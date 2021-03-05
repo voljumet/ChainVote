@@ -1,6 +1,6 @@
-pragma solidity 0.5.12;
+pragma solidity 0.7.5;
 
-contract Ownable{
+contract Ownable {
     address public owner;
 
     modifier onlyOwner(){
@@ -8,7 +8,7 @@ contract Ownable{
         _; //Continue execution
     }
 
-    constructor() public{
+    constructor() public {
         owner = msg.sender;
     }
 }
