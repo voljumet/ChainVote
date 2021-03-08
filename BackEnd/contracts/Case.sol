@@ -17,8 +17,11 @@ contract Cases is Ownable{
       string[] alternativesString;
     }
     uint private caseNumber;
+
+    // 1. case title, 2. caseNumber. -- mapping to search cases in frontend
+    mapping(string => uint) caseIndexRegister;
     
-    // 1. caseNumber, 2. alternativeText, 3. alternativesVotes. map _caseNumber to alternatives.
+    // 1. caseNumber, 2. alternativeText, 3. alternativesVotes. -- mapping caseNumber to alternatives.
     mapping(uint => mapping(string => uint)) caseAlternatives;
 
     event caseCreated(string title, bool openForVoting);
@@ -77,11 +80,12 @@ contract Cases is Ownable{
 
     function getCase(uint _caseNumber) public view returns(string memory _title, uint _deadline, uint _totalVotes, bool _openForVoting, string[] memory _alternatives, uint[10] memory _num){
         uint[10] memory votesArray;
-        for(uint i = 0; i <=  cases[_caseNumber].alternativesSting.length-1; i++){
-            votesArray[i] = caseAlternatives[_caseNumber][cases[_caseNumber].alternativesSting[i]];
+        for(uint i = 0; i <=  cases[_caseNumber].alternativesString.length-1; i++){
+            votesArray[i] = caseAlternatives[_caseNumber][cases[_caseNumber].alternativesString[i]];
         }
         
-        return (cases[_caseNumber].title, cases[_caseNumber].deadline, cases[_caseNumber].totalVotes, cases[_caseNumber].openForVoting, cases[_caseNumber].alternativesSting, votesArray);
+        return (cases[_caseNumber].title, cases[_caseNumber].deadline, cases[_caseNumber].totalVotes, 
+        cases[_caseNumber].openForVoting, cases[_caseNumber].alternativesString, votesArray);
     }
     function deleteCase(uint _caseNumber) public onlyOwner {
       string memory title = cases[_caseNumber].title;
@@ -96,13 +100,13 @@ contract Cases is Ownable{
    
    function addAlternatives(uint _caseNumber, string memory _alternative) public{
        caseAlternatives[_caseNumber][_alternative] = 0;
-       cases[_caseNumber].alternativesSting.push(_alternative);
+       cases[_caseNumber].alternativesString.push(_alternative);
    }
    
    function Vote (uint _caseNumber, uint _optionVoted) public{
        caseAlternatives[_caseNumber]["Ikke Stemt"] = SafeMath.sub(caseAlternatives[_caseNumber]["Ikke Stemt"], 1);
-       caseAlternatives[_caseNumber][cases[_caseNumber].alternativesSting[_optionVoted]] = 
-            SafeMath.add(caseAlternatives[_caseNumber][cases[_caseNumber].alternativesSting[_optionVoted]], 1);
+       caseAlternatives[_caseNumber][cases[_caseNumber].alternativesString[_optionVoted]] = 
+            SafeMath.add(caseAlternatives[_caseNumber][cases[_caseNumber].alternativesString[_optionVoted]], 1);
    }
  
 }
