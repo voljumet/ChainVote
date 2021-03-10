@@ -4,7 +4,7 @@ pragma abicoder v2;
 
 import "./Ownable.sol";
 
-contract Case is Ownable {
+contract NewCase is Ownable {
 
     constructor() {
         initialize(msg.sender);
@@ -86,9 +86,9 @@ contract Case is Ownable {
    }
 
    function openVoting(uint256 _caseNumber) public onlyOwner {
-       require(_uintStorage[_caseNumber]["Total Votes"] > 0);
+        require(_uintStorage[_caseNumber]["Total Votes"] > 0);
         _boolStorage[_caseNumber]["Open For Voting"] = true;
-        // emit
+        emit votingOpened(_caseNumber, _stringStorage[_caseNumber]["title"]);
    }
    
    function vote (uint256 _caseNumber, uint256 _optionVoted) public {
@@ -121,8 +121,9 @@ contract Case is Ownable {
         return (_stringArrayStorage[_caseNumber]["Alternatives"], _uintArrayStorage[_caseNumber]["Alternatives"]);
    }
 
-   function getMyVote(uint256 _caseNumber) public view returns(string memory){
-        return (_stringArrayStorage[_caseNumber]["Alternatives"][_uintStorage[_caseNumber][string(abi.encodePacked(msg.sender))]]);
+   function getMyVote(uint256 _caseNumber) public view returns(uint256){
+        return (_uintStorage[_caseNumber][string(abi.encodePacked(msg.sender))]
+        );
    }
- 
+
 }

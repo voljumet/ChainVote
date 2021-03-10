@@ -1,41 +1,36 @@
-// 'Dogs' is contract name, NOT FILENAME!
-const Dogs = artifacts.require("Dogs");
-const DogsUpdated = artifacts.require("DogsUpdated");
+// 'Case1' is contract name, NOT FILENAME!
+const Case1 = artifacts.require("Case");
+const Case2 = artifacts.require("NewCase");
 const Proxy = artifacts.require("Proxy");
 
 module.exports = async function (developer, network, accounts) {
   // deploy contracts
-  const dogs = await Dogs.new();
-  const proxy = await Proxy.new(dogs.address);
+  const case1 = await Case1.new();
+  const proxy = await Proxy.new(case1.address);
 
   //create proxy Dog to fool truffle
-  var proxyDog = await Dogs.at(proxy.address);
+  var proxyCase1 = await Case1.at(proxy.address);
 
   //set the nr of dogs through the proxy
-  await proxyDog.setNumberOfDogs(10);
+  await proxyCase1.createCase("First Case", 20052020, 100);
+  await proxyCase1.addAlternatives(1, "Ja");
+  await proxyCase1.addAlternatives(1, "Nei");
+  await proxyCase1.openVoting(1);
 
-  //tested
-  var nrOfDogs = await proxyDog.getNumberOfDogs();
-  console.log("before update: " + nrOfDogs.toNumber());
+  var myVote = await proxyCase1.getMyVote(1);
+  console.log("My Vote: " + myVote);
+  console.log("Voting...");
+  await proxyCase1.vote(1, 1);
+  myVote = await proxyCase1.getMyVote(1);
+  console.log("My Vote: " + myVote);
 
-  //deploy new version of Dogs
-  const dogsUpdated = await DogsUpdated.new();
-  proxy.upgrade(dogsUpdated.address);
+  proxyCase1 = await Case2.at(proxy.address);
+  proxyCase1.initialize(accounts[0]);
 
-  //fool truffle once again. It now thinks proxyDog has all functions.
-  proxyDog = await DogsUpdated.at(proxy.address);
-  // initialize proxy state.
-  proxyDog.initialize(accounts[0]);
+  myVote = await proxyCase1.getMyVote(1);
+  console.log("My Vote, after update: " + myVote);
 
-  //check that storage remained
-  nrOfDogs = await proxyDog.getNumberOfDogs();
-  console.log("after update: " + nrOfDogs.toNumber());
-
-  //set the nr of dogs through the proxy with NEW FUNC CONTRACT
-  await proxyDog.setNumberOfDogs(30);
-
-  //check that setNumberOfDogs worked with new func
-  nrOfDogs = await proxyDog.getNumberOfDogs();
-  console.log("after change: " + nrOfDogs.toNumber());
+  await proxyCase1.vote(1, 2);
+  myVote = await proxyCase1.getMyVote(1);
+  console.log("My Vote, after change: " + myVote);
 };
- 

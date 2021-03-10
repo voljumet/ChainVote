@@ -1,43 +1,41 @@
+//SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.7.5;
 
-import "./Storage.sol";
 import "./Ownable.sol";
 
-contract Proxy is Storage, Ownable{
-
-    address currentAddress;
-    bool private _paused;
+contract Proxy is Ownable {
 
     constructor(address _currenAddress) {
-        currentAddress = _currenAddress;
-        _paused = false;
+        // index 0, not sure if ok
+        _addressStorage[0]["currentAddress"] = _currenAddress;
+        _boolStorage[0]["paused"] = false;
     }
 
     function upgrade(address _newAddress) public onlyOwner whenPaused {
-        currentAddress = _newAddress;
+        _addressStorage[0]["currentAddress"] = _newAddress;
     }
 
     modifier whenNotPaused() {
-        require(!_paused);
+        require(!_boolStorage[0]["paused"]);
         _;
     }
     modifier whenPaused() {
-        require(_paused);
+        require(_boolStorage[0]["paused"]);
         _;
     }
     
     function pause() public onlyOwner whenNotPaused {
-        _paused = true;
+        _boolStorage[0]["paused"] = true;
     }
     
     function unPause() public onlyOwner whenPaused{
-        _paused = false;
+        _boolStorage[0]["paused"] = false;
     }
 
-// Fallback function, last call..
-    fallback() external payable whenNotPaused {
-        address implementation = currentAddress;
-        require(currentAddress != address(0));
+    // Fallback function, last call..
+    fallback() payable external whenNotPaused {
+        address implementation = _addressStorage[0]["currentAddress"];
+        require(_addressStorage[0]["currentAddress"] != address(0));
         bytes memory data = msg.data;
 
         assembly{
@@ -49,6 +47,10 @@ contract Proxy is Storage, Ownable{
             case 0 {revert(ptr, size)}
             default {return(ptr, size)}
         }
+    }
+    // Solidity split the unnamed function into fallback() and recieve() in v 0.6.0
+    receive() external payable {
+        // custom function code
     }
 }
 
