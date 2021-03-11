@@ -66,8 +66,6 @@ contract Case is Ownable {
     // Problematisk å slette?
     function deleteCase(uint _caseNumber) public onlyOwner {
         require(!_boolStorage[_caseNumber]["Open For Voting"]);
-        string memory title = _stringStorage[_caseNumber]["Title"];
-        bool openForVoting = _boolStorage[_caseNumber]["Open For Voting"];
 
         delete _stringStorage[_caseNumber]["Title"];
         delete _uintStorage[_caseNumber]["Deadline"];
@@ -76,7 +74,7 @@ contract Case is Ownable {
         delete _addressStorage[_caseNumber]["Voted"];
         delete _boolStorage[_caseNumber]["Open For Voting"];
 
-        emit caseDeleted(title, openForVoting, _addressStorage[0]["owner"]);
+        emit caseDeleted(_stringStorage[_caseNumber]["Title"], _boolStorage[_caseNumber]["Open For Voting"], _addressStorage[0]["owner"]);
    }
    
    function addAlternatives(uint256 _caseNumber, string memory _alternative) public onlyOwner {
@@ -86,9 +84,9 @@ contract Case is Ownable {
    }
 
    function openVoting(uint256 _caseNumber) public onlyOwner {
-       require(_uintStorage[_caseNumber]["Total Votes"] > 0);
+        require(_uintStorage[_caseNumber]["Total Votes"] > 0);
         _boolStorage[_caseNumber]["Open For Voting"] = true;
-        // emit
+        emit votingOpened(_caseNumber, _stringStorage[_caseNumber]["title"]);
    }
    
    function vote (uint256 _caseNumber, uint256 _optionVoted) public {

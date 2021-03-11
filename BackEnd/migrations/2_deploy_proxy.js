@@ -24,6 +24,7 @@ module.exports = async function (developer, network, accounts) {
   myVote = await proxyCase1.getMyVote(1);
   console.log("My Vote: " + myVote);
 
+  // bytter contract
   proxyCase1 = await Case2.at(proxy.address);
   proxyCase1.initialize(accounts[0]);
 

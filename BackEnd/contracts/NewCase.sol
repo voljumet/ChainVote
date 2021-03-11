@@ -121,9 +121,8 @@ contract NewCase is Ownable {
         return (_stringArrayStorage[_caseNumber]["Alternatives"], _uintArrayStorage[_caseNumber]["Alternatives"]);
    }
 
-   function getMyVote(uint256 _caseNumber) public view returns(uint256){
-        return (_uintStorage[_caseNumber][string(abi.encodePacked(msg.sender))]
-        );
+   function getMyVote(uint256 _caseNumber) public view returns(string memory){
+        return (_stringArrayStorage[_caseNumber]["Alternatives"][_uintStorage[_caseNumber][string(abi.encodePacked(msg.sender))]]);
    }
 
 }
