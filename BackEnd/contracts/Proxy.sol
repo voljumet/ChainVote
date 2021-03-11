@@ -7,35 +7,35 @@ contract Proxy is Ownable {
 
     constructor(address _currenAddress) {
         // index 0, not sure if ok
-        _addressStorage[0]["currentAddress"] = _currenAddress;
-        _boolStorage[0]["paused"] = false;
+        _addressStorage["currentAddress"] = _currenAddress;
+        _boolStorage["paused"] = false;
     }
 
     function upgrade(address _newAddress) public onlyOwner whenPaused {
-        _addressStorage[0]["currentAddress"] = _newAddress;
+        _addressStorage["currentAddress"] = _newAddress;
     }
 
     modifier whenNotPaused() {
-        require(!_boolStorage[0]["paused"]);
+        require(!_boolStorage["paused"]);
         _;
     }
     modifier whenPaused() {
-        require(_boolStorage[0]["paused"]);
+        require(_boolStorage["paused"]);
         _;
     }
     
     function pause() public onlyOwner whenNotPaused {
-        _boolStorage[0]["paused"] = true;
+        _boolStorage["paused"] = true;
     }
     
     function unPause() public onlyOwner whenPaused{
-        _boolStorage[0]["paused"] = false;
+        _boolStorage["paused"] = false;
     }
 
     // Fallback function, last call..
     fallback() payable external whenNotPaused {
-        address implementation = _addressStorage[0]["currentAddress"];
-        require(_addressStorage[0]["currentAddress"] != address(0));
+        address implementation = _addressStorage["currentAddress"];
+        require(_addressStorage["currentAddress"] != address(0));
         bytes memory data = msg.data;
 
         assembly{

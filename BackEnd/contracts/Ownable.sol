@@ -6,11 +6,11 @@ import "./Storage.sol";
 contract Ownable is Storage {
 
     modifier onlyOwner(){
-        require(msg.sender == _addressStorage[0]["owner"]);
+        require(msg.sender == _addressStorage["owner"]);
         _; //Continue execution
     }
 
     constructor() {
-        _addressStorage[0]["owner"] = msg.sender;
+        _addressStorage["owner"] = msg.sender;
     }
 }

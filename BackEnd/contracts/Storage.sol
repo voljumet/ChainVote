@@ -5,13 +5,34 @@ import "./SafeMath.sol";
 
 contract Storage {
 
-    // 1. case Number  2. variable Name  3. variable Value
-    mapping(uint => mapping(string => uint256)) _uintStorage;
-    mapping(uint => mapping(string => uint256[])) _uintArrayStorage;
-    mapping(uint => mapping(string => string)) _stringStorage;
-    mapping(uint => mapping(string => string[])) _stringArrayStorage;
-    mapping(uint => mapping(string => address)) _addressStorage;
-    mapping(uint => mapping(string => bool)) _boolStorage;
-    mapping(uint => mapping(string => bytes4)) _bytesStorage;
+    struct user {
+        mapping(string => uint256) _uintUser;
+        mapping(string => uint256[]) _uintArrayUser;
+        mapping(string => string) _stringUser;
+        mapping(string => string[]) _stringArryUser;
+        mapping(string => bool) _boolUser;
+        mapping(string => address) _addressUser;
+        mapping(string => bytes4) _bytesUser;
+    }
+
+    struct cases {
+        mapping(string => uint256) _uintCase;
+        mapping(string => uint256[]) _uintArrayCase;
+        mapping(string => string) _stringCase;
+        mapping(string => string[]) _stringArrayCase;
+        mapping(string => bool) _boolCase;
+    }
+
+    // 1 = variable Name |  2 = variable Value
+    mapping(string => uint256) _uintStorage;
+    mapping(string => uint256[]) _uintArrayStorage;
+    mapping(string => string) _stringStorage;
+    mapping(string => string[]) _stringArrayStorage;
+    mapping(string => address) _addressStorage;
+    mapping(string => bool) _boolStorage;
+    mapping(string => bytes4) _bytesStorage;
+
+    mapping(uint => cases) _cases;
+    mapping(address => user) _users;
     
 }
