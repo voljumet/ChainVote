@@ -60,11 +60,16 @@ contract Case is Ownable {
     }
 
     function getCase(uint _caseNumber) public view returns(string memory _title, uint _deadline, uint _totalVotes, bool _openForVoting, string[] memory _alternatives, uint[] memory _num){
-        return (_cases[_caseNumber]._stringCase["Title"], _cases[_caseNumber]._uintCase["Deadline"], _cases[_caseNumber]._uintCase["Total Votes"], 
-        _cases[_caseNumber]._boolCase["Open For Voting"], _cases[_caseNumber]._stringArrayCase["Alternatives"], _cases[_caseNumber]._uintArrayCase["Alternatives"]);
+        return (_cases[_caseNumber]._stringCase["Title"], 
+                _cases[_caseNumber]._uintCase["Deadline"], 
+                _cases[_caseNumber]._uintCase["Total Votes"], 
+                _cases[_caseNumber]._boolCase["Open For Voting"], 
+                _cases[_caseNumber]._stringArrayCase["Alternatives"], 
+                _cases[_caseNumber]._uintArrayCase["Alternatives"]
+        );
     }
 
-    // Problematisk å slette?
+    // Problematisk å slette? Ligger på BC, så det går vel ikke akkurat å gjøre, bygge om til deactivate?
     function deleteCase(uint _caseNumber) public onlyOwner {
         require(!_cases[_caseNumber]._boolCase["Open For Voting"]);
 
@@ -73,6 +78,7 @@ contract Case is Ownable {
         delete _cases[_caseNumber]._uintCase["Total Votes"];
         delete _cases[_caseNumber]._stringArrayCase["Alternatives"];
         delete _cases[_caseNumber]._boolCase["Open For Voting"];
+        delete _cases[_caseNumber]._uintArrayCase["Alternatives"];
 
         emit caseDeleted(_cases[_caseNumber]._stringCase["Title"], _cases[_caseNumber]._boolCase["Open For Voting"]);
    }
@@ -110,17 +116,20 @@ contract Case is Ownable {
         require(_cases[_caseNumber]._boolCase["Open For Voting"], "Not Open For Voting Yet!");  // Checks if the case is open for voting
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alternatives"].length, "Pick an option that exists");   // Checks that the option exists
 
-        uint256 oldVote = _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))];
-
-        // Checks if the address already voted, then using changeVote instead
-        if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) {
-            changeVote(_caseNumber, _optionVoted);
-        } else {
-            firstVote(_caseNumber, _optionVoted);
+        if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
+            _cases[_caseNumber]._uintArrayCase["Alternatives"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
+                SafeMath.sub(_cases[_caseNumber]._uintArrayCase["Alternatives"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]], 1); // SUBTRACT
+        } else { // Has not voted
+            _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] = true; // VOTING = TRUE
+            _cases[_caseNumber]._uintArrayCase["Alternatives"][0] = SafeMath.sub(_cases[_caseNumber]._uintArrayCase["Alternatives"][0], 1); // SUBTRACT
         }
+        _cases[_caseNumber]._uintArrayCase["Alternatives"][_optionVoted] = SafeMath.add(_cases[_caseNumber]._uintArrayCase["Alternatives"][_optionVoted], 1); // ADD
 
-        assert(_optionVoted != oldVote);
-        assert(keccak256(abi.encodePacked(
+        uint256 oldVote = _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))];
+        _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] = _optionVoted; // Map msg.sender => _optionVoted
+
+        assert(_optionVoted != oldVote); // vote has changed
+        assert(keccak256(abi.encodePacked( // 
                     _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))],
                     _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]
                 ))
@@ -129,20 +138,6 @@ contract Case is Ownable {
                     true
                 ))
         );
-   }
-
-   function firstVote(uint256 _caseNumber, uint256 _optionVoted) internal {
-        _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] = true; // Voting address registerd to the case
-        _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] = _optionVoted; // Register alternative to address
-        _cases[_caseNumber]._uintArrayCase["Alternatives"][0] = SafeMath.sub(_cases[_caseNumber]._uintArrayCase["Alternatives"][0], 1); // subtracts a Vote from "Ikke Stemt" 
-        _cases[_caseNumber]._uintArrayCase["Alternatives"][_optionVoted] = SafeMath.add(_cases[_caseNumber]._uintArrayCase["Alternatives"][_optionVoted], 1); //adds a vote to the option chosen
-   }
-
-   function changeVote(uint256 _caseNumber, uint256 _optionVoted) internal {
-        uint256 registerdVote = _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))];
-        _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] = _optionVoted;     // Register alternative to address
-        _cases[_caseNumber]._uintArrayCase["Alternatives"][registerdVote] = SafeMath.sub(_cases[_caseNumber]._uintArrayCase["Alternatives"][registerdVote], 1);     // subtracts a Vote from previously voted alternative
-        _cases[_caseNumber]._uintArrayCase["Alternatives"][_optionVoted] = SafeMath.add(_cases[_caseNumber]._uintArrayCase["Alternatives"][_optionVoted], 1);   //adds a vote to the option chosen
    }
 
    function getAlternatives(uint256 _caseNumber) public view returns(string[] memory, uint256[] memory){
