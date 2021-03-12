@@ -5,7 +5,7 @@ import "./SafeMath.sol";
 
 contract Storage {
 
-    struct user {
+    struct User {
         mapping(string => uint256) _uintUser;
         mapping(string => uint256[]) _uintArrayUser;
         mapping(string => string) _stringUser;
@@ -15,12 +15,13 @@ contract Storage {
         mapping(string => bytes4) _bytesUser;
     }
 
-    struct cases {
+    struct Case {
         mapping(string => uint256) _uintCase;
         mapping(string => uint256[]) _uintArrayCase;
         mapping(string => string) _stringCase;
         mapping(string => string[]) _stringArrayCase;
         mapping(string => bool) _boolCase;
+
     }
 
     // 1 = variable Name |  2 = variable Value
@@ -32,7 +33,7 @@ contract Storage {
     mapping(string => bool) _boolStorage;
     mapping(string => bytes4) _bytesStorage;
 
-    mapping(uint => cases) _cases;
-    mapping(address => user) _users;
+    mapping(uint => Case) _cases;
+    mapping(address => User) _users;
     
 }
