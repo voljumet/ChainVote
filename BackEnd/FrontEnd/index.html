@@ -31,7 +31,7 @@ https://templatemo.com/tm-538-digital-trend
   </head>
   <body>
     <!-- MENU BAR -->
-    <nav class="navbar navbar-expand-lg">
+     <nav class="navbar navbar-expand-lg">
       <div class="container">
         <a class="navbar-brand" href="index.html">
           <i class="fa fa-line-chart"></i>
@@ -122,30 +122,26 @@ https://templatemo.com/tm-538-digital-trend
           <div
             class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
           >
-
+             <div>
+              <h4 class="month" data-aos="fade-up">
+                <u>February</u>
+              </h4>
+              <div class="row" data-aos="fade-up">
+                <div class="column">
+                  <div class="card">
+                    <h3>Proposal #1</h3>
+                    <p>Deadline in: 15 dayes</p>
+                    <div id="myProgress">
+                      <div id="myBar"></div>
+                    </div>
+                    <br />
+                    <button onclick="move(100);">Start</button>
+                  </div>
+                </div>
+              </div>
+              </div>
          
             <div class="hero-text">
-              <h4 class="text-white" data-aos="fade-up">
-               <u>January</u>
-              </h4>
-               <h4 class="text-white" data-aos="fade-up">
-               <u>February</u>
-              </h4>
-               <h4 class="text-white" data-aos="fade-up">
-               <u>Mars</u>
-              </h4>
-
-
-            <!-- 
-              <a
-                href="contact.html"
-                class="custom-btn btn-bg btn mt-3"
-                data-aos="fade-up"
-                data-aos-delay="100"
-                >Let us discuss together!</a
-              >
-               -->
-
               <strong
                 class="d-block py-3 pl-5 text-white"
                 data-aos="fade-up"
@@ -410,5 +406,32 @@ https://templatemo.com/tm-538-digital-trend
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/smoothscroll.js"></script>
     <script src="js/custom.js"></script>
+    <script scr="js/timeBar.js"></script>
+    
+    <!--Deadline function -->
+    <script>
+      var i = 0;
+      function move(time) {
+        if (i == 0) {
+          i = 1;
+          var elem = document.getElementById('myBar');
+          elem.style.backgroundColor = '#4CAF50';
+          var width = 10;
+          var id = setInterval(frame, time);
+          function frame() {
+            if (width >= time) {
+              clearInterval(id);
+              i = 0;
+            } else {
+              width++;
+              elem.style.width = width + '%';
+              if (width == time) {
+                elem.style.backgroundColor = 'red';
+              }
+            }
+          }
+        }
+      }
+    </script>
   </body>
 </html>
