@@ -3,11 +3,23 @@ pragma solidity 0.7.5;
 pragma abicoder v2;
 
 import "./Ownable.sol";
+import "./MultiSig.sol";
 
-contract Case is Ownable {
+contract Case is Ownable, MultiSig {
 
     constructor() {
         initialize(msg.sender);
+    }
+    
+    function createUser(string memory _city, string memory _userType) public {
+        _users[msg.sender]._stringUser["Region"] = _city;
+        _users[msg.sender]._stringUser["User Type"] = _userType;
+        
+        _addressArrayStorage[ string(abi.encodePacked(_city,_userType)) ].push(msg.sender); // makes array based on city and usertype
+    }
+    
+    function getUserArrayLength(string memory _city, string memory _userType) public view returns(uint){
+        return _addressArrayStorage[ string(abi.encodePacked(_city,_userType)) ].length;
     }
     
     function initialize(address _owner) private {
@@ -20,15 +32,27 @@ contract Case is Ownable {
     event caseDeleted(string title, bool openForVoting);
     event votingOpened(uint256 caseNumber, string title);
     event votingClosed(uint256 caseNumber, string title);
+    
+    function approvalZ(uint _caseNumber) public {
+        approve(_caseNumber);
+    }
+    
+    function getSigningRequestsZ(uint _caseNumber) public view {
+        getSigningRequests(_caseNumber);
+    }
+    
 
-    function createCase(string memory _title, uint256 _deadline, uint256 _totalVotes, string[] memory _alternatives) public onlyOwner {
+    function createCase(string memory _title, uint256 _deadline, uint256 _totalVotes, string[] memory _alternatives, string memory _region) public onlyOwner {
         require(_totalVotes > 0, "Total votes needs to be more than 0");
-        // "Global" Case Number Counter
-        _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1);
+        _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
 
         // This creates a case
         _cases[caseNumber]._stringCase["Title"] = _title;
+        _cases[caseNumber]._stringCase["Region"] = _region;
+        // tall på antall stemer som trengs "9/2+0,5"
+        _cases[caseNumber]._uintCase["Limit"] = 5;
+        
         _cases[caseNumber]._uintCase["Deadline"] = _deadline;
         _cases[caseNumber]._uintCase["Total Votes"] = _totalVotes;
         _cases[caseNumber]._boolCase["open For Voting"] = false;
@@ -42,6 +66,8 @@ contract Case is Ownable {
             _cases[caseNumber]._stringArrayCase["Alternatives"].push(_alternatives[i]);
             _cases[caseNumber]._uintArrayCase["Alternatives"].push(0);
         }
+        
+        
 
         // checks if the information that is going to be stored is the same as the information entered into the function
         for(uint i = 0; i < _alternatives.length; i++){
@@ -51,6 +77,7 @@ contract Case is Ownable {
 
         assert(keccak256(abi.encodePacked(
                     _cases[caseNumber]._stringCase["Title"],
+                    _cases[caseNumber]._stringCase["Region"],
                     _cases[caseNumber]._uintCase["Deadline"],
                     _cases[caseNumber]._boolCase["open For Voting"],
                     _cases[caseNumber]._uintCase["Total Votes"],
@@ -60,6 +87,7 @@ contract Case is Ownable {
             ==
             keccak256(abi.encodePacked(
                     _title,
+                    _region,
                     _deadline,
                     false,
                     _totalVotes,
@@ -68,6 +96,8 @@ contract Case is Ownable {
                 ))
         );
         emit caseCreated(_cases[caseNumber]._stringCase["Title"], _cases[caseNumber]._boolCase["Open For Voting"]);
+        
+        publishForApproval(caseNumber);
     }
 
     function getCase(uint _caseNumber) public view returns(string memory _title, uint _deadline, uint _totalVotes, bool _openForVoting, string[] memory _alternatives, uint[] memory _num){
@@ -80,8 +110,9 @@ contract Case is Ownable {
     }
 
     // Problematisk å slette? Ligger på BC, så det går vel ikke akkurat å gjøre, bygge om til deactivate?
-    function deactivateCase(uint _caseNumber) public onlyOwner {
+    function deleteCase(uint _caseNumber) public onlyOwner {
         require(!_cases[_caseNumber]._boolCase["Open For Voting"]);
+
 
         _cases[_caseNumber]._boolCase["Case Deactivated"] = true;
 

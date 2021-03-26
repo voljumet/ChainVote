@@ -29,6 +29,7 @@ contract Storage {
     mapping(string => uint256[]) _uintArrayStorage;
     mapping(string => string) _stringStorage;
     mapping(string => string[]) _stringArrayStorage;
+    mapping(string => address[]) _addressArrayStorage;
     mapping(string => address) _addressStorage;
     mapping(string => bool) _boolStorage;
     mapping(string => bytes4) _bytesStorage;
