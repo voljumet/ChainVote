@@ -1,3 +1,4 @@
+//SPDX-License-Identifier: MIT
 pragma solidity 0.7.5;
 pragma abicoder v2;
 
@@ -9,24 +10,33 @@ contract MultiSig is Storage{
     event ApprovalReceived(uint _caseNumber, uint _approvals, address _approver);
     event CaseApproved(uint _caseNumber);
 
-    //Should only allow people in the signers list to continue the execution.
+    // Checks that only "Regional" or "National" userType can run the function
     modifier onlyOwners(uint _caseNumber){
         bool signer = false;
-        string memory temp = "Standard";
-        require(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("Regional")) || keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("National")));
-        if(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("Regional"))){
-            temp = "Regional";
-        } else if(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("National"))){
-            temp = "National";
-        } 
         
-        for(uint i = 0; i< _addressArrayStorage[ string(abi.encodePacked(_cases[_caseNumber]._stringCase["Region"],temp)) ].length ; i++){
-            if(_addressArrayStorage[ string(abi.encodePacked(_cases[_caseNumber]._stringCase["Region"],temp)) ][i] == msg.sender){
+        for(uint i = 0; i< _addressArrayStorage[ string(abi.encodePacked(_cases[_caseNumber]._stringCase["Region"], checkUserTypeString())) ].length ; i++){
+            if(_addressArrayStorage[ string(abi.encodePacked(_cases[_caseNumber]._stringCase["Region"],checkUserTypeString())) ][i] == msg.sender){
                 signer = true;
             }
         }
-        require(signer == true);
+        require(signer == true, "ERR5: Signer = true failed");
         _;
+    }
+    
+    // Checks if userType is Regional or National, returns either, returns nothing if userType is Standard
+    function checkUserTypeString() internal view returns(string memory returnVal) {
+        require(checkUserTypeBool(), "ERR3: checkUserTypeBool");
+        if(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("Regional"))){
+            return ("Regional");
+        } else if(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("National"))){
+            return ("National");
+        } 
+    }
+    
+    function checkUserTypeBool() internal view returns(bool returnVal) {
+        require(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("Regional")) ||
+                keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("National")),  "ERR4: Require Reg OR Nat");
+        return true;
     }
 
     // Create an instance of the Sign struct and add it to the SigningRequests array
@@ -65,4 +75,6 @@ contract MultiSig is Storage{
         
         return ("Percent signed(%): ", number3);
     }
+    
+    
 }
