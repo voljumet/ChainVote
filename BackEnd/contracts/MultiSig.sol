@@ -19,7 +19,7 @@ contract MultiSig is Storage{
                 signer = true;
             }
         }
-        require(signer == true, "ERR5: Signer = true failed");
+        require(signer == true, "ERR5: Signer = true");
         _;
     }
     
@@ -42,26 +42,27 @@ contract MultiSig is Storage{
     // Create an instance of the Sign struct and add it to the SigningRequests array
     function publishForApproval(uint _caseNumber) internal onlyOwners(_caseNumber) {
         _cases[_caseNumber]._uintCase["Approvals"] = 0;
-        _cases[_caseNumber]._boolCase["hasBeenApproved"] = false;
         // legges til i lista
         _uintArrayStorage["WaitingForApproval"].push(_caseNumber);
         
         emit SigningRequestCreated(_cases[_caseNumber]._stringCase["Title"], _caseNumber);
     }
     
+    // APPROVE NOT WORKING
     function approve(uint _caseNumber) internal onlyOwners(_caseNumber) {
-        require(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == false);  // checks if user has approved
-        require(_cases[_caseNumber]._boolCase["hasBeenApproved"] == false);                     // checks if case is approved
-        
+        require(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == false, "ERR12: msg.sender = false");  // checks if user has approved
+        require(_cases[_caseNumber]._boolCase["Open For Voting"] == false, "ERR13: open = false X");                     // checks if case is approved
+
         _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] = true; // user has approved
-        _cases[_caseNumber]._uintCase["Approvals"] ++;
+        //SafeMath.add(_cases[_caseNumber]._uintCase["Approvals"], 1); // increase by 1
+        _cases[_caseNumber]._uintCase["Approvals"]+=1; // increase by 1
         
         emit ApprovalReceived(_caseNumber, _cases[_caseNumber]._uintCase["Approvals"], msg.sender);
         
         if(_cases[_caseNumber]._uintCase["Approvals"] >= _cases[_caseNumber]._uintCase["Limit"]){
-            _cases[_caseNumber]._boolCase["hasBeenApproved"] = true;
-            // fjernes fra waiting lista
             //When enough signatures are received, will open the case for voting. Change "OpenforVoting" bool to true. 
+            _cases[_caseNumber]._boolCase["Open For Voting"] = true;
+            // fjernes fra waiting lista
             
             emit CaseApproved(_caseNumber);
         }
@@ -75,6 +76,8 @@ contract MultiSig is Storage{
         
         return ("Percent signed(%): ", number3);
     }
-    
-    
+
+    function getApproval(uint _caseNumber) public view returns(uint){
+        return _cases[_caseNumber]._uintCase["Approvals"];
+    }
 }
