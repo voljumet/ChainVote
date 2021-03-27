@@ -29,8 +29,7 @@ module.exports = async function (developer, network, accounts) {
   await proxyCaseOne.createCase(
     "First Case",
     20052021,
-    ["Ja", "Nei"],
-    "Grimstad"
+    ["Ja", "Nei"]
   );
 
   var limit = await proxyCaseOne.returnLimitApproval(1);

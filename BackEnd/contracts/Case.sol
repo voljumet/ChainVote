@@ -53,13 +53,15 @@ contract Case is Ownable, MultiSig {
         return getApproval(_caseNumber);
     }
 
-    function createCase(string memory _title, uint256 _deadline, string[] memory _alternatives, string memory _region) public {
+    function createCase(string memory _title, uint256 _deadline, string[] memory _alternatives) public {
         require(checkUserTypeBool(),"ERR1: Not Regional or National"); // checks that the userType is "Regional" or "National"
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
-
+        string memory _region = _users[msg.sender]._stringUser["Region"];
         // This creates a case
         _cases[caseNumber]._stringCase["Title"] = _title;
+
+        // Case-region used from user
         _cases[caseNumber]._stringCase["Region"] = _region;
         
         // tall på antall stemer som trengs "((((7 *10) /2) +5) /10)" for å approve casen i MultiSig
