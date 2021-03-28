@@ -26,11 +26,8 @@ module.exports = async function (developer, network, accounts) {
   await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[13] });
 
   //set the nr of dogs through the proxy
-  await proxyCaseOne.createCase(
-    "First Case",
-    20052021,
-    ["Ja", "Nei"]
-  );
+  await proxyCaseOne.createCase("First Case", 20052021, ["Ja", "Nei"]);
+  console.log("Case created");
 
   var limit = await proxyCaseOne.returnLimitApproval(1);
   console.log("Limit: " + limit); // skal bli 5
@@ -89,4 +86,4 @@ module.exports = async function (developer, network, accounts) {
   myVote = await proxyCaseOne.getMyVote(1);
   console.log("My Vote, after change: " + myVote);
   */
-};
+};;

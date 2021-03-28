@@ -60,9 +60,7 @@ contract Case is Ownable, MultiSig {
         string memory _region = _users[msg.sender]._stringUser["Region"];
         // This creates a case
         _cases[caseNumber]._stringCase["Title"] = _title;
-
-        // Case-region used from user
-        _cases[caseNumber]._stringCase["Region"] = _region;
+        _cases[caseNumber]._stringCase["Region"] = _region; // Case-region used from user
         
         // tall på antall stemer som trengs "((((7 *10) /2) +5) /10)" for å approve casen i MultiSig
         _cases[caseNumber]._uintCase["Limit"] = 
@@ -120,6 +118,7 @@ contract Case is Ownable, MultiSig {
                     // _totalVotes
                 ))
         );
+        assert(_cases[caseNumber]._uintCase["Limit"]%2 != 0);
         emit caseCreated(_cases[caseNumber]._stringCase["Title"], _cases[caseNumber]._boolCase["Open For Voting"]);
         
         publishForApproval(caseNumber);
@@ -142,15 +141,9 @@ contract Case is Ownable, MultiSig {
 
         emit caseDeleted(_cases[_caseNumber]._stringCase["Title"], _cases[_caseNumber]._boolCase["Open For Voting"]);
    }
-
-//    function openVoting(uint256 _caseNumber) public onlyOwners(_caseNumber) {
-//         require(_cases[_caseNumber]._uintCase["Total Votes"] > 0, "Total Votes must be higher than 0");
-//         _cases[_caseNumber]._boolCase["hasBeenApproved"] = true;
-//         _cases[_caseNumber]._boolCase["Open For Voting"] = true;
-//         emit votingOpened(_caseNumber, _cases[_caseNumber]._stringCase["title"]);
-//    }
    
    function vote (uint256 _caseNumber, uint256 _optionVoted) public {
+       // time logic?
         require(_cases[_caseNumber]._boolCase["Open For Voting"], "ERR7: Not Open For Voting Yet!");  // Checks if the case is open for voting
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alternatives"].length, "ERR8: Pick an option that exists");   // Checks that the option exists
 
@@ -186,4 +179,21 @@ contract Case is Ownable, MultiSig {
       require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "Case does not exist");
         return ( _cases[_caseNumber]._stringArrayCase["Alternatives"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
    }
+
+// testing time logic
+    uint time;
+    
+    function test(uint _deadline_in_x_days) public returns(uint, uint){
+        time = block.timestamp + _deadline_in_x_days*5; // blir deadline
+        return (time, block.timestamp);
+    }
+    
+    function tryer() public view returns(string memory ads){
+        if(time > block.timestamp){
+            return "wait for time to pass";
+        } else {
+            return "now is after deadline";
+        }
+    }
+
 }
