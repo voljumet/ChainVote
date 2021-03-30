@@ -11,11 +11,27 @@ contract Case is Ownable, MultiSig {
         initialize(msg.sender);
     }
     
-    function createUser(string memory _region, string memory _userType) public {
+     function createUser(string memory _region, string memory _userType) public {
+        require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["Region"]))== keccak256(""), "Case.error.1: User is already registered");
+        require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["User Type"]))== keccak256(""), "Case.error.1: User is already registered");
         _users[msg.sender]._stringUser["Region"] = _region;
         _users[msg.sender]._stringUser["User Type"] = _userType;
-        
+
+        uint  length =  _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
         _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].push(msg.sender); // makes array based on region and usertype
+
+        assert(keccak256(abi.encodePacked(
+                    _users[msg.sender]._stringUser["Region"],
+                    _users[msg.sender]._stringUser["User Type"],
+                     _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length
+                ))
+            ==
+            keccak256(abi.encodePacked(
+                    _region,
+                    _userType,
+                    length+=1     
+                ))
+        );
     }
     
     function getUserArrayLength(string memory _region, string memory _userType) public view returns(uint){
@@ -23,9 +39,20 @@ contract Case is Ownable, MultiSig {
     }
     
     function initialize(address _owner) private {
-        require(!_boolStorage["initialized"], "ERR6: initialized");
+        require(!_boolStorage["initialized"], "Case.error.3: initialized");
         _addressStorage["owner"] = _owner;
         _boolStorage["initialized"] = true;
+
+        assert(keccak256(abi.encodePacked(
+                     _addressStorage["owner"],
+                   _boolStorage["initialized"]
+                ))
+            ==
+            keccak256(abi.encodePacked(
+                    _owner,
+                    true
+                ))
+        );
     }
 
     event caseCreated(string title, bool openForVoting);
@@ -140,6 +167,7 @@ contract Case is Ownable, MultiSig {
         _cases[_caseNumber]._boolCase["Case Deactivated"] = true;
 
         emit caseDeleted(_cases[_caseNumber]._stringCase["Title"], _cases[_caseNumber]._boolCase["Open For Voting"]);
+        assert(_cases[_caseNumber]._boolCase["Case Deactivated"] == true);
    }
    
    function vote (uint256 _caseNumber, uint256 _optionVoted) public {
