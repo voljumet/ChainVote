@@ -6,7 +6,8 @@ const truffleAssert = require('truffle-assertions');
 
   contract('Proxy', async function (accounts) {
     let instance;
-
+ 
+    
     beforeEach(async function () {
       const caseOne = await CaseOne.new();
       const proxy = await Proxy.new(caseOne.address);
