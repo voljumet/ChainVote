@@ -19,13 +19,13 @@ contract MultiSig is Storage{
                 signer = true;
             }
         }
-        require(signer == true, "ERR5: Signer = true");
+        require(signer == true, "multisig.error.5: Signer = true");
         _;
     }
     
     // Checks if userType is Regional or National, returns either, returns nothing if userType is Standard
     function checkUserTypeString() internal view returns(string memory returnVal) {
-        require(checkUserTypeBool(), "ERR3: checkUserTypeBool");
+        require(checkUserTypeBool(), "multisig.error.3: checkUserTypeBool");
         if(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("Regional"))){
             return ("Regional");
         } else if(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("National"))){
@@ -35,7 +35,7 @@ contract MultiSig is Storage{
     
     function checkUserTypeBool() internal view returns(bool returnVal) {
         require(keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("Regional")) ||
-                keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("National")),  "ERR4: Require Reg OR Nat");
+                keccak256(bytes(_users[msg.sender]._stringUser["User Type"])) == keccak256(bytes("National")),  "multisig.error.4: Require Reg OR Nat");
         return true;
     }
 
@@ -44,14 +44,18 @@ contract MultiSig is Storage{
         _cases[_caseNumber]._uintCase["Approvals"] = 0;
         // legges til i lista
         _uintArrayStorage["WaitingForApproval"].push(_caseNumber);
+
         
+        //Her må funksjonalitet for å legge til tidsbegrensninger inn.
+
+
         emit SigningRequestCreated(_cases[_caseNumber]._stringCase["Title"], _caseNumber);
     }
     
     // APPROVE NOT WORKING
-    function approve(uint _caseNumber) internal onlyOwners(_caseNumber) {
+    function approve(uint _caseNumber) internal onlyOwners(_caseNumber){
         require(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == false, "ERR12: msg.sender = false");  // checks if user has approved
-        require(_cases[_caseNumber]._boolCase["Open For Voting"] == false, "ERR13: open = false X");                     // checks if case is approved
+        require(_cases[_caseNumber]._boolCase["Open For Voting"] == false, "multisig.error.13: open = false X");                     // checks if case is approved
 
         _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] = true; // user has approved
         //SafeMath.add(_cases[_caseNumber]._uintCase["Approvals"], 1); // increase by 1
@@ -63,7 +67,13 @@ contract MultiSig is Storage{
             //When enough signatures are received, will open the case for voting. Change "OpenforVoting" bool to true. 
             _cases[_caseNumber]._boolCase["Open For Voting"] = true;
             // fjernes fra waiting lista
-            
+            for(uint i = 0; i < _uintArrayStorage["WaitingForApproval"].length; i++){
+                if(_uintArrayStorage["WaitingForApproval"][i] == _caseNumber){
+                     require(i < _uintArrayStorage["WaitingForApproval"].length);
+                     _uintArrayStorage["WaitingForApproval"][i] = _uintArrayStorage["WaitingForApproval"][_uintArrayStorage["WaitingForApproval"].length-1];
+                     _uintArrayStorage["WaitingForApproval"].pop();
+                }
+            }
             emit CaseApproved(_caseNumber);
         }
         assert(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == true);
@@ -75,6 +85,10 @@ contract MultiSig is Storage{
         uint number3 = number/number2;
         
         return ("Percent signed(%): ", number3);
+    }
+
+    function getWaitinglistCount()public view returns(uint[] memory){
+        return _uintArrayStorage["WaitingForApproval"];
     }
 
     function getApproval(uint _caseNumber) public view returns(uint){
