@@ -11,6 +11,7 @@ contract Case is Ownable, MultiSig {
         initialize(msg.sender);
     }
     
+    
     function createUser(string memory _region, string memory _userType) public {
         _users[msg.sender]._stringUser["Region"] = _region;
         _users[msg.sender]._stringUser["User Type"] = _userType;
@@ -32,9 +33,10 @@ contract Case is Ownable, MultiSig {
     event caseDeleted(string title, bool openForVoting);
     event votingOpened(uint256 caseNumber, string title);
     event votingClosed(uint256 caseNumber, string title);
+    event caseClosedForVoting(string, bool);
     
     function approvalZ(uint _caseNumber) public {
-        approve(_caseNumber);
+        return approve(_caseNumber);
     }
     
     function getSigningRequestsZ(uint _caseNumber) public view returns(string memory, uint){
@@ -53,8 +55,19 @@ contract Case is Ownable, MultiSig {
         return getApproval(_caseNumber);
     }
 
+    function getWaitinglistCountZ()public view returns(uint[] memory){
+        return getWaitinglistCount();
+    }
+
+    function closeForVoting(uint _caseNumber)public onlyOwners(_caseNumber){
+        require(_cases[_caseNumber]._uintCase["Deadline"] < block.timestamp, "case.error.21:Deadline not reached");
+        _cases[_caseNumber]._boolCase["open For Voting"] = false; 
+        assert(_cases[_caseNumber]._boolCase["open For Voting"] = false);
+        emit caseClosedForVoting(_cases[_caseNumber]._stringCase["Title"], _cases[_caseNumber]._boolCase["Open For Voting"]);
+    }
+
     function createCase(string memory _title, uint256 _deadline, string[] memory _alternatives) public {
-        require(checkUserTypeBool(),"ERR1: Not Regional or National"); // checks that the userType is "Regional" or "National"
+        require(checkUserTypeBool(),"case.error.1: Not Regional or National"); // checks that the userType is "Regional" or "National"
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
         string memory _region = _users[msg.sender]._stringUser["Region"];
@@ -125,8 +138,8 @@ contract Case is Ownable, MultiSig {
     }
 
     function getCase(uint _caseNumber) public view returns(string memory _title, uint _deadline, uint _totalVotes, bool _openForVoting, string[] memory _alternatives, uint[] memory _num){
-        require(!_cases[_caseNumber]._boolCase["Case Deactivated"], "ERR9: This case has been deactivated");
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR10: Case does not exist");
+        require(!_cases[_caseNumber]._boolCase["Case Deactivated"], "case.error.9: This case has been deactivated");
+        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "case.error10: Case does not exist");
         return (_cases[_caseNumber]._stringCase["Title"],               _cases[_caseNumber]._uintCase["Deadline"], 
                 _cases[_caseNumber]._uintCase["Total Votes"],           _cases[_caseNumber]._boolCase["Open For Voting"], 
                 _cases[_caseNumber]._stringArrayCase["Alternatives"],   _cases[_caseNumber]._uintArrayCase["Alternatives"]
@@ -144,9 +157,10 @@ contract Case is Ownable, MultiSig {
    
    function vote (uint256 _caseNumber, uint256 _optionVoted) public {
        // time logic?
-        require(_cases[_caseNumber]._boolCase["Open For Voting"], "ERR7: Not Open For Voting Yet!");  // Checks if the case is open for voting
-        require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alternatives"].length, "ERR8: Pick an option that exists");   // Checks that the option exists
-
+        require(_cases[_caseNumber]._boolCase["Open For Voting"], "case.error.7: Not Open For Voting Yet!");  // Checks if the case is open for voting
+        require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alternatives"].length, "case.error.8: Pick an option that exists");   // Checks that the option exists
+        require(_cases[_caseNumber]._uintCase["Deadline"] > block.timestamp, "case.error.20: Deadline reached, case closed for voting");
+        
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alternatives"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
                 SafeMath.sub(_cases[_caseNumber]._uintArrayCase["Alternatives"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]], 1); // SUBTRACT

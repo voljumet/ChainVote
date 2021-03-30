@@ -26,6 +26,12 @@ module.exports = async function (developer, network, accounts) {
   await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[13] });
 
   //set the nr of dogs through the proxy
+  await proxyCaseOne.createCase("First Case",16171804 , ["Ja", "Nei"]);
+  console.log("Case created");
+
+  await proxyCaseOne.createCase("First Case", 1617086800, ["Ja", "Nei"]);
+  console.log("Case created");
+
   await proxyCaseOne.createCase("First Case", 20052021, ["Ja", "Nei"]);
   console.log("Case created");
 
@@ -36,8 +42,10 @@ module.exports = async function (developer, network, accounts) {
   console.log("Total: " + total); // skal bli 14
 
   await proxyCaseOne.approvalZ(1, { from: accounts[1] });
+  var getWait = await proxyCaseOne.getWaitinglistCount();
   var approvalZ = await proxyCaseOne.getApprovalZ(1);
   console.log("approvals on case 1: " + approvalZ);
+  console.log("Waiting list count" + getWait);
 
   await proxyCaseOne.approvalZ(1, { from: accounts[2] });
   approvalZ = await proxyCaseOne.getApprovalZ(1);
@@ -53,16 +61,22 @@ module.exports = async function (developer, network, accounts) {
 
   await proxyCaseOne.approvalZ(1, { from: accounts[5] });
   approvalZ = await proxyCaseOne.getApprovalZ(1);
+  getWait = await proxyCaseOne.getWaitinglistCount();
   console.log("approvals on case 1: " + approvalZ);
+  console.log("Waiting list count " + getWait);
 
   console.log("approvals done");
 
-  await proxyCaseOne.vote(1, 1, { from: accounts[1] });
-  await proxyCaseOne.vote(1, 1, { from: accounts[2] });
-  await proxyCaseOne.vote(1, 1, { from: accounts[3] });
-  await proxyCaseOne.vote(1, 1, { from: accounts[4] });
-  await proxyCaseOne.vote(1, 1, { from: accounts[5] });
-  await proxyCaseOne.vote(1, 1, { from: accounts[6] });
+  await proxyCaseOne.closeForVoting(1, {from: accounts[9]})
+  console.log("Closed case one for voting");
+
+
+  // // await proxyCaseOne.vote(1, 1, { from: accounts[1] });
+  // // await proxyCaseOne.vote(1, 1, { from: accounts[2] });
+  // await proxyCaseOne.vote(1, 1, { from: accounts[3] });
+  // await proxyCaseOne.vote(1, 1, { from: accounts[4] });
+  // await proxyCaseOne.vote(1, 1, { from: accounts[5] });
+  // await proxyCaseOne.vote(1, 1, { from: accounts[6] });
 
   var votes = await proxyCaseOne.getCase(1);
   console.log(votes);
