@@ -1,6 +1,7 @@
 // 'Case1' is contract name, NOT FILENAME!
-const CaseOne = artifacts.require("Case");
-const Proxy = artifacts.require("Proxy");
+
+const CaseOne = artifacts.require('Case');
+const Proxy = artifacts.require('Proxy');
 
 module.exports = async function (developer, network, accounts) {
   // deploy contracts
@@ -9,53 +10,47 @@ module.exports = async function (developer, network, accounts) {
 
   //create proxy Case to fool truffle
   var proxyCaseOne = await CaseOne.at(proxy.address);
-
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[0] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[1] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[2] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[3] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[4] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[5] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[6] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[7] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[8] });
-  await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[9] });
-  await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[10] });
-  await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[11] });
-  await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[12] });
-  await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[13] });
+  /*
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[0] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[1] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[2] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[3] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[4] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[5] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[6] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[7] });
 
   //set the nr of dogs through the proxy
-  await proxyCaseOne.createCase("First Case", 20052021, ["Ja", "Nei"]);
-  console.log("Case created");
+  await proxyCaseOne.createCase('First Case', 20052021, ['Ja', 'Nei']);
+  console.log('Case created');
 
   var limit = await proxyCaseOne.returnLimitApproval(1);
-  console.log("Limit: " + limit); // skal bli 5
+  console.log('Limit: ' + limit); // skal bli 5
 
   var total = await proxyCaseOne.returnTotalVotes(1);
-  console.log("Total: " + total); // skal bli 14
+  console.log('Total: ' + total); // skal bli 14
 
   await proxyCaseOne.approvalZ(1, { from: accounts[1] });
   var approvalZ = await proxyCaseOne.getApprovalZ(1);
-  console.log("approvals on case 1: " + approvalZ);
+  console.log('approvals on case 1: ' + approvalZ);
 
   await proxyCaseOne.approvalZ(1, { from: accounts[2] });
   approvalZ = await proxyCaseOne.getApprovalZ(1);
-  console.log("approvals on case 1: " + approvalZ);
+  console.log('approvals on case 1: ' + approvalZ);
 
   await proxyCaseOne.approvalZ(1, { from: accounts[3] });
   approvalZ = await proxyCaseOne.getApprovalZ(1);
-  console.log("approvals on case 1: " + approvalZ);
+  console.log('approvals on case 1: ' + approvalZ);
 
   await proxyCaseOne.approvalZ(1, { from: accounts[4] });
   approvalZ = await proxyCaseOne.getApprovalZ(1);
-  console.log("approvals on case 1: " + approvalZ);
+  console.log('approvals on case 1: ' + approvalZ);
 
   await proxyCaseOne.approvalZ(1, { from: accounts[5] });
   approvalZ = await proxyCaseOne.getApprovalZ(1);
-  console.log("approvals on case 1: " + approvalZ);
+  console.log('approvals on case 1: ' + approvalZ);
 
-  console.log("approvals done");
+  console.log('approvals done');
 
   await proxyCaseOne.vote(1, 1, { from: accounts[1] });
   await proxyCaseOne.vote(1, 1, { from: accounts[2] });
@@ -86,4 +81,4 @@ module.exports = async function (developer, network, accounts) {
   myVote = await proxyCaseOne.getMyVote(1);
   console.log("My Vote, after change: " + myVote);
   */
-};;
+};
