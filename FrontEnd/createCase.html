@@ -20,6 +20,9 @@ https://templatemo.com/tm-538-digital-trend
     />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet">
+    
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/aos.css" />
@@ -38,16 +41,11 @@ https://templatemo.com/tm-538-digital-trend
           <i class="fa fa-line-chart"></i>
           ChainVote
         </a>
-         <a class="navbar-brand" href="index.html">
-          <i class="fa fa-book"></i>
-          History
+        <a class="navbar-brand" href="index.html">
+          <i class=" fa fa-arrow-left"></i>
+          Back To Home Page
         </a>
-        <a class="navbar-brand" href="createCase.html">
-          <i class="fa fa-book"></i>
-          Create Case
-        </a>
-
-        
+       
         <button
           class="navbar-toggler"
           type="submit"
@@ -106,46 +104,50 @@ https://templatemo.com/tm-538-digital-trend
     </nav>
 
     <!-- HERO -->
-    <section
+  <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
       <div class="container">
         <div class="row">
-          <div class="input-group rounded">
-            <input
-              type="search"
-              class="form-control rounded"
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="search-addon"
-            />
-            <span class="input-group-text border-0" id="search-addon">
-              <i class="fa fa-search"></i>
-            </span>
-          </div>
+          
 
-          <div
-            class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
-          >
-             <div>
-              <h4 class="month" data-aos="fade-up">
-                <u>February</u>
-              </h4>
-              <div class="row" data-aos="fade-up">
-                <div class="column">
-                  <div class="card">
-                    <h3>Proposal #1</h3>
-                    <p>Deadline in: 15 dayes</p>
-                    <div id="myProgress">
-                      <div id="myBar"></div>
-                    </div>
-                    <br />
-                    <button onclick="move(100);">Start</button>
-                  </div>
-                </div>
-              </div>
-              </div>
-          </div>
+          <form  method="post" class="contact-form" id="proposal_discription" data-aos="fade-up" data-aos-delay="300" role="form">
+             <h2> Proposal Number #</h2>
+                        <div class="row">
+                          <div class="col-lg-12 col-12">
+                            <textarea class="form-control" rows="6" name="message" placeholder="Proposal Discription"></textarea>
+                          </div>
+                             <div >
+                          <input type="text" class="form-control" name="name" placeholder="Alternative Text">
+                             </div>
+                              <div>
+                          <input type="text" class="form-control" name="name" placeholder="Alternative Text">
+                             </div>
+
+                          <div>
+                            <button type="submit"  class="form-control" id="create-button" name="create">Create Proposal</button>
+                          </div>
+                           <div>
+                            <button type="submit"  class="form-control" id="cancel-button" name="cancel">Cancel</button>
+                          </div>
+                        </div>
+
+                        <div class  ="Help">
+                             
+                                <div class="col-md-12">
+                                    <div class="info">
+                                        <i class="icon-info-sign"></i>
+
+                                                  <span class="extra-info">
+                                                        Extra Info about Proposal
+                                                   </span>
+                                     </div>
+                                </div>
+                        </div>
+                       
+
+          </form>
+           
         </div>
       </div>
     </section>
@@ -159,30 +161,6 @@ https://templatemo.com/tm-538-digital-trend
     <script src="js/custom.js"></script>
     <script scr="js/timeBar.js"></script>
     
-    <!--Deadline function -->
-    <script>
-      var i = 0;
-      function move(time) {
-        if (i == 0) {
-          i = 1;
-          var elem = document.getElementById('myBar');
-          elem.style.backgroundColor = '#4CAF50';
-          var width = 10;
-          var id = setInterval(frame, time);
-          function frame() {
-            if (width >= time) {
-              clearInterval(id);
-              i = 0;
-            } else {
-              width++;
-              elem.style.width = width + '%';
-              if (width == time) {
-                elem.style.backgroundColor = 'red';
-              }
-            }
-          }
-        }
-      }
-    </script>
+  
   </body>
 </html>

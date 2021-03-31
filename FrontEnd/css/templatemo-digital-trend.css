@@ -548,8 +548,8 @@ https://templatemo.com/tm-538-digital-trend
   }
 
   .newsletter-form button,
-  .contact-form #submit-button {
-    background: var(--primary-color);
+  .contact-form #create-button {
+    background: green;
     border-radius: var(--border-radius-large);
     color: var(--white-color);
     cursor: pointer;
@@ -561,6 +561,34 @@ https://templatemo.com/tm-538-digital-trend
   .newsletter-form button {
     background: var(--secondary-color);
   }
+  /*_____________ Cancel button ___________________*/
+   .newsletter-form .form-control,
+  .contact-form .form-control {
+    box-shadow: none;
+    background: var(--project-bg);
+    border: 0;
+    padding: 1.7em 1.3em;
+    margin: 14px 0;
+  }
+
+  .newsletter-form button,
+  .contact-form #cancel-button {
+    background: red;
+    border-radius: var(--border-radius-large);
+    color: var(--white-color);
+    cursor: pointer;
+    font-size: var(--p-font-size);
+    line-height: 0px;
+    padding: 1.5em 1.3em;
+  }
+
+  .newsletter-form button {
+    background: var(--secondary-color);
+  }
+
+
+
+
 
 
 
