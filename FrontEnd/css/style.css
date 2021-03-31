@@ -295,3 +295,9 @@ a {
   
     
 }
+.disable-day{
+  color: gray;
+}
+.highlight-day a:not(.disable-day) {
+  background-color: blue;
+}
