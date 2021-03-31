@@ -1,33 +1,26 @@
 // 'Case1' is contract name, NOT FILENAME!
 
-const CaseOne = artifacts.require('Case');
-const Proxy = artifacts.require('Proxy');
+const CaseOne = artifacts.require("Case");
+const Proxey = artifacts.require("Proxy");
 
-module.exports = async function (developer, network, accounts) {
-  // deploy contracts
-  const caseOne = await CaseOne.new();
-  const proxy = await Proxy.new(caseOne.address);
+module.exports = async function (deployer, network, accounts) {
+  await deployer.deploy(CaseOne);
+  let instanceCase = await CaseOne.deployed();
+
+  await deployer.deploy(Proxey, instanceCase.address);
+  await Proxey.deployed();
 
   //create proxy Case to fool truffle
-  var proxyCaseOne = await CaseOne.at(proxy.address);
-
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[0] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[1] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[2] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[3] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[4] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[5] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[6] });
-  // await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[7] });
-  // await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[8] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[9] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[10] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[11] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[12] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[13] });
-  console.log(await proxyCaseOne.getUser({from: accounts[6]}));
-  await proxyCaseOne.editUser("Oslo", "National", { from: accounts[6] });
-  console.log(await proxyCaseOne.getUser({from: accounts[6]}));
+  // var proxyCaseOne = await CaseOne.at(proxy.address);
+  // await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[0] });
+  /*
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[1] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[2] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[3] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[4] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[5] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[6] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[7] });
 
   //set the nr of dogs through the proxy
   // await proxyCaseOne.createCase("First Case",16171804 , ["Ja", "Nei"]);
