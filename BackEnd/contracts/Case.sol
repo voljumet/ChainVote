@@ -7,6 +7,13 @@ import "./MultiSig.sol";
 
 contract Case is Ownable, MultiSig {
 
+    event caseCreated(string title, bool openForVoting);
+    event caseDeleted(string title, bool openForVoting);
+    event votingOpened(uint256 caseNumber, string title);
+    event votingClosed(uint256 caseNumber, string title);
+    event CloseVoting(string); // Result needed
+    event userCreated(address, string);
+
     constructor() {
         initialize(msg.sender);
     }
@@ -32,9 +39,8 @@ contract Case is Ownable, MultiSig {
                     length+=1     
                 ))
         );
+        emit userCreated(msg.sender, "User Created successfully");
     }
-    
-    
     
     function initialize(address _owner) private {
         require(!_boolStorage["initialized"], "case.error.3: initialized");
@@ -50,12 +56,6 @@ contract Case is Ownable, MultiSig {
                     true))
         );
     }
-
-    event caseCreated(string title, bool openForVoting);
-    event caseDeleted(string title, bool openForVoting);
-    event votingOpened(uint256 caseNumber, string title);
-    event votingClosed(uint256 caseNumber, string title);
-    event CloseVoting(string); // Result needed
     
     function endVoting(uint _caseNumber)public onlyOwners(_caseNumber){
         require(_cases[_caseNumber]._uintCase["Close"] < block.timestamp, "case.error.21: Voting for case not ended");

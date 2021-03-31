@@ -1,17 +1,19 @@
 // 'Case1' is contract name, NOT FILENAME!
 
-const CaseOne = artifacts.require('Case');
-const Proxy = artifacts.require('Proxy');
+const CaseOne = artifacts.require("Case");
+const Proxey = artifacts.require("Proxy");
 
-module.exports = async function (developer, network, accounts) {
-  // deploy contracts
-  const caseOne = await CaseOne.new();
-  const proxy = await Proxy.new(caseOne.address);
+module.exports = async function (deployer, network, accounts) {
+  await deployer.deploy(CaseOne);
+  let instanceCase = await CaseOne.deployed();
+
+  await deployer.deploy(Proxey, instanceCase.address);
+  await Proxey.deployed();
 
   //create proxy Case to fool truffle
-  var proxyCaseOne = await CaseOne.at(proxy.address);
+  // var proxyCaseOne = await CaseOne.at(proxy.address);
+  // await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[0] });
   /*
-  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[0] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[1] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[2] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[3] });
