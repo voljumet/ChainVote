@@ -78,7 +78,10 @@ contract MultiSig is Storage{
         }
         assert(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == true);
     }
-    
+    // Ikke ferdig
+    // Limit = antall som kan signere
+    // Approvals = antall som har signert
+    // Approvals/
     function getSigningRequests(uint _caseNumber) internal view returns(string memory, uint) {
         uint number = (_cases[_caseNumber]._uintCase["Approvals"]*100);
         uint number2 = (_cases[_caseNumber]._uintCase["Total Votes"]*100);
@@ -87,11 +90,11 @@ contract MultiSig is Storage{
         return ("Percent signed(%): ", number3);
     }
 
-    function getWaitinglistCount()public view returns(uint[] memory){
+    function getWaitinglistCount()internal view returns(uint[] memory){
         return _uintArrayStorage["WaitingForApproval"];
     }
 
-    function getApproval(uint _caseNumber) public view returns(uint){
+    function getApproval(uint _caseNumber) internal view returns(uint){
         return _cases[_caseNumber]._uintCase["Approvals"];
     }
 }

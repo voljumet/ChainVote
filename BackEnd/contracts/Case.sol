@@ -112,6 +112,8 @@ contract Case is Ownable, MultiSig {
                 2),
             5),
         10);
+
+        require(_cases[caseNumber]._uintCase["Limit"]%2 != 0);
         
         // totalVotes = Standard+Regional+National
         _cases[caseNumber]._uintCase["Total Votes"] = _addressArrayStorage[ string(abi.encodePacked(_region,"Standard")) ].length;
@@ -157,7 +159,6 @@ contract Case is Ownable, MultiSig {
                     // _totalVotes
                 ))
         );
-        assert(_cases[caseNumber]._uintCase["Limit"]%2 != 0);
         emit caseCreated(_cases[caseNumber]._stringCase["Title"], _cases[caseNumber]._boolCase["Open For Voting"]);
         
         publishForApproval(caseNumber);
@@ -212,7 +213,8 @@ contract Case is Ownable, MultiSig {
         );
    }
 
-   function getAlternatives(uint256 _caseNumber) public view returns(string[] memory, uint256[] memory){
+   function getAlternatives(uint256 _caseNumber) public view returns(string[] memory _alter , uint256[] memory _alterNum){
+       require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "Case does not exist");
         return (_cases[_caseNumber]._stringArrayCase["Alternatives"], _cases[_caseNumber]._uintArrayCase["Alternatives"]);
    }
 
