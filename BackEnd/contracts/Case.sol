@@ -45,6 +45,8 @@ contract Case is Ownable, MultiSig {
         assert(keccak256((abi.encodePacked(_Region))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"]))) &&
                keccak256((abi.encodePacked(_userType))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["User Type"]))));
     }
+
+    
     
     
     
