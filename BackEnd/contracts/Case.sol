@@ -33,6 +33,20 @@ contract Case is Ownable, MultiSig {
                 ))
         );
     }
+
+    function editUser(string memory _Region, string memory _userType) public{
+
+        if(keccak256((abi.encodePacked(_Region))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"])))){
+            _users[msg.sender]._stringUser["Region"] = _Region;      
+        }
+        if(keccak256((abi.encodePacked(_userType))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["User Type"])))){
+            _users[msg.sender]._stringUser["User Type"] = _userType;
+        }
+        assert(keccak256((abi.encodePacked(_Region))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"]))) &&
+               keccak256((abi.encodePacked(_userType))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["User Type"]))));
+    }
+
+    
     
     
     
@@ -213,6 +227,10 @@ contract Case is Ownable, MultiSig {
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "case.error.25: Case does not exist");
         return approve(_caseNumber);
     }
+   function getUser()public view returns(string memory, string memory){
+        return(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["User Type"]);
+    }
+
     
     function getApprovalLimit(uint _caseNumber) public view returns(uint){
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "case.error.26: Case does not exist");
