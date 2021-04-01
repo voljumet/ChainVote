@@ -296,3 +296,7 @@ a {
 .highlight-day a:not(.disable-day) {
   background-color: blue;
 }
+
+.#:checked:after{
+  
+}
