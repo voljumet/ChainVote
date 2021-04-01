@@ -150,10 +150,10 @@ contract Case is Ownable, MultiSig {
             ==
               keccak256(abi.encodePacked(
                     _title,     _region,
-                    _open,      _endDate,
+                    "Start Date",      _endDate,
                     false,      "Ikke Stemt"))
         );
-        emit caseCreated(caseNumber, _title, _description, _openForVoting, _startDate, _endDate, stringAlternatives, uintAlternatives, _cases[_caseNumber]._uintCase["Total Votes"], _region);
+        emit caseCreated(caseNumber, _title, _description, false, _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alternatives"], _cases[caseNumber]._uintArrayCase["Alternatives"], _cases[caseNumber]._uintCase["Total Votes"], _region);
         
         publishForApproval(caseNumber);
     }
