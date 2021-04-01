@@ -214,12 +214,12 @@ window.abi = [
       },
       {
         internalType: "uint256",
-        name: "_open",
+        name: "_startDate",
         type: "uint256",
       },
       {
         internalType: "uint256",
-        name: "_close",
+        name: "_endDate",
         type: "uint256",
       },
       {
@@ -250,7 +250,7 @@ window.abi = [
       },
       {
         internalType: "uint256",
-        name: "_close",
+        name: "_endDate",
         type: "uint256",
       },
       {
