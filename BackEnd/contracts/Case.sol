@@ -7,18 +7,20 @@ import "./MultiSig.sol";
 
 contract Case is Ownable, MultiSig {
 
-    event caseCreated(string title, bool openForVoting);
+    event caseCreated(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlternatives, uint[] uintAlternatives, uint totalVotes, string indexed region);
     event caseDeleted(string title, bool openForVoting);
     event votingOpened(uint256 caseNumber, string title);
     event votingClosed(uint256 caseNumber, string title);
     event CloseVoting(string); // Result needed
-    event userCreated(address, string);
+    event userCreated(address userAddress, string confirmation);
+    /* ""receipt.events.userCreated.returnValues.confirmation"" in main.js
+        use for userCreated(x x, string confirmation) */
 
     constructor() {
         initialize(msg.sender);
     }
     
-     function createUser(string memory _region, string memory _userType) public {
+    function createUser(string memory _region, string memory _userType) public {
         require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["Region"]))== keccak256(""), "case.error.1: User is already registered");
         require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["User Type"]))== keccak256(""), "case.error.1: User is already registered");
         _users[msg.sender]._stringUser["Region"] = _region;
@@ -72,7 +74,7 @@ contract Case is Ownable, MultiSig {
     }
     
     function endVoting(uint _caseNumber)public onlyOwners(_caseNumber){
-        require(_cases[_caseNumber]._uintCase["Close"] < block.timestamp, "case.error.21: Voting for case not ended");
+        require(_cases[_caseNumber]._uintCase["End Date"] < block.timestamp, "case.error.21: Voting for case not ended");
         _cases[_caseNumber]._boolCase["open For Voting"] = false; 
         assert(_cases[_caseNumber]._boolCase["open For Voting"] = false);
         emit CloseVoting(_cases[_caseNumber]._stringCase["Title"]);
@@ -99,7 +101,7 @@ contract Case is Ownable, MultiSig {
 
     }
 
-    function createCase(string memory _title, string memory _description, uint256 _open, uint256 _close, string[] memory _alternatives) public {
+    function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string[] memory _alternatives) public {
         require(checkUserTypeBool(),"case.error.1: Not Regional or National"); // checks that the userType is "Regional" or "National"
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
@@ -121,8 +123,8 @@ contract Case is Ownable, MultiSig {
         // Counts total voters (TotalVotes = Standard + Regional + National).
         totalVotes(caseNumber, _region);
 
-        _cases[caseNumber]._uintCase["Open"] = _open;
-        _cases[caseNumber]._uintCase["Close"] = _close;
+        _cases[caseNumber]._uintCase["Start Date"] = _startDate;
+        _cases[caseNumber]._uintCase["End Date"] = _endDate;
         _cases[caseNumber]._boolCase["open For Voting"] = false;
         _cases[caseNumber]._boolCase["Case Deactivated"] = false;
 
@@ -143,23 +145,23 @@ contract Case is Ownable, MultiSig {
 
         assert(keccak256(abi.encodePacked(
                     _cases[caseNumber]._stringCase["Title"],            _cases[caseNumber]._stringCase["Region"],
-                    _cases[caseNumber]._uintCase["Open"],               _cases[caseNumber]._uintCase["Close"],
+                    _cases[caseNumber]._uintCase["Start Date"],               _cases[caseNumber]._uintCase["End Date"],
                     _cases[caseNumber]._boolCase["open For Voting"],    _cases[caseNumber]._stringArrayCase["Alternatives"][0]))
             ==
               keccak256(abi.encodePacked(
                     _title,     _region,
-                    _open,      _close,
+                    _open,      _endDate,
                     false,      "Ikke Stemt"))
         );
-        emit caseCreated(_cases[caseNumber]._stringCase["Title"], _cases[caseNumber]._boolCase["Open For Voting"]);
+        emit caseCreated(caseNumber, _title, _description, _openForVoting, _startDate, _endDate, stringAlternatives, uintAlternatives, _cases[_caseNumber]._uintCase["Total Votes"], _region);
         
         publishForApproval(caseNumber);
     }
 
-    function getCase(uint _caseNumber) public view returns(string memory _title, uint _close, uint _totalVotes, bool _openForVoting, string[] memory _alternatives, uint[] memory _num){
+    function getCase(uint _caseNumber) public view returns(string memory _title, uint _endDate, uint _totalVotes, bool _startDateForVoting, string[] memory _alternatives, uint[] memory _num){
         require(!_cases[_caseNumber]._boolCase["Case Deactivated"], "case.error.9: This case has been deactivated");
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "case.error.10: Case does not exist");
-        return (_cases[_caseNumber]._stringCase["Title"],               _cases[_caseNumber]._uintCase["Close"], 
+        return (_cases[_caseNumber]._stringCase["Title"],               _cases[_caseNumber]._uintCase["End Date"], 
                 _cases[_caseNumber]._uintCase["Total Votes"],           _cases[_caseNumber]._boolCase["Open For Voting"], 
                 _cases[_caseNumber]._stringArrayCase["Alternatives"],   _cases[_caseNumber]._uintArrayCase["Alternatives"]
         );
@@ -177,8 +179,8 @@ contract Case is Ownable, MultiSig {
     function vote (uint256 _caseNumber, uint256 _optionVoted) public {
         require(_cases[_caseNumber]._boolCase["Open For Voting"], "case.error.7: Not Open For Voting Yet!");  // Checks if the case is open for voting
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alternatives"].length, "case.error.8: Pick an option that exists");   // Checks that the option exists
-        require(_cases[_caseNumber]._uintCase["Close"] > block.timestamp, "case.error.20: Voting for case has ended");
-        require(_cases[_caseNumber]._uintCase["Open"] < block.timestamp, "case.error.22: Case not open for voting yet");
+        require(_cases[_caseNumber]._uintCase["End Date"] > block.timestamp, "case.error.20: Voting for case has ended");
+        require(_cases[_caseNumber]._uintCase["Start Date"] < block.timestamp, "case.error.22: Case not open for voting yet");
         
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alternatives"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 

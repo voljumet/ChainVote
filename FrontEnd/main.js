@@ -26,7 +26,11 @@ async function createUser(_region, _userType) {
     .createUser(_region, _userType)
     .send({ from: ethereum.selectedAddress })
     .on("receipt", function (receipt) {
-      console.log(receipt);
+        console.log(receipt);
+        if (receipt.events.userCreated.returnValues.confirmation == "User Created successfully") {
+            alert("user created successfully")
+        }
+            
     });
 }
 
