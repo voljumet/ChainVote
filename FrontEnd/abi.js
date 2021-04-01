@@ -1,3 +1,11 @@
+// // fetches the jsonfile with abi
+
+// window.abi = "caseAbi.abi";
+
+// var json = "../Backend/build/contracts/Case.json";
+// var caseAbi = JSON.parse(json);
+// window.abi = caseAbi.abi;
+
 window.abi = [
   {
     inputs: [],
@@ -78,9 +86,21 @@ window.abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
+        internalType: "uint256",
+        name: "caseNumber",
+        type: "uint256",
+      },
+      {
+        indexed: true,
         internalType: "string",
         name: "title",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "description",
         type: "string",
       },
       {
@@ -88,6 +108,48 @@ window.abi = [
         internalType: "bool",
         name: "openForVoting",
         type: "bool",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "startDate",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "endDate",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string[]",
+        name: "stringAlternatives",
+        type: "string[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256[]",
+        name: "uintAlternatives",
+        type: "uint256[]",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "totalVotes",
+        type: "uint256",
+      },
+      {
+        indexed: true,
+        internalType: "string",
+        name: "region",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "confirmation",
+        type: "string",
       },
     ],
     name: "caseCreated",
@@ -118,13 +180,13 @@ window.abi = [
       {
         indexed: false,
         internalType: "address",
-        name: "",
+        name: "userAddress",
         type: "address",
       },
       {
         indexed: false,
         internalType: "string",
-        name: "",
+        name: "confirmation",
         type: "string",
       },
     ],
@@ -260,7 +322,7 @@ window.abi = [
       },
       {
         internalType: "bool",
-        name: "_openForVoting",
+        name: "_startDateForVoting",
         type: "bool",
       },
       {
