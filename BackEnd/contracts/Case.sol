@@ -18,10 +18,24 @@ contract Case is Ownable, MultiSig {
         
         _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].push(msg.sender); // makes array based on region and usertype
     }
+
+    function editUser(string memory _Region, string memory _userType) public{
+
+        if(keccak256((abi.encodePacked(_Region))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"])))){
+            _users[msg.sender]._stringUser["Region"] = _Region;      
+        }
+        if(keccak256((abi.encodePacked(_userType))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["User Type"])))){
+            _users[msg.sender]._stringUser["User Type"] = _userType;
+        }
+        assert(keccak256((abi.encodePacked(_Region))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"]))) &&
+               keccak256((abi.encodePacked(_userType))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["User Type"]))));
+    }
     
     function getUserArrayLength(string memory _region, string memory _userType) public view returns(uint){
         return _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
     }
+
+    
     
     function initialize(address _owner) private {
         require(!_boolStorage["initialized"], "ERR6: initialized");
@@ -193,6 +207,10 @@ contract Case is Ownable, MultiSig {
       require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "Case does not exist");
         return ( _cases[_caseNumber]._stringArrayCase["Alternatives"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
    }
+
+   function getUser()public view returns(string memory, string memory){
+        return(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["User Type"]);
+    }
 
 // testing time logic
     uint time;
