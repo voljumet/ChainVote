@@ -7,7 +7,7 @@ import "./MultiSig.sol";
 
 contract Case is Ownable, MultiSig {
 
-    event caseCreated(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlternatives, uint[] uintAlternatives, uint totalVotes, string indexed region);
+    event caseCreated(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlternatives, uint[] uintAlternatives, uint totalVotes, string indexed region, string confirmation);
     event caseDeleted(string title, bool openForVoting);
     event votingOpened(uint256 caseNumber, string title);
     event votingClosed(uint256 caseNumber, string title);
@@ -153,7 +153,7 @@ contract Case is Ownable, MultiSig {
                     "Start Date",      _endDate,
                     false,      "Ikke Stemt"))
         );
-        emit caseCreated(caseNumber, _title, _description, false, _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alternatives"], _cases[caseNumber]._uintArrayCase["Alternatives"], _cases[caseNumber]._uintCase["Total Votes"], _region);
+        emit caseCreated(caseNumber, _title, _description, false, _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alternatives"], _cases[caseNumber]._uintArrayCase["Alternatives"], _cases[caseNumber]._uintCase["Total Votes"], _region, "Case Created Successfully");
         
         publishForApproval(caseNumber);
     }
