@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Digital Voting System</title>
+    <!--
+
+DIGITAL TREND
+
+https://templatemo.com/tm-538-digital-trend
+
+-->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="author" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" />
+
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/aos.css" />
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="css/templatemo-digital-trend.css" />
+  </head>
+  <body>
+    <!-- MENU BAR -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <i class="fa fa-line-chart"></i>
+          ChainVote
+        </a>
+        <a class="navbar-brand" href="index.html">
+          <i class="fa fa-arrow-left"></i>
+          Back To Home Page
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="submit"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <!-- 
+            <li class="nav-item">
+              <a href="#project" class="nav-link smoothScroll contact ">Our Works</a>
+            </li>
+            <li class="nav-item">
+              <a href="blog.html" class="nav-link contact">Blog</a>
+            </li>
+            -->
+            <!-- Language Menu -->
+            <nav>
+              <div class="lang-menu">
+                <div class="selected-lang">English</div>
+                <ul>
+                  <li>
+                    <a href="#" class="no">Norsk</a>
+                  </li>
+                  <li>
+                    <a href="" class="en">English</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+
+            <!-- Display User Name-->
+            <h5 class="user-text">Rune Alexander Laursen</h5>
+
+            <li class="nav-item">
+              <a href="contact.html" class="nav-link contact">
+                <img src="images/avatar.png" alt="Avatar" class="avatar" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section
+      class="hero hero-bg d-flex justify-content-center align-items-center"
+    >
+      <div class="container">
+        <div class="row">
+          <form
+            method="post"
+            class="contact-form"
+            id="proposal_discription"
+            data-aos="fade-up"
+            data-aos-delay="300"
+            role="form"
+          >
+            <div id="id03" class="proposal_number">
+              <h2>Propoasal {{proposal_number}}</h2>
+            </div>
+
+            <div class="row">
+              <h3 class="form-control">Ha lue på hele året</h3>
+              <div class="form-control">
+                <label class="container1"
+                  >Option One
+                  <input type="radio" checked="checked" name="radio" />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="container1"
+                  >Option Two
+                  <input type="radio" name="radio" />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="container1"
+                  >Option Three
+                  <input type="radio" name="radio" />
+                  <span class="checkmark"></span>
+                </label>
+                <label class="container1"
+                  >Option Four
+                  <input type="radio" name="radio" />
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="fa fa-check"
+              id="confirm-vote-button"
+              name="create"
+            >
+              Confirm Vote
+            </button>
+            <button
+              type="submit"
+              class="fa fa-refresh"
+              id="change-vote-button"
+              name="cancel"
+            >
+              Change Vote
+            </button>
+            <div class="col-lg-7 ">
+              <div id="id01" class="time_left">
+                <h2>Time Left To Vote: {{timeLeft}}</h2>
+              </div>
+              <div id="id02">
+                <h3>Total cast votes: {{votes}}</h3>
+              </div>
+            </div>
+
+            <div class="Help">
+              <div class="col-md-12">
+                <div class="info">
+                  <i class="icon-info-sign"></i>
+                  <span class="extra-info"> Extra Info about Proposal </span>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCRIPTS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/smoothscroll.js"></script>
+    <script src="js/custom.js"></script>
+    <script scr="js/timeBar.js"></script>
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+
+    <!-- Time -->
+    <script>
+      var numTime = '15:30 min';
+      var myObject = { timeLeft: numTime };
+      w3.displayObject('id01', myObject);
+    </script>
+    <!-- Number of votes -->
+    <script>
+      var numVotes = 1234;
+      var myObject = { votes: numVotes };
+      w3.displayObject('id02', myObject);
+    </script>
+    <!-- Proposal Number -->
+    <script>
+      var myObject = { proposal_number: '9' };
+      w3.displayObject('id03', myObject);
+    </script>
+  </body>
+</html>
