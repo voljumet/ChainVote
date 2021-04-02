@@ -1,37 +1,42 @@
-// 'Case1' is contract name, NOT FILENAME!
+// 'Case' is contract name, NOT FILENAME!
 
-const CaseOne = artifacts.require('Case');
-const Proxy = artifacts.require('Proxy');
+const CaseOne = artifacts.require("Case");
+const Proxey = artifacts.require("Proxy");
 
-module.exports = async function (developer, network, accounts) {
-  // deploy contracts
-  const caseOne = await CaseOne.new();
-  const proxy = await Proxy.new(caseOne.address);
+module.exports = async function (deployer, network, accounts) {
+  await deployer.deploy(CaseOne);
+  let instanceCase = await CaseOne.deployed();
 
+  await deployer.deploy(Proxey, instanceCase.address);
+  // await Proxey.deployed();
+  let proxyCase = await Proxey.deployed();
+  
   //create proxy Case to fool truffle
-  var proxyCaseOne = await CaseOne.at(proxy.address);
-
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[0] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[1] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[2] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[3] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[4] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[5] });
-  await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[6] });
-  // await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[7] });
-  // await proxyCaseOne.createUser("Grimstad", "Regional", { from: accounts[8] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[9] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[10] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[11] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[12] });
-  // await proxyCaseOne.createUser("Grimstad", "Standard", { from: accounts[13] });
-  console.log(await proxyCaseOne.getUser({from: accounts[6]}));
-  await proxyCaseOne.editUser("Oslo", "National", { from: accounts[6] });
-  console.log(await proxyCaseOne.getUser({from: accounts[6]}));
+  var proxyCaseReDir = await CaseOne.at(proxyCase.address);
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[0] });
+  var user = await proxyCaseReDir.getUser({from: accounts[0] })
+  console.log("User1: " + user);
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[1] });
+  console.log("User2: " + await proxyCaseReDir.getUser({from: accounts[1] }));
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[2] });
+  console.log("User3: " + await proxyCaseReDir.getUser({from: accounts[2] }));
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[3] });
+  console.log("User4: " + await proxyCaseReDir.getUser({from: accounts[3] }));
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
+  console.log("User5: " + await proxyCaseReDir.getUser({from: accounts[4] }));
+  
+  /*
+  await proxyCaseReDir.createCase("First Case", "This is the description",16171804,1234564,"en","to","tre","fire","fem", { from: accounts[1] });
+  console.log("Case created");
+  console.log( await proxyCaseReDir.getCase(1, {from: accounts[1]}))
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[2] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[3] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[4] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[5] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[6] });
+  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[7] });
 
   //set the nr of dogs through the proxy
-  // await proxyCaseOne.createCase("First Case",16171804 , ["Ja", "Nei"]);
-  // console.log("Case created");
 
   // await proxyCaseOne.createCase("First Case", 1617086800, ["Ja", "Nei"]);
   // console.log("Case created");
