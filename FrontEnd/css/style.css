@@ -155,16 +155,9 @@ a {
 }
 
 /* Style the counter cards */
-.card {
-  width: fit-content;
-  block-size: fit-content;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  padding: 16px;
-  text-align: center;
-  background-color: #f1f1f1;
-}
+
 .month{
-  color: white;
+  color: black;
   margin-top: 30px;
 }
 #myProgress {
@@ -174,7 +167,7 @@ a {
 }
 
 #myBar {
-  width: 10%;
+  width: 100%;
   height: 10px;
   border-radius: 25px;
   background-color: #4CAF50;
@@ -297,6 +290,32 @@ a {
   background-color: blue;
 }
 
-.#:checked:after{
-  
+/*                 */
+.container2 {
+  display: flex;
+        justify-content: space-between;
+        margin-left: 0px;
+        margin-right: -670px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 1200px;
+}
+.Container:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid black;
+  float: left;
+  margin: 10px;
+  padding: 10px 10px 10px 10px;
+  width: 250px;
+}
+@media screen and (max-width: 600px) {
+  .card {
+     width: 100%;
+  }
 }
