@@ -23,10 +23,15 @@ contract Case is Ownable, MultiSig {
     }
     
     function createUser(string memory _region, string memory _userType) public {
-        require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["Region"]))== keccak256("") ||  
-        keccak256( abi.encodePacked(_users[msg.sender]._stringUser["UserType"]))== keccak256(""), "ERR1");
-        _users[msg.sender]._stringUser["Region"] = _region;
-        _users[msg.sender]._stringUser["UserType"] = _userType;
+        require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["Region"])) != keccak256(abi.encodePacked(_region)) ||
+                keccak256( abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) != keccak256(abi.encodePacked(_userType)), "ERR1");
+
+        if(keccak256((abi.encodePacked(_region))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"])))){
+            _users[msg.sender]._stringUser["Region"] = _region;
+        }
+        if(keccak256((abi.encodePacked(_userType))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["UserType"])))){
+            _users[msg.sender]._stringUser["UserType"] = _userType;
+        }
 
         uint length =  _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
         _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].push(msg.sender); // makes array based on region and usertype
@@ -46,20 +51,6 @@ contract Case is Ownable, MultiSig {
         emit userCreated(msg.sender, "User Created successfully");
     }
 
-    function editUser(string memory _Region, string memory _userType) public{
-
-        if(keccak256((abi.encodePacked(_Region))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"])))){
-            _users[msg.sender]._stringUser["Region"] = _Region;      
-        }
-        if(keccak256((abi.encodePacked(_userType))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["User Type"])))){
-            _users[msg.sender]._stringUser["User Type"] = _userType;
-        }
-        assert(keccak256((abi.encodePacked(_Region))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"]))) &&
-               keccak256((abi.encodePacked(_userType))) == keccak256((abi.encodePacked(_users[msg.sender]._stringUser["User Type"]))));
-    }
-
-    
-    
     function initialize(address _owner) private {
         require(!_boolStorage["initialized"], "ERR2");
         _addressStorage["owner"] = _owner;
@@ -228,10 +219,10 @@ contract Case is Ownable, MultiSig {
         return (_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
     }
 
-    function getAlt(uint256 _caseNumber) public view returns(string[] memory _alter , uint256[] memory _alterNum){
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR14");
-        return (_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
-    }
+    // function getAlt(uint256 _caseNumber) public view returns(string[] memory _alter , uint256[] memory _alterNum){
+    //     require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR14");
+    //     return (_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
+    // }
 
     function getMyVote(uint256 _caseNumber) public view returns(string memory){
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR15");
@@ -243,12 +234,8 @@ contract Case is Ownable, MultiSig {
         return _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
     }
 
-    function approveCase(uint _caseNumber) public {
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "case.error.25: Case does not exist");
-        return approve(_caseNumber);
-    }
    function getUser()public view returns(string memory, string memory){
-        return(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["User Type"]);
+        return(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
     }
 
     function getApprovalLimit(uint _caseNumber) public view returns(uint){
