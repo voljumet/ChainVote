@@ -114,6 +114,7 @@ function timeIt(date, End, Start){
     }
 
 }
+
 // Reload the page
 setTimeout(function(){
     window.location.reload(1);
@@ -129,7 +130,7 @@ setTimeout(function(){
     return bytes;
 }
 
-AddCardsToPage();
+
 ///////////////////////////
 async function AddCardsToPage() {
     let reuslt  = await Moralis.Cloud.run("test",{});
@@ -138,3 +139,9 @@ async function AddCardsToPage() {
     })
  
 }
+
+  AddCardsToPage()
+    
+
+
+
