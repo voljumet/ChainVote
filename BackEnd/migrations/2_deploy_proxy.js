@@ -8,7 +8,8 @@ module.exports = async function (deployer, network, accounts) {
   let instanceCase = await CaseOne.deployed();
 
   await deployer.deploy(Proxey, instanceCase.address);
-  // await Proxey.deployed();
+   await Proxey.deployed();
+  /*
   let proxyCase = await Proxey.deployed();
   
   //create proxy Case to fool truffle
@@ -25,7 +26,6 @@ module.exports = async function (deployer, network, accounts) {
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
   console.log("User5: " + await proxyCaseReDir.getUser({from: accounts[4] }));
   
-  /*
   await proxyCaseReDir.createCase("First Case", "This is the description",16171804,1234564,"en","to","tre","fire","fem", { from: accounts[1] });
   console.log("Case created");
   console.log( await proxyCaseReDir.getCase(1, {from: accounts[1]}))
