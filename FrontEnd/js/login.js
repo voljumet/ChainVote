@@ -1,7 +1,6 @@
 Moralis.initialize('I65RnUxauoNa8j0LUyYuLnPNHkVt94JJxtfWzxiy'); // Application id from moralis.io
 Moralis.serverURL = 'https://8eb5frfqjkbo.moralis.io:2053/server'; //Server url from moralis.io
 
-
 const user = document.getElementsByClassName('usery')[0];
 
 
@@ -42,33 +41,41 @@ function writeTo(_email, _userType, _region, _userName){
 
 ///////////////////////////
 async function getUser() {
-    let reuslt  = await Moralis.Cloud.run("userTest",{});
-    reuslt.forEach(element =>{
-        user.appendChild(writeTo(element.attributes.Email,element.attributes.UserType,element.attributes.Region,element.attributes.username))
-    })
-    console.log(reuslt);
+    try{    
+        let reuslt  = await Moralis.Cloud.run("Usert",{});
+        reuslt.forEach(element =>{
+            user.appendChild(writeTo(element.attributes.Email,element.attributes.UserType,element.attributes.Region,element.attributes.username))
+        })
+        console.log(reuslt);
+
+    }catch (error){
+        console.log(error)
+    }
+  
 }
 async function myFunction() {
-    let reuslt  = await Moralis.Cloud.run("userTest",{});
+    alert("heheh")
+   
+    let reuslt  = await Moralis.Cloud.run("Usert",{});
+    console.log(reuslt)
     let match = false;
+   
     reuslt.forEach(element =>{
         if(document.getElementById("input").value == element.attributes.Email){
             login();
             user.appendChild(writeTo(element.attributes.Email,element.attributes.UserType,element.attributes.Region,element.attributes.username))
            return  match= true;
-           
         }
     })
     if(match){
         alert("Found match");
     }
-
        else{
         alert("No match");
     }
   }
 
-  document.getElementById("input-button").onclick= myFunction;
+  document.getElementById("input-buttony").onclick= myFunction;
 
 
 
