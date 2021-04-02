@@ -13,6 +13,7 @@ contract Case is Ownable, MultiSig {
     event votingClosed(uint256 caseNumber, string title);
     event SigningRequestCreated(string title,uint _caseNumber);
     event CloseVoting(string); // Result needed
+    event getUsers(uint numberOfUsers); 
     event userCreated(address userAddress, string confirmation);
     /* ""receipt.events.userCreated.returnValues.confirmation"" in main.js
         use for userCreated(x x, string confirmation) */
@@ -237,7 +238,8 @@ contract Case is Ownable, MultiSig {
         return ( _cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
     }
 
-    function getUserArrayLength(string memory _region, string memory _userType) public view returns(uint){
+    function getUserArrayLength(string memory _region, string memory _userType) public returns(uint){
+        emit getUsers(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
         return _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
     }
 
