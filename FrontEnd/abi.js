@@ -124,13 +124,13 @@ window.abi = [
       {
         indexed: false,
         internalType: "string[]",
-        name: "stringAlternatives",
+        name: "stringAlt",
         type: "string[]",
       },
       {
         indexed: false,
         internalType: "uint256[]",
-        name: "uintAlternatives",
+        name: "uintAlt",
         type: "uint256[]",
       },
       {
@@ -172,6 +172,19 @@ window.abi = [
       },
     ],
     name: "caseDeleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "numberOfUsers",
+        type: "uint256",
+      },
+    ],
+    name: "getUsers",
     type: "event",
   },
   {
@@ -230,6 +243,19 @@ window.abi = [
     ],
     name: "votingOpened",
     type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_caseNumber",
+        type: "uint256",
+      },
+    ],
+    name: "approve",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [
@@ -323,6 +349,37 @@ window.abi = [
         type: "uint256",
       },
     ],
+    name: "deactivateCase",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_caseNumber",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "_optionVoted",
+        type: "uint256",
+      },
+    ],
+    name: "vote",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_caseNumber",
+        type: "uint256",
+      },
+    ],
     name: "getCase",
     outputs: [
       {
@@ -347,7 +404,7 @@ window.abi = [
       },
       {
         internalType: "string[]",
-        name: "_alternatives",
+        name: "_alt",
         type: "string[]",
       },
       {
@@ -393,7 +450,7 @@ window.abi = [
         type: "uint256",
       },
     ],
-    name: "getAlternatives",
+    name: "getAlt",
     outputs: [
       {
         internalType: "string[]",
@@ -451,20 +508,6 @@ window.abi = [
         type: "uint256",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_caseNumber",
-        type: "uint256",
-      },
-    ],
-    name: "approveCase",
-    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -516,7 +559,7 @@ window.abi = [
         type: "uint256",
       },
     ],
-    name: "getApprovalZ",
+    name: "getApprovals",
     outputs: [
       {
         internalType: "uint256",
@@ -536,6 +579,26 @@ window.abi = [
         internalType: "uint256[]",
         name: "",
         type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_caseNumber",
+        type: "uint256",
+      },
+    ],
+    name: "getLimit",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
