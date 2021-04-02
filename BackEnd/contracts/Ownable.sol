@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.7.5;
 
 import "./Storage.sol";
@@ -21,7 +21,7 @@ import "./Storage.sol";
 contract Ownable is Storage {
 
     modifier onlyOwner(){
-        require(msg.sender == _addressStorage["owner"]);
+        require(msg.sender == _addressStorage["owner"], "ERR27");
         _; //Continue execution
     }
 

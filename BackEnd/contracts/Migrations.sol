@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Migrations {
@@ -8,7 +8,7 @@ contract Migrations {
   modifier restricted() {
     require(
       msg.sender == owner,
-      "This function is restricted to the contract's owner"
+      "ERR23"
     );
     _;
   }

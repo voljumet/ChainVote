@@ -1,4 +1,4 @@
-// 'Case1' is contract name, NOT FILENAME!
+// 'Case' is contract name, NOT FILENAME!
 
 const CaseOne = artifacts.require("Case");
 const Proxey = artifacts.require("Proxy");
@@ -8,13 +8,21 @@ module.exports = async function (deployer, network, accounts) {
   let instanceCase = await CaseOne.deployed();
 
   await deployer.deploy(Proxey, instanceCase.address);
-  await Proxey.deployed();
+  let proxyCase = await Proxey.deployed();
 
   //create proxy Case to fool truffle
-  // var proxyCaseOne = await CaseOne.at(proxy.address);
-  // await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[0] });
+  var proxyCaseReDir = await CaseOne.at(proxyCase.address);
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[0] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[1] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[2] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[3] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
+
+  console.log("User created");
+  await proxyCaseReDir.createCase("First Case", "This is the description",16171804,1234564,"en","to","tre","fire","fem", { from: accounts[1] });
+  console.log("Case created");
+  console.log( await proxyCaseReDir.getCase(1, {from: accounts[1]}))
   /*
-  await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[1] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[2] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[3] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[4] });
@@ -23,8 +31,6 @@ module.exports = async function (deployer, network, accounts) {
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[7] });
 
   //set the nr of dogs through the proxy
-  await proxyCaseOne.createCase("First Case",16171804 , ["Ja", "Nei"]);
-  console.log("Case created");
 
   await proxyCaseOne.createCase("First Case", 1617086800, ["Ja", "Nei"]);
   console.log("Case created");
