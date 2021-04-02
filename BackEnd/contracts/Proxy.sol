@@ -1,4 +1,4 @@
-//SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.7.5;
 
 import "./Ownable.sol";
@@ -16,11 +16,11 @@ contract Proxy is Ownable {
     }
 
     modifier whenNotPaused() {
-        require(!_boolStorage["paused"]);
+        require(!_boolStorage["paused"], "ERR24");
         _;
     }
     modifier whenPaused() {
-        require(_boolStorage["paused"]);
+        require(_boolStorage["paused"], "ERR25");
         _;
     }
     
@@ -35,7 +35,7 @@ contract Proxy is Ownable {
     // Fallback function, last call..
     fallback() payable external whenNotPaused {
         address implementation = _addressStorage["currentAddress"];
-        require(_addressStorage["currentAddress"] != address(0));
+        require(_addressStorage["currentAddress"] != address(0), "ERR26");
         bytes memory data = msg.data;
 
         assembly{

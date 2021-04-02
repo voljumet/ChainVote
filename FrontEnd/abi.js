@@ -285,9 +285,29 @@ window.abi = [
         type: "uint256",
       },
       {
-        internalType: "string[]",
-        name: "_alternatives",
-        type: "string[]",
+        internalType: "string",
+        name: "_alt1",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_alt2",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_alt3",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_alt4",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "_alt5",
+        type: "string",
       },
     ],
     name: "createCase",
@@ -339,37 +359,6 @@ window.abi = [
     stateMutability: "view",
     type: "function",
     constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_caseNumber",
-        type: "uint256",
-      },
-    ],
-    name: "deactivateCase",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_caseNumber",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "_optionVoted",
-        type: "uint256",
-      },
-    ],
-    name: "vote",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
     inputs: [
