@@ -54,7 +54,7 @@ const truffleAssert = require('truffle-assertions');
          // Then test createUser
          await instance.createUser('Grimstad', 'Regional', { from: accounts[1] });
          await truffleAssert.passes(
-           instance.createCase('First Case', 20052021, ['Ja', 'Nei'], { from: accounts[1] }),
+           instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', { from: accounts[1] }),
            truffleAssert.ErrorType.REVERT
          );
        });
@@ -64,7 +64,7 @@ const truffleAssert = require('truffle-assertions');
      
          await instance.createUser('Grimstad', 'National', { from: accounts[1] });
          await truffleAssert.passes(
-           instance.createCase('First Case', 20052021, ['Ja', 'Nei'], { from: accounts[1] }),
+           instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', { from: accounts[1] }),
            truffleAssert.ErrorType.REVERT
          );
        });
@@ -73,7 +73,7 @@ const truffleAssert = require('truffle-assertions');
        
          await instance.createUser('Grimstad', 'Standard', { from: accounts[1] });
          await truffleAssert.fails(
-           instance.createCase('First Case', 20052021, ['Ja', 'Nei'], { from: accounts[1] }),
+           instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', { from: accounts[1] }),
            truffleAssert.ErrorType.REVERT
          );
        });
@@ -85,7 +85,7 @@ const truffleAssert = require('truffle-assertions');
          await instance.createUser('Grimstad', 'Regional', {from: accounts[3] });
          await instance.createUser('Grimstad', 'Regional', {from: accounts[4] });
          await truffleAssert.fails(
-           instance.createCase('First Case', 20052021, ['Ja', 'Nei'], { from: accounts[1] }),
+           instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', { from: accounts[1] }),
            truffleAssert.ErrorType.REVERT
          );
        });
@@ -95,7 +95,7 @@ const truffleAssert = require('truffle-assertions');
          await instance.createUser('Grimstad', 'Regional', {from: accounts[1] });
          await instance.createUser('Grimstad', 'Regional', {from: accounts[2] });
          await truffleAssert.fails(
-           instance.createCase('First Case', 20052021, ['Ja', 'Nei'], { from: accounts[1] }),
+           instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', { from: accounts[1] }),
            truffleAssert.ErrorType.REVERT
          );
        });
@@ -103,7 +103,7 @@ const truffleAssert = require('truffle-assertions');
 
        it('Should get a existing case', async function () {
         await instance.createUser('Grimstad', 'National', { from: accounts[1] });
-        await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+        await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
           from: accounts[1],
          });
         let result = await instance.getCase(1);
@@ -118,7 +118,7 @@ const truffleAssert = require('truffle-assertions');
       
         it('Should not get case when it is deactivated', async function () {
         await instance.createUser('Grimstad', 'National', { from: accounts[1] });
-        await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+        await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
           from: accounts[1],
         });
         await instance.deleteCase(1);
@@ -129,7 +129,7 @@ const truffleAssert = require('truffle-assertions');
 
         it('Should delete a case', async function () {
         await instance.createUser('Grimstad', 'National', { from: accounts[1] });
-        await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+        await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
           from: accounts[1],
         });
         await truffleAssert.passes(instance.deleteCase(1),truffleAssert.ErrorType.REVERT
@@ -139,7 +139,7 @@ const truffleAssert = require('truffle-assertions');
      
       it('Should not delete a case that is open for voting', async function () {
         await instance.createUser('Grimstad', 'National', { from: accounts[1] });
-        await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+        await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
           from: accounts[1],
         });
         await instance.approvalZ(1, { from: accounts[1] });
@@ -153,7 +153,7 @@ const truffleAssert = require('truffle-assertions');
 
     it('Regional user can approve a case', async function () {
       await instance.createUser('Grimstad', 'Regional', { from: accounts[1] });
-      await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+      await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
         from: accounts[1],
       });
 
@@ -165,7 +165,7 @@ const truffleAssert = require('truffle-assertions');
 
     it('National user can approve a case', async function () {
       await instance.createUser('Grimstad', 'National', { from: accounts[1] });
-      await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+      await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
         from: accounts[1],
       });
 
@@ -178,7 +178,7 @@ const truffleAssert = require('truffle-assertions');
     it('Standard user can not approve a case', async function () {
       await instance.createUser('Grimstad', 'Standard', { from: accounts[1] });
       await instance.createUser('Grimstad', 'Regional', { from: accounts[2] });
-      await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+      await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
         from: accounts[2],
       });
 
@@ -190,7 +190,7 @@ const truffleAssert = require('truffle-assertions');
 
     it('National/Regional should not approve twice', async function () {
       await instance.createUser('Grimstad', 'National', { from: accounts[1] });
-      await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+      await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
         from: accounts[1],
       });
       await instance.approvalZ(1, { from: accounts[1] });
@@ -207,7 +207,7 @@ const truffleAssert = require('truffle-assertions');
       await instance.createUser('Grimstad', 'National', { from: accounts[4] });
       await instance.createUser('Grimstad', 'National', { from: accounts[5] });
 
-      await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+      await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
         from: accounts[1],
       });
 
@@ -230,7 +230,7 @@ const truffleAssert = require('truffle-assertions');
        await instance.createUser('Grimstad', 'Regional', { from: accounts[3] });
        await instance.createUser('Grimstad', 'Regional', { from: accounts[4] });
        await instance.createUser('Grimstad', 'Regional', { from: accounts[5] });
-       await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+       await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
            from: accounts[1],
          }),
          truffleAssert.ErrorType.REVERT
@@ -250,7 +250,7 @@ const truffleAssert = require('truffle-assertions');
        await instance.createUser('Grimstad', 'Standard', { from: accounts[7] });
        await instance.createUser('Grimstad', 'Standard', { from: accounts[8] });
        await instance.createUser('Grimstad', 'Standard', { from: accounts[9] });
-       await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+       await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
            from: accounts[1],
          }),
          truffleAssert.ErrorType.REVERT
@@ -267,7 +267,7 @@ const truffleAssert = require('truffle-assertions');
        await instance.createUser('Grimstad', 'Regional', { from: accounts[3] });
        await instance.createUser('Grimstad', 'Regional', { from: accounts[4] });
        await instance.createUser('Grimstad', 'Regional', { from: accounts[5] });
-       await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+       await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
            from: accounts[1],
          }),
          truffleAssert.ErrorType.REVERT
@@ -290,7 +290,7 @@ const truffleAssert = require('truffle-assertions');
       await instance.createUser('Grimstad', 'Regional', { from: accounts[3] });
       await instance.createUser('Grimstad', 'Regional', { from: accounts[4] });
       await instance.createUser('Grimstad', 'Regional', { from: accounts[5] });
-      await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+      await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
         from: accounts[1],
       }),
         truffleAssert.ErrorType.REVERT;
@@ -422,7 +422,7 @@ const truffleAssert = require('truffle-assertions');
    //////////////// Get Allternatives /////////////////////////////////
       it('Should return case^s alternatives' , async function () {
        await instance.createUser('Grimstad', 'Regional', { from: accounts[1] });
-       await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+       await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
            from: accounts[1],
          }),
          truffleAssert.ErrorType.REVERT
@@ -490,7 +490,7 @@ const truffleAssert = require('truffle-assertions');
       // First create a user of type Reginal / National
       // Then test createUser
       await instance.createUser('Grimstad', 'Regional', { from: accounts[1] });
-      await instance.createCase('First Case', 20052021, ['Ja', 'Nei'], {
+      await instance.createCase('First Case','Descripton', 20202020, 20202020,'ja','nei','kanskje','blank', 'slutt å spørre', {
         from: accounts[1],
       });
       await truffleAssert.fails(
