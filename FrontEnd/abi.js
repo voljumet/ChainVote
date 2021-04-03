@@ -1,11 +1,3 @@
-// // fetches the jsonfile with abi
-
-// window.abi = "caseAbi.abi";
-
-// var json = "../Backend/build/contracts/Case.json";
-// var caseAbi = JSON.parse(json);
-// window.abi = caseAbi.abi;
-
 window.abi = [
   {
     inputs: [],
@@ -172,6 +164,25 @@ window.abi = [
       },
     ],
     name: "caseDeleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "region",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "userType",
+        type: "string",
+      },
+    ],
+    name: "getUserE",
     type: "event",
   },
   {
@@ -501,9 +512,8 @@ window.abi = [
         type: "string",
       },
     ],
-    stateMutability: "view",
+    stateMutability: "nonpayable",
     type: "function",
-    constant: true,
   },
   {
     inputs: [

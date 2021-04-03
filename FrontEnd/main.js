@@ -3,8 +3,6 @@ Moralis.serverURL = "https://et2gfmeu3ppx.moralis.io:2053/server"; //Server url 
 
 
 
-
-
 async function login() {
   try {
     user = await Moralis.User.current();
@@ -19,6 +17,7 @@ async function login() {
     document.getElementById("newCase").style.display = "block";
     document.getElementById("getCase").style.display = "block";
     document.getElementById("getUserArrLen").style.display = "block";
+    document.getElementById("getUser").style.display = "block";
   } catch (error) {
     console.log(error);
   }
@@ -113,8 +112,27 @@ async function getUserArr() {
     });
 }
 
+// Get user region and userType
+async function getUser() {
+  window.web3 = await Moralis.Web3.enable();
+  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+  contractInstance.methods
+    .getUser()
+    .send({ from: ethereum.selectedAddress })
+    .on("receipt", function (receipt) {
+      console.log(receipt);
+      alert(
+        "Region: " +
+          receipt.events.getUserE.returnValues.region +
+          "\nUsertype: " +
+          receipt.events.getUserE.returnValues.userType
+      );
+    });
+}
+
 document.getElementById("login_button").onclick = login;
 document.getElementById("get_users").onclick = getUserArr;
+document.getElementById("get_user").onclick = getUser;
 
 document.getElementById("get_case").onclick = function () {
   getCase(document.getElementById("caseNumber").value);
