@@ -450,31 +450,6 @@ window.abi = [
         type: "uint256",
       },
     ],
-    name: "getAlt",
-    outputs: [
-      {
-        internalType: "string[]",
-        name: "_alter",
-        type: "string[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "_alterNum",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_caseNumber",
-        type: "uint256",
-      },
-    ],
     name: "getMyVote",
     outputs: [
       {
@@ -510,6 +485,25 @@ window.abi = [
     ],
     stateMutability: "nonpayable",
     type: "function",
+  },
+  {
+    inputs: [],
+    name: "getUser",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+    constant: true,
   },
   {
     inputs: [
