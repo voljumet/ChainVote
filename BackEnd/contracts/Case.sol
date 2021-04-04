@@ -146,7 +146,7 @@ contract Case is Ownable, MultiSig {
         _cases[caseNumber]._uintCase["Approvals"] = 0;                 // Initialize approvals
         _uintArrayStorage["WaitingForApproval"].push(caseNumber);    // Add to waiting list
 
-        emit confirmationE("Case Created successfully!");
+        emit confirmationE("Case created successfully!");
         emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
     }
 
