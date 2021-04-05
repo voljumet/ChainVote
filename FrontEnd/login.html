@@ -87,7 +87,7 @@ https://templatemo.com/tm-538-digital-trend
             </nav>
 
             <!-- Display User Name-->
-            <h5 class="user-text">Rune Alexander Laursen</h5>
+            <h5 class="user-text" id="userNameFront"></h5>
 
             <li class="nav-item">
               <a href="contact.html" class="nav-link contact">
@@ -115,12 +115,21 @@ https://templatemo.com/tm-538-digital-trend
               </div>
           
               <!-- Login Form -->
+            <div id="userinfo" >
               <form>
-                <input type="text" id="input" class="fadeIn second"  placeholder="Write Your E-mail">
+                <input type="text" id="email-input" class="fadeIn second"  placeholder="E-mail">
+                <input type="text" id="username-input" class="fadeIn second"  placeholder="Name">
+                <input type="text" id="region-input" class="fadeIn second"  placeholder="Rigion">
+                <input type="text" id="usertype-input" class="fadeIn second"  placeholder="Rigiontype">
                 <!--   <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">-->
-                <button id="input-buttony" class="input-button" >Login</button>
-                
+                <button type="button" id="closeInfo" >close</button>
+                <button type="button" id="save" >save</button>
               </form>
+            </div>
+
+            <button type="button" id="connect" class="fadeIn second" >Connect With MetaMask</button>
+            <button type="button" id="userinfobutton" class="fadeIn second" >Profile</button>
+            <button type="button" id="logout" class="fadeIn second"  >Logout</button>
           
               <!-- Remind Passowrd -->
               <div id="formFooter">
