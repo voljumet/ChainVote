@@ -415,7 +415,7 @@ span.psw {
 
 #formFooter {
   background-color: #f6f6f6;
-  border-top: 1px solid #dce8f1;
+  border-top: 1px solid #f1dce3;
   padding: 15px;
   text-align: center;
   -webkit-border-radius: 0 0 10px 10px;
@@ -429,7 +429,7 @@ span.psw {
   border-radius: 50%;
 
 }
-#input-button{
+#input-buttony {
   background-color: #3160c4;
   color: white;
   padding: 14px 20px;
@@ -439,3 +439,80 @@ span.psw {
   width: 30%;
   
 }
+#logout-buttony {
+  background-color: #3160c4;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 30%;
+}
+
+#userinfobutton {
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #3160c4;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+#logout {
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #dc4015;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#save {
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #3160c4;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#closeInfo{
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #3160c4;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#connect{
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #1db712;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#userNameFront{
+  font-size: 24px;
+  text-align: center;
+  
+}
+

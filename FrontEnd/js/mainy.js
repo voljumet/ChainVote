@@ -1,5 +1,5 @@
-Moralis.initialize('I65RnUxauoNa8j0LUyYuLnPNHkVt94JJxtfWzxiy'); // Application id from moralis.io
-Moralis.serverURL = 'https://8eb5frfqjkbo.moralis.io:2053/server'; //Server url from moralis.io
+Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application id from moralis.io
+Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
 var web3 = new Web3(Web3.givenProvider);
 
 const tabele = document.getElementsByClassName('container2')[0];
@@ -103,6 +103,12 @@ function timeIt(date, End, Start){
         End.style.backgroundColor='orange';
       
     }
+    if (hours <= 0 & minutes >0 )
+    {
+        End.style.backgroundColor='#baef1c';
+      
+    }
+
     if (days == 0){
         return [ hours + " H "
         + minutes + " M "];
@@ -133,13 +139,23 @@ setTimeout(function(){
 
 ///////////////////////////
 async function AddCardsToPage() {
-    let reuslt  = await Moralis.Cloud.run("test",{});
+    let reuslt  = await Moralis.Cloud.run("Cases",{});
+    console.log(reuslt)
     reuslt.forEach(element =>{
         tabele.appendChild(createCard(element.attributes.CaseNumber,element.attributes.Title,element.attributes.StartDate,element.attributes.EndDate))
     })
  
 }
+async function getUser() {
+    try {
+      let reuslt = await Moralis.Cloud.run("User", {});
+      console.log(reuslt);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  getUser()
   AddCardsToPage()
     
 
