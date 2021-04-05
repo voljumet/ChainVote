@@ -1,11 +1,3 @@
-// // fetches the jsonfile with abi
-
-// window.abi = "caseAbi.abi";
-
-// var json = "../Backend/build/contracts/Case.json";
-// var caseAbi = JSON.parse(json);
-// window.abi = caseAbi.abi;
-
 window.abi = [
   {
     inputs: [],
@@ -172,6 +164,25 @@ window.abi = [
       },
     ],
     name: "caseDeleted",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "string",
+        name: "region",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "userType",
+        type: "string",
+      },
+    ],
+    name: "getUserE",
     type: "event",
   },
   {
@@ -450,31 +461,6 @@ window.abi = [
         type: "uint256",
       },
     ],
-    name: "getAlt",
-    outputs: [
-      {
-        internalType: "string[]",
-        name: "_alter",
-        type: "string[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "_alterNum",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-    constant: true,
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_caseNumber",
-        type: "uint256",
-      },
-    ],
     name: "getMyVote",
     outputs: [
       {
@@ -506,6 +492,24 @@ window.abi = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getUser",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
       },
     ],
     stateMutability: "nonpayable",

@@ -7,24 +7,39 @@ import "./MultiSig.sol";
 
 contract Case is Ownable, MultiSig {
 
-    event caseCreated(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string indexed region, string confirmation);
-    event caseDeleted(string title, bool openForVoting);
-    event votingOpened(uint256 caseNumber, string title);
-    event votingClosed(uint256 caseNumber, string title);
-    event SigningRequestCreated(string title,uint _caseNumber);
-    event CloseVoting(string); // Result needed
-    event getUsers(uint numberOfUsers); 
-    event userCreated(address userAddress, string confirmation);
-    /* ""receipt.events.userCreated.returnValues.confirmation"" in main.js
-        use for userCreated(x x, string confirmation) */
+    event SigningRequestE(string title,uint caseNumber);
+    event getCaseE(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string indexed region, string confirmation);
+    event getUsersE(uint usersWithSameRegionAndUserType); 
+    event getUserE(string region, string userType); 
+    event totalVotesE(uint toalVotes);
+    event approvalsE(uint numberOfApprovals, uint limit);
+    event casesWaitingForApprovalE(uint[] casesWaitingForApproval);
+    event myVoteE(string votedAlternative);
+    event caseResultE(string indexed title, string description, string[] stringAlternatives, uint[] uintAlternatives);
+    
+    /* 
+    ""receipt.events.userCreated.returnValues.confirmation"" in main.js
+        use for userCreated(x x, string confirmation) 
+        */
 
     constructor() {
-        initialize(msg.sender);
+        require(!_boolStorage["initialized"], "ERR1");
+        _addressStorage["owner"] = msg.sender;
+        _boolStorage["initialized"] = true;
+
+        assert( keccak256(abi.encodePacked(
+                     _addressStorage["owner"],
+                   _boolStorage["initialized"]))
+            ==
+                keccak256(abi.encodePacked(
+                    msg.sender,
+                    true))
+        );
     }
     
     function createUser(string memory _region, string memory _userType) public {
         require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["Region"])) != keccak256(abi.encodePacked(_region)) ||
-                keccak256( abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) != keccak256(abi.encodePacked(_userType)), "ERR1");
+                keccak256( abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) != keccak256(abi.encodePacked(_userType)), "ERR2");
 
         if(keccak256((abi.encodePacked(_region))) != keccak256((abi.encodePacked(_users[msg.sender]._stringUser["Region"])))){
             _users[msg.sender]._stringUser["Region"] = _region;
@@ -48,46 +63,15 @@ contract Case is Ownable, MultiSig {
                     length+=1     
                 ))
         );
-        emit userCreated(msg.sender, "User Created successfully");
-    }
-
-    function initialize(address _owner) private {
-        require(!_boolStorage["initialized"], "ERR2");
-        _addressStorage["owner"] = _owner;
-        _boolStorage["initialized"] = true;
-
-        assert( keccak256(abi.encodePacked(
-                     _addressStorage["owner"],
-                   _boolStorage["initialized"]))
-            ==
-                keccak256(abi.encodePacked(
-                    _owner,
-                    true))
-        );
+        emit confirmationE("User created successfully!");
     }
     
     function endVoting(uint _caseNumber)public onlyOwners(_caseNumber){
-        require(_cases[_caseNumber]._uintCase["End Date"] < block.timestamp, "ERR3");
+        require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
         _cases[_caseNumber]._boolCase["openForVoting"] = false; 
         assert(_cases[_caseNumber]._boolCase["openForVoting"] = false);
-        emit CloseVoting(_cases[_caseNumber]._stringCase["Title"]);
+        emit confirmationE("Voting closed successfully!");
     }
-
-    // function createArray(string memory _string) private pure returns(string[] memory){
-    //     string memory test = "alex,er,kul";
-    //     bytes memory temp;
-    //     string[] memory array;
-
-    //     uint j = 0;
-    //     for(uint i = 0; i < bytes(test).length; i++){
-    //         if(keccak256(abi.encodePacked(bytes(test)[i])) != keccak256(abi.encodePacked(bytes(","))) ){
-    //             temp[i] = bytes(test)[i];
-    //         } else {
-    //             array[j] = string(temp);
-    //             j++;
-    //         }
-    //     }
-    // }
 
     function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2,string memory _alt3,string memory _alt4,string memory _alt5) public {
         require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Regional")) ||
@@ -111,7 +95,7 @@ contract Case is Ownable, MultiSig {
             SafeMath.add(
                 SafeMath.div(
                     SafeMath.mul(
-                        _addressArrayStorage[ string(abi.encodePacked(_region, checkUserTypeString() )) ].length, 
+                        _addressArrayStorage[ string(abi.encodePacked(_region, _users[msg.sender]._stringUser["UserType"] )) ].length, 
                     10),
                 2),
             5),
@@ -126,13 +110,13 @@ contract Case is Ownable, MultiSig {
                 SafeMath.add(_addressArrayStorage[ string(abi.encodePacked(_region,"Standard")) ].length, 
                                 _addressArrayStorage[ string(abi.encodePacked(_region,"Regional")) ].length));
 
-        _cases[caseNumber]._uintCase["Start Date"] = _startDate;
-        _cases[caseNumber]._uintCase["End Date"] = _endDate;
+        _cases[caseNumber]._uintCase["StartDate"] = _startDate;
+        _cases[caseNumber]._uintCase["EndDate"] = _endDate;
         _cases[caseNumber]._boolCase["openForVoting"] = false;
         _cases[caseNumber]._boolCase["CaseDeactivated"] = false;
 
         //adding first alternative to Array and giving it all the votes
-        _cases[caseNumber]._stringArrayCase["Alt"].push("Ikke Stemt");
+        _cases[caseNumber]._stringArrayCase["Alt"].push("Not voted");
         _cases[caseNumber]._uintArrayCase["Alt"].push(_cases[caseNumber]._uintCase["TotalVotes"]);
 
         for(uint i = 0; i < alt.length; i++){
@@ -144,42 +128,41 @@ contract Case is Ownable, MultiSig {
         
         // checks if the information that is going to be stored is the same as the information entered into the function
         for(uint i = 0; i < alt.length; i++){
-            assert(keccak256(abi.encodePacked(_cases[caseNumber]._stringArrayCase["Alt"][ SafeMath.add(i,1) ])) == keccak256(abi.encodePacked(alt[i])));
-            assert(_cases[caseNumber]._uintArrayCase["Alt"][ SafeMath.add(i, 1) ] == 0);
+            assert(keccak256(abi.encodePacked(_cases[caseNumber]._stringArrayCase["Alt"][ SafeMath.add(i,1) ])) == keccak256(abi.encodePacked(alt[i])) && 
+                    _cases[caseNumber]._uintArrayCase["Alt"][ SafeMath.add(i, 1) ] == 0);
         }
 
         assert(keccak256(abi.encodePacked(
-                    _cases[caseNumber]._stringCase["Title"],            _cases[caseNumber]._stringCase["Region"],
-                    _cases[caseNumber]._uintCase["Start Date"],         _cases[caseNumber]._uintCase["End Date"],
+                    _cases[caseNumber]._stringCase["Title"],          _cases[caseNumber]._stringCase["Region"],
+                    _cases[caseNumber]._uintCase["StartDate"],        _cases[caseNumber]._uintCase["EndDate"],
                     _cases[caseNumber]._boolCase["openForVoting"],    _cases[caseNumber]._stringArrayCase["Alt"][0]))
             ==
               keccak256(abi.encodePacked(
                     _title,     _region,
                     _startDate,      _endDate,
-                    false,      "Ikke Stemt"))
+                    false,      "Not voted"))
         );
-        emit caseCreated(caseNumber, _title, _description, false, _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alt"], _cases[caseNumber]._uintArrayCase["Alt"], _cases[caseNumber]._uintCase["TotalVotes"], _region, "Case Created Successfully");
-        
+
         _cases[caseNumber]._uintCase["Approvals"] = 0;                 // Initialize approvals
         _uintArrayStorage["WaitingForApproval"].push(caseNumber);    // Add to waiting list
 
-        emit SigningRequestCreated(_cases[caseNumber]._stringCase["Title"], caseNumber);
+        emit confirmationE("Case created successfully!");
+        emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
     }
 
     function deactivateCase(uint _caseNumber) public onlyOwner {
-        require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR8");
+        require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR6");
         _cases[_caseNumber]._boolCase["CaseDeactivated"] = true;
         clearFromWaiting(_caseNumber);
 
-        emit caseDeleted(_cases[_caseNumber]._stringCase["Title"], _cases[_caseNumber]._boolCase["OpenForVoting"]);
         assert(_cases[_caseNumber]._boolCase["CaseDeactivated"] == true);
+        emit confirmationE("Case deactivated successfully!");
     }
    
-    function vote (uint256 _caseNumber, uint256 _optionVoted) public {
-        require(_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR9");  // Checks if the case is open for voting
-        require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alt"].length, "ERR10");   // Checks that the option exists
-        require(_cases[_caseNumber]._uintCase["End Date"] > block.timestamp, "ERR11");
-        require(_cases[_caseNumber]._uintCase["Start Date"] < block.timestamp, "ERR12");
+    function vote(uint256 _caseNumber, uint256 _optionVoted) public {
+        require(_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR7");  // Checks that the case is open for voting
+        require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alt"].length, "ERR8");   // Checks that the voting option exists
+        require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp && _cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9");
         
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
@@ -193,8 +176,7 @@ contract Case is Ownable, MultiSig {
         uint256 oldVote = _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))];
         _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] = _optionVoted; // Map msg.sender => _optionVoted
 
-        assert(_optionVoted != oldVote); // vote has changed
-        assert(keccak256(abi.encodePacked( 
+        assert(_optionVoted != oldVote && keccak256(abi.encodePacked( 
                     _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))],
                     _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]
                 ))
@@ -203,61 +185,49 @@ contract Case is Ownable, MultiSig {
                     true
                 ))
         );
+        emit confirmationE("Vote has been registered!");
     }
 
-    function getCase(uint _caseNumber) public view returns(string memory _title, uint _endDate, uint _totalVotes, bool _startDateForVoting, string[] memory _alt, uint[] memory _num){
-        require(!_cases[_caseNumber]._boolCase["CaseDeactivated"], "ERR6");
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR7");
-        return (_cases[_caseNumber]._stringCase["Title"],               _cases[_caseNumber]._uintCase["End Date"], 
-                _cases[_caseNumber]._uintCase["TotalVotes"],           _cases[_caseNumber]._boolCase["OpenForVoting"], 
-                _cases[_caseNumber]._stringArrayCase["Alt"],   _cases[_caseNumber]._uintArrayCase["Alt"]
-        );
+    function getCase(uint _caseNumber) public {
+        require(!_cases[_caseNumber]._boolCase["CaseDeactivated"], "ERR10");
+        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR11");
+        emit getCaseE(_caseNumber,                                  _cases[_caseNumber]._stringCase["Title"], 
+                    _cases[_caseNumber]._stringCase["Description"], _cases[_caseNumber]._boolCase["OpenForVoting"], 
+                    _cases[_caseNumber]._uintCase["StartDate"],     _cases[_caseNumber]._uintCase["EndDate"], 
+                    _cases[_caseNumber]._stringArrayCase["Alt"],    _cases[_caseNumber]._uintArrayCase["Alt"], 
+                    _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"], "");
     }
 
-    function getCaseResult(uint _caseNumber) public view returns(string[] memory, uint[] memory){
+    function getCaseResult(uint _caseNumber) public {
+        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR12");
+        emit caseResultE(_cases[_caseNumber]._stringCase["Title"],_cases[_caseNumber]._stringCase["Description"],_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
+    }
+
+    function getMyVote(uint256 _caseNumber) public {
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR13");
-        return (_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
+        emit myVoteE( _cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
     }
 
-    // function getAlt(uint256 _caseNumber) public view returns(string[] memory _alter , uint256[] memory _alterNum){
-    //     require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR14");
-    //     return (_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
-    // }
-
-    function getMyVote(uint256 _caseNumber) public view returns(string memory){
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR15");
-        return ( _cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
-    }
-
-    function getUserArrayLength(string memory _region, string memory _userType) public returns(uint){
-        emit getUsers(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
-        return _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
-    }
-
-   function getUser()public view returns(string memory, string memory){
-        return(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
-    }
-
-    function getApprovalLimit(uint _caseNumber) public view returns(uint){
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR17");
-        return _cases[_caseNumber]._uintCase["Limit"];
+    function getUserArrayLength(string memory _region, string memory _userType) public {
+        emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
     }
     
-    function getTotalVotes(uint _caseNumber) public view returns(uint){
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR18");
-        return _cases[_caseNumber]._uintCase["TotalVotes"];
+    function getTotalVotes(uint _caseNumber) public {
+        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR14");
+        emit totalVotesE(_cases[_caseNumber]._uintCase["TotalVotes"]);
     }
 
-    function getApprovals(uint _caseNumber) public view returns(uint){
-        return _cases[_caseNumber]._uintCase["Approvals"];
+    function getApprovalsAndLimit(uint _caseNumber) public {
+        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR15");
+        emit approvalsE(_cases[_caseNumber]._uintCase["Approvals"], _cases[_caseNumber]._uintCase["Limit"]);
     }
 
-    function getCasesWaitingForApproval()public view returns(uint[] memory){
-        return _uintArrayStorage["WaitingForApproval"];
+    function getUser()public {
+        emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
     }
 
-    function getLimit(uint _caseNumber) public view returns(uint){
-        return _cases[_caseNumber]._uintCase["Limit"];
+    function getCasesWaitingForApproval()public {
+        emit casesWaitingForApprovalE(_uintArrayStorage["WaitingForApproval"]);
     }
 
 }
