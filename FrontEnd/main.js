@@ -10,7 +10,7 @@ async function login() {
 
     console.log(user);
     // alert("User logged in");
-    document.getElementById("login_button").style.display = "none";
+    // document.getElementById("login_button").style.display = "none";
     // document.getElementById("createUser").style.display = "block";
     document.getElementById("newCase").style.display = "block";
     document.getElementById("getCase").style.display = "block";
@@ -18,7 +18,7 @@ async function login() {
     document.getElementById("getUser").style.display = "block";
     document.getElementById("deactivateCase").style.display = "block";
     document.getElementById("endVoting").style.display = "block";
-    document.getElementById("vote").style.display = "block";
+    // document.getElementById("vote").style.display = "block";
     document.getElementById("getMyVote").style.display = "block";
     document.getElementById("getTotalVotes").style.display = "block";
     document.getElementById("getApprovalsAndLimit").style.display = "block";
@@ -280,22 +280,22 @@ async function getApprovalsAndLimit(caseNumber) {
     });
 }
 
-async function vote(caseNumber, alternative) {
-  window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
-  contractInstance.methods
-    .vote(caseNumber, alternative)
-    .send({ from: ethereum.selectedAddress })
-    .on("receipt", function (receipt) {
-      console.log(receipt);
-      if (
-        receipt.events.confirmationE.returnValues.confirmation ==
-        "Vote has been registered"
-      ) {
-        alert(receipt.events.confirmationE.returnValues.confirmation);
-      }
-    });
-}
+// async function vote(caseNumber, alternative) {
+//   window.web3 = await Moralis.Web3.enable();
+//   let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+//   contractInstance.methods
+//     .vote(caseNumber, alternative)
+//     .send({ from: ethereum.selectedAddress })
+//     .on("receipt", function (receipt) {
+//       console.log(receipt);
+//       if (
+//         receipt.events.confirmationE.returnValues.confirmation ==
+//         "Vote has been registered"
+//       ) {
+//         alert(receipt.events.confirmationE.returnValues.confirmation);
+//       }
+//     });
+// }
 
 document.getElementById("login_button").onclick = login;
 document.getElementById("get_users").onclick = getUserArr;
@@ -313,12 +313,12 @@ document.getElementById("end_voting").onclick = function () {
   endVoting(document.getElementById("caseNumber3").value);
 };
 
-document.getElementById("vote_").onclick = function () {
-  vote(
-    document.getElementById("caseNumber4").value,
-    document.getElementById("alternative").value
-  );
-};
+// document.getElementById("vote_").onclick = function () {
+//   vote(
+//     document.getElementById("caseNumber4").value,
+//     document.getElementById("alternative").value
+//   );
+// };
 
 document.getElementById("get_my_vote").onclick = function () {
   getMyVote(document.getElementById("caseNumber5").value);

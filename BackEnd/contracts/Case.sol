@@ -8,7 +8,7 @@ import "./MultiSig.sol";
 contract Case is Ownable, MultiSig {
 
     event SigningRequestE(string title,uint caseNumber);
-    event getCaseE(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string indexed region, string confirmation);
+    event getCaseE(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string indexed region);
     event getUsersE(uint usersWithSameRegionAndUserType); 
     event getUserE(string region, string userType); 
     event totalVotesE(uint toalVotes);
@@ -72,24 +72,38 @@ contract Case is Ownable, MultiSig {
         emit confirmationE("Voting closed successfully");
     }
 
-    function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2,string memory _alt3,string memory _alt4,string memory _alt5) public {
+    function addAlternatives(uint256 _caseNumber, string memory _alternative) public onlyOwner {
+        require(_cases[_caseNumber]._boolCase["openForVoting"] == false &&
+            _cases[_caseNumber]._boolCase["CaseDeactivated"] == false, "ERR20");
+        _cases[_caseNumber]._stringArrayCase["Alt"].push(_alternative);
+        _cases[_caseNumber]._uintArrayCase["Alt"].push(0);
+        assert(keccak256(abi.encodePacked(_cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._stringArrayCase["Alt"].length-1 ])) == keccak256(abi.encodePacked(_alternative)));
+   }
+
+    function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2) public {
         require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Regional")) ||
             keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("National")), "ERR4"); // checks that the userType is "Regional" or "National"
-        require(keccak256(bytes(_title)) != keccak256(bytes("")) && keccak256(bytes(_description)) != keccak256(bytes("")) && _startDate > block.timestamp && _endDate > block.timestamp && 
-            keccak256(bytes(_alt1)) != keccak256(bytes("")) && keccak256(bytes(_alt2)) != keccak256(bytes("")) && keccak256(bytes(_alt3)) != keccak256(bytes("")) && 
-            keccak256(bytes(_alt4)) != keccak256(bytes("")) && keccak256(bytes(_alt5)) != keccak256(bytes("")), "ERR12");
+        require(keccak256(bytes(_title)) != keccak256(bytes("")) && keccak256(bytes(_description)) != keccak256(bytes("")) && _startDate > block.timestamp 
+            && _endDate > block.timestamp && keccak256(bytes(_alt1)) != keccak256(bytes("")) && keccak256(bytes(_alt2)) != keccak256(bytes("")), "ERR12");
+
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
+        // string [] memory _result = new string [](_startDate);
 
         // What region is the case for, only users with same region will be able to vote on this proposal
-        string memory _region = _users[msg.sender]._stringUser["Region"];
+        //adding first alternative to Array and giving it all the votes
+        _cases[caseNumber]._stringArrayCase["Alt"].push("Not voted");
+        _cases[caseNumber]._uintArrayCase["Alt"].push(_cases[caseNumber]._uintCase["TotalVotes"]);
+
+        _cases[caseNumber]._stringArrayCase["Alt"].push(_alt1);
+        _cases[caseNumber]._stringArrayCase["Alt"].push(_alt2);
+         
 
         // This creates a case
+        string memory _region = _users[msg.sender]._stringUser["Region"];
         _cases[caseNumber]._stringCase["Title"] = _title;
         _cases[caseNumber]._stringCase["Description"] = _description;
         _cases[caseNumber]._stringCase["Region"] = _region;     // Sets proposals region to same as the creator of the case
-        
-        string[5] memory alt = [_alt1,_alt2,_alt3,_alt4,_alt5];
         
         // Calculate half of the votes needed +1
         _cases[caseNumber]._uintCase["Limit"] = 
@@ -116,23 +130,12 @@ contract Case is Ownable, MultiSig {
         _cases[caseNumber]._uintCase["EndDate"] = _endDate;
         _cases[caseNumber]._boolCase["openForVoting"] = false;
         _cases[caseNumber]._boolCase["CaseDeactivated"] = false;
-
-        //adding first alternative to Array and giving it all the votes
-        _cases[caseNumber]._stringArrayCase["Alt"].push("Not voted");
-        _cases[caseNumber]._uintArrayCase["Alt"].push(_cases[caseNumber]._uintCase["TotalVotes"]);
-
-        for(uint i = 0; i < alt.length; i++){
-            if(keccak256(abi.encodePacked(alt[i])) != keccak256(abi.encodePacked(""))){
-                _cases[caseNumber]._stringArrayCase["Alt"].push(alt[i]);
-                _cases[caseNumber]._uintArrayCase["Alt"].push(0);
-            }
-        }
         
         // checks if the information that is going to be stored is the same as the information entered into the function
-        for(uint i = 0; i < alt.length; i++){
-            assert(keccak256(abi.encodePacked(_cases[caseNumber]._stringArrayCase["Alt"][ SafeMath.add(i,1) ])) == keccak256(abi.encodePacked(alt[i])) && 
-                    _cases[caseNumber]._uintArrayCase["Alt"][ SafeMath.add(i, 1) ] == 0);
-        }
+        // for(uint i = 0; i < _numberOfAlternatives; i++){
+        //     assert(keccak256(abi.encodePacked(_cases[caseNumber]._stringArrayCase["Alt"][i+1])) == keccak256(abi.encodePacked(alt[i])) && 
+        //             _cases[caseNumber]._uintArrayCase["Alt"][i+1] == 0);
+        // }
 
         assert(keccak256(abi.encodePacked(
                     _cases[caseNumber]._stringCase["Title"],          _cases[caseNumber]._stringCase["Region"],
@@ -150,6 +153,7 @@ contract Case is Ownable, MultiSig {
 
         emit confirmationE("Case created successfully!");
         emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
+        emit getCaseE(caseNumber, _title, _description, _cases[caseNumber]._boolCase["openForVoting"], _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alt"], _cases[caseNumber]._uintArrayCase["Alt"], _cases[caseNumber]._uintCase["TotalVotes"], _region);
     }
 
     function deactivateCase(uint _caseNumber) public onlyOwner {
@@ -197,7 +201,7 @@ contract Case is Ownable, MultiSig {
                     _cases[_caseNumber]._stringCase["Description"], _cases[_caseNumber]._boolCase["OpenForVoting"], 
                     _cases[_caseNumber]._uintCase["StartDate"],     _cases[_caseNumber]._uintCase["EndDate"], 
                     _cases[_caseNumber]._stringArrayCase["Alt"],    _cases[_caseNumber]._uintArrayCase["Alt"], 
-                    _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"], "");
+                    _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"]);
     }
 
     function getMyVote(uint256 _caseNumber) public {
