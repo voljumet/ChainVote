@@ -18,6 +18,7 @@ const truffleAssert = require('truffle-assertions');
       instance3 = await Proxey.at(proxey.address);
     });
 
+    
     it("Should change the address of case contract", async ()=>{
       await instance3.pause({from: accounts[0]})
       await truffleAssert.passes(
