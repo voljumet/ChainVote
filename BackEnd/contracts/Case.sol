@@ -15,12 +15,11 @@ contract Case is Ownable, MultiSig {
     event approvalsE(uint numberOfApprovals, uint limit);
     event casesWaitingForApprovalE(uint[] casesWaitingForApproval);
     event myVoteE(string votedAlternative);
-    event caseResultE(string indexed title, string description, string[] stringAlternatives, uint[] uintAlternatives);
     
     /* 
-    ""receipt.events.userCreated.returnValues.confirmation"" in main.js
-        use for userCreated(x x, string confirmation) 
-        */
+        "receipt.events.userCreatedE.returnValues.confirmationE" in main.js
+        used for userCreatedE(x x, string confirmation)
+    */
 
     constructor() {
         require(!_boolStorage["initialized"], "ERR1");
@@ -70,7 +69,7 @@ contract Case is Ownable, MultiSig {
         require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
         _cases[_caseNumber]._boolCase["openForVoting"] = false; 
         assert(_cases[_caseNumber]._boolCase["openForVoting"] = false);
-        emit confirmationE("Voting closed successfully!");
+        emit confirmationE("Voting closed successfully");
     }
 
     function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2,string memory _alt3,string memory _alt4,string memory _alt5) public {
@@ -156,7 +155,7 @@ contract Case is Ownable, MultiSig {
         clearFromWaiting(_caseNumber);
 
         assert(_cases[_caseNumber]._boolCase["CaseDeactivated"] == true);
-        emit confirmationE("Case deactivated successfully!");
+        emit confirmationE("Case deactivated successfully");
     }
    
     function vote(uint256 _caseNumber, uint256 _optionVoted) public {
@@ -185,7 +184,7 @@ contract Case is Ownable, MultiSig {
                     true
                 ))
         );
-        emit confirmationE("Vote has been registered!");
+        emit confirmationE("Vote has been registered");
     }
 
     function getCase(uint _caseNumber) public {
@@ -196,11 +195,6 @@ contract Case is Ownable, MultiSig {
                     _cases[_caseNumber]._uintCase["StartDate"],     _cases[_caseNumber]._uintCase["EndDate"], 
                     _cases[_caseNumber]._stringArrayCase["Alt"],    _cases[_caseNumber]._uintArrayCase["Alt"], 
                     _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"], "");
-    }
-
-    function getCaseResult(uint _caseNumber) public {
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR12");
-        emit caseResultE(_cases[_caseNumber]._stringCase["Title"],_cases[_caseNumber]._stringCase["Description"],_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
     }
 
     function getMyVote(uint256 _caseNumber) public {
@@ -222,11 +216,11 @@ contract Case is Ownable, MultiSig {
         emit approvalsE(_cases[_caseNumber]._uintCase["Approvals"], _cases[_caseNumber]._uintCase["Limit"]);
     }
 
-    function getUser()public {
+    function getUser() public {
         emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
     }
 
-    function getCasesWaitingForApproval()public {
+    function getCasesWaitingForApproval() public {
         emit casesWaitingForApprovalE(_uintArrayStorage["WaitingForApproval"]);
     }
 
