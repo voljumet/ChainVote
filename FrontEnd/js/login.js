@@ -212,11 +212,30 @@ saveUserInfo = async()=>{
 
         await user.save();
         alert("user ifo saved successfully");
-        openUerInfo();
+      openUerInfo();
+      createUser(userRegionField.value, userTypeField.value);
     } catch (error) {
         alert(error)
     }
    
+}
+
+async function createUser(_region, _userType) {
+  alert("Region: " + _region + "\nUserType: " + _userType);
+  window.web3 = await Moralis.Web3.enable();
+  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+  contractInstance.methods
+    .createUser(_region, _userType)
+    .send({ from: ethereum.selectedAddress })
+    .on("receipt", function (receipt) {
+      console.log(receipt);
+      if (
+        receipt.events.confirmationE.returnValues.confirmation ==
+        "User Created successfully"
+      ) {
+        alert("user created successfully");
+      }
+    });
 }
 
 closeButton = async()=>{

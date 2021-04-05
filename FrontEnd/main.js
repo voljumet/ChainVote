@@ -11,7 +11,7 @@ async function login() {
     console.log(user);
     // alert("User logged in");
     document.getElementById("login_button").style.display = "none";
-    document.getElementById("createUser").style.display = "block";
+    // document.getElementById("createUser").style.display = "block";
     document.getElementById("newCase").style.display = "block";
     document.getElementById("getCase").style.display = "block";
     document.getElementById("getUserArrLen").style.display = "block";
@@ -30,25 +30,25 @@ async function login() {
   }
 }
 
-async function createUser(_region, _userType) {
-  //   var load = window.abi;
-  //   alert(load);
-  alert("Region: " + _region + "\nUserType: " + _userType);
-  window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
-  contractInstance.methods
-    .createUser(_region, _userType)
-    .send({ from: ethereum.selectedAddress })
-    .on("receipt", function (receipt) {
-      console.log(receipt);
-      if (
-        receipt.events.userCreated.returnValues.confirmation ==
-        "User Created successfully"
-      ) {
-        alert("user created successfully");
-      }
-    });
-}
+// async function createUser(_region, _userType) {
+//   //   var load = window.abi;
+//   //   alert(load);
+//   alert("Region: " + _region + "\nUserType: " + _userType);
+//   window.web3 = await Moralis.Web3.enable();
+//   let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+//   contractInstance.methods
+//     .createUser(_region, _userType)
+//     .send({ from: ethereum.selectedAddress })
+//     .on("receipt", function (receipt) {
+//       console.log(receipt);
+//       if (
+//         receipt.events.userCreated.returnValues.confirmation ==
+//         "User Created successfully"
+//       ) {
+//         alert("user created successfully");
+//       }
+//     });
+// }
 
 async function getUserArrayLength(_region, _userType) {
   alert("Region: " + _region + "\nUserType: " + _userType);
@@ -66,56 +66,56 @@ async function getUserArrayLength(_region, _userType) {
     });
 }
 
-// createCase
-async function createCase(
-  _title,
-  _description,
-  _startDate,
-  _endDate,
-  alt1,
-  alt2,
-  alt3,
-  alt4,
-  alt5
-) {
-  var array = [alt1, alt2, alt3, alt4, alt5];
-  alert(
-    "title: " +
-      _title +
-      "\ndesciption: " +
-      _description +
-      "\nstart date: " +
-      _startDate +
-      "\nend date: " +
-      _endDate +
-      "\nalternatives: " +
-      array
-  );
-  window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
-  contractInstance.methods
-    .createCase(
-      _title,
-      _description,
-      _startDate,
-      _endDate,
-      alt1,
-      alt2,
-      alt3,
-      alt4,
-      alt5
-    )
-    .send({ from: ethereum.selectedAddress })
-    .on("receipt", function (receipt) {
-      console.log(receipt);
-      if (
-        receipt.events.confirmationE.returnValues.confirmationE ==
-        "Case created successfully"
-      ) {
-        alert("case Created successfully");
-      }
-    });
-}
+// // createCase
+// async function createCase(
+//   _title,
+//   _description,
+//   _startDate,
+//   _endDate,
+//   alt1,
+//   alt2,
+//   alt3,
+//   alt4,
+//   alt5
+// ) {
+//   var array = [alt1, alt2, alt3, alt4, alt5];
+//   alert(
+//     "title: " +
+//       _title +
+//       "\ndesciption: " +
+//       _description +
+//       "\nstart date: " +
+//       _startDate +
+//       "\nend date: " +
+//       _endDate +
+//       "\nalternatives: " +
+//       array
+//   );
+//   window.web3 = await Moralis.Web3.enable();
+//   let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+//   contractInstance.methods
+//     .createCase(
+//       _title,
+//       _description,
+//       _startDate,
+//       _endDate,
+//       alt1,
+//       alt2,
+//       alt3,
+//       alt4,
+//       alt5
+//     )
+//     .send({ from: ethereum.selectedAddress })
+//     .on("receipt", function (receipt) {
+//       console.log(receipt);
+//       if (
+//         receipt.events.confirmationE.returnValues.confirmationE ==
+//         "Case created successfully"
+//       ) {
+//         alert("case Created successfully");
+//       }
+//     });
+// }
 
 // get case number
 async function getCase(_caseNumber) {
@@ -342,12 +342,12 @@ document.getElementById("approve_").onclick = function () {
   approve(document.getElementById("caseNumber9").value);
 };
 
-document.getElementById("create_user").onclick = function () {
-  createUser(
-    document.getElementById("Region1").value,
-    document.getElementById("UserType1").value
-  );
-};
+// document.getElementById("create_user").onclick = function () {
+//   createUser(
+//     document.getElementById("Region1").value,
+//     document.getElementById("UserType1").value
+//   );
+// };
 
 document.getElementById("get_user_array_length").onclick = function () {
   getUserArrayLength(
@@ -356,20 +356,20 @@ document.getElementById("get_user_array_length").onclick = function () {
   );
 };
 
-document.getElementById("create_case").onclick = function () {
-  createCase(
-    document.getElementById("title").value,
-    document.getElementById("description").value,
-    (document.getElementById("startDate").innerHTML = new Date(
-      $("#startDate").val()
-    ).getTime()),
-    (document.getElementById("endDate").innerHTML = new Date(
-      $("#endDate").val()
-    ).getTime()),
-    document.getElementById("alternatives1").value,
-    document.getElementById("alternatives2").value,
-    document.getElementById("alternatives3").value,
-    document.getElementById("alternatives4").value,
-    document.getElementById("alternatives5").value
-  );
-};
+// document.getElementById("create_case").onclick = function () {
+//   createCase(
+//     document.getElementById("title").value,
+//     document.getElementById("description").value,
+//     (document.getElementById("startDate").innerHTML = new Date(
+//       $("#startDate").val()
+//     ).getTime()),
+//     (document.getElementById("endDate").innerHTML = new Date(
+//       $("#endDate").val()
+//     ).getTime()),
+//     document.getElementById("alternatives1").value,
+//     document.getElementById("alternatives2").value,
+//     document.getElementById("alternatives3").value,
+//     document.getElementById("alternatives4").value,
+//     document.getElementById("alternatives5").value
+//   );
+// };

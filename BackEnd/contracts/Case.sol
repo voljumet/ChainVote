@@ -75,6 +75,9 @@ contract Case is Ownable, MultiSig {
     function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2,string memory _alt3,string memory _alt4,string memory _alt5) public {
         require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Regional")) ||
             keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("National")), "ERR4"); // checks that the userType is "Regional" or "National"
+        require(keccak256(bytes(_title)) != keccak256(bytes("")) && keccak256(bytes(_description)) != keccak256(bytes("")) && _startDate > block.timestamp && _endDate > block.timestamp && 
+            keccak256(bytes(_alt1)) != keccak256(bytes("")) && keccak256(bytes(_alt2)) != keccak256(bytes("")) && keccak256(bytes(_alt3)) != keccak256(bytes("")) && 
+            keccak256(bytes(_alt4)) != keccak256(bytes("")) && keccak256(bytes(_alt5)) != keccak256(bytes("")), "ERR12");
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
 
