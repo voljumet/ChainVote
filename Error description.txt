@@ -12,7 +12,7 @@ Error codes
 9: Voting for this case has ended. -> Case.sol
 10: This case has been deactivated. -> Case.sol
 11: Case does not exist. -> Case.sol
-12: Case does not exist. -> Case.sol
+12: 
 13: Case does not exist. -> Case.sol
 14: Case does not exist. -> Case.sol
 15: Case does not exist. -> Case.sol

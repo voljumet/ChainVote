@@ -36,7 +36,7 @@ contract MultiSig is Storage{
             emit caseApprovedE(_caseNumber, _cases[_caseNumber]._stringCase["Title"]);
         }
         assert(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == true);
-        emit confirmationE("Your approval has been recieved!");
+        emit confirmationE("Your approval has been recieved");
     }
 
     // Removes caseNumber from the array "WaitingForApproval"

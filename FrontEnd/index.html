@@ -38,21 +38,74 @@
     <div class="container">
       <button id="login_button">Register with MetaMask</button>
 
-      <div id="voting" style="display: none">
-        <input type="text" id="Region" placeholder="Wat Region?" />
-        <input type="text" id="UserType" placeholder="Wat UserType?" />
+      <div id="createUser" style="display: none">
+        <input type="text" id="Region1" placeholder="Wat Region?" />
+        <input type="text" id="UserType1" placeholder="Wat UserType?" />
         <button id="create_user">Create User</button>
       </div>
 
+      <div id="getUserArrayLength" style="display: none">
+        <input type="text" id="Region2" placeholder="Wat Region?" />
+        <input type="text" id="UserType2" placeholder="Wat UserType?" />
+        <button id="get_user_array_length">Create User</button>
+      </div>
+
       <div id="getCase" style="display: none">
-        <input type="text" id="caseNumber" placeholder="Case Number" />
+        <input type="text" id="caseNumber1" placeholder="Case Number" />
         <button id="get_case">Get Case</button>
       </div>
-      
+
+      <div id="deactivateCase" style="display: none">
+        <input type="text" id="caseNumber2" placeholder="Case Number" />
+        <button id="deactivate_case">Deactivate Case</button>
+      </div>
+
+      <div id="endVoting" style="display: none">
+        <input type="text" id="caseNumber3" placeholder="Case Number" />
+        <button id="end_voting">End voting</button>
+      </div>
+
+      <div id="vote" style="display: none">
+        <input type="text" id="caseNumber4" placeholder="Case to vote on" />
+        <input
+          type="text"
+          id="alternative"
+          placeholder="option to vote (ex: '1')"
+        />
+        <button id="vote_">Vote</button>
+      </div>
+
+      <div id="getMyVote" style="display: none">
+        <input type="text" id="caseNumber5" placeholder="Case number" />
+        <button id="get_my_vote">Vote</button>
+      </div>
+
+      <div id="getTotalVotes" style="display: none">
+        <input type="text" id="caseNumber6" placeholder="Case Number" />
+        <button id="get_total_votes">Get total votes</button>
+      </div>
+
+      <div id="getApprovalsAndLimit" style="display: none">
+        <input type="text" id="caseNumber7" placeholder="Case Number" />
+        <button id="get_Approvals_And_Limit">get approvals and limit</button>
+      </div>
+
+      <div id="getCasesWaitingForApproval" style="display: none">
+        <input type="text" id="caseNumber8" placeholder="Case Number" />
+        <button id="get_Cases_Waiting_For_Approval">
+          get cases waiting for approval
+        </button>
+      </div>
+
+      <div id="approve" style="display: none">
+        <input type="text" id="caseNumber9" placeholder="Case Number" />
+        <button id="approve_">End voting</button>
+      </div>
+
       <div id="getUserArrLen" style="display: none">
         <button id="get_users">Get number of users</button>
       </div>
-      
+
       <div id="getUser" style="display: none">
         <button id="get_user">Get user</button>
       </div>
