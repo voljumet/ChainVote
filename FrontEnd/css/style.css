@@ -191,6 +191,10 @@ a {
   top: 0;
   left: 50px;
 }
+.icon-info-sign{
+  padding-left: 600px;
+  
+}
 
 .info:hover .extra-info {
   display: block;
@@ -549,3 +553,20 @@ span.psw {
   padding: 1.5em 1.3em;
 }
 
+#btny1{
+ 
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+    width: auto;
+    position: relative;
+  
+}
+.input-group-text{
+  border-radius: 25px;
+  width: 10px;
+  height: 10px;
+}

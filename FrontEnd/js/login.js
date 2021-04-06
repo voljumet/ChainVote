@@ -144,7 +144,8 @@ openUserInfo();
 init = async() =>{
     hideElment(userInfo);
     window.web3 = await Moralis.Web3.enable();
-    initUser()
+  
+    initUser();
 }
 initUser = async () =>{
     user = await Moralis.User.current()
@@ -237,6 +238,7 @@ async function createUser(_region, _userType) {
         alert("user created successfully");
       }
     });
+    
 }
 
 closeButton = async()=>{
@@ -244,6 +246,17 @@ closeButton = async()=>{
     showElment(userProfileButton);
 }
 
+
+
+async function checkUserType(){
+    user = await Moralis.User.current();
+    if (user.get('UserType') == "Standard") {
+        hideElment(document.getElementById("createCaseHerf"))
+        
+    } else {
+        showElment(document.getElementById("createCaseHerf"))
+    }
+}
 
 
 
@@ -271,3 +284,4 @@ const userTypeField= document.getElementById('usertype-input');
 const userRegionField= document.getElementById('region-input');
 
 init();
+checkUserType();

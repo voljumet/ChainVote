@@ -110,16 +110,6 @@ function timeIt(date, timeBar){
     }
 }
 
- function unpack(str) {
-    var bytes = [];
-    for(var i = 0; i < str.length; i++) {
-        var char = str.charCodeAt(i);
-        bytes.push(char >>> 8);
-        bytes.push(char & 0xFF);
-    }
-    return bytes;
-}
-
 ///////////////////////////
 // Render Case Card on the Index page
 async function AddCardsToPage() {
@@ -131,11 +121,24 @@ async function AddCardsToPage() {
 }
 
 AddCardsToPage()
+checkUserType();
     
 // Reload the page
 setTimeout(function(){
     window.location.reload(1);
  }, 60000);
 
+ 
+async function checkUserType(){
+    user = await Moralis.User.current();
+    if (user.get('UserType') == "Standard") {
+        hideElment(document.getElementById("createCaseHerf"))
+        
+    } else {
+        showElment(document.getElementById("createCaseHerf"))
+    }
+}
 
+hideElment = (element) => element.style.display = "none";
+showElment = (element) => element.style.display = "block";
 
