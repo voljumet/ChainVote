@@ -20,7 +20,7 @@ Error codes
 17: Case does not exist. -> MultiSig.sol
 18: This address has already approved this case. -> MultiSig.sol
 19: Case open for voting, cant be approved. -> MultiSig.sol
-20: 
+20: Alternatives cannot be added because the case is open for voting or deactivated. -> Case.sol
 21: 
 22: 
 23: 
