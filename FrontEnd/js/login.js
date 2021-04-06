@@ -157,6 +157,7 @@ initUser = async () =>{
         showElment(userConnectButton);
         hideElment(userProfileButton);
         hideElment(document.getElementById("logout"));
+        UserNameFront.innerText = "";
     }
 }
 
@@ -259,6 +260,7 @@ userProfileButton.onclick= openUerInfo;
 document.getElementById("closeInfo").onclick = closeButton;
 document.getElementById("logout").onclick = logOut;
 document.getElementById("save").onclick = saveUserInfo;
+
 
 const userInfo = document.getElementById("userinfo");
 const UserNameFront = document.getElementById('userNameFront');

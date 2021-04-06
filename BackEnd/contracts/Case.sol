@@ -8,7 +8,7 @@ import "./MultiSig.sol";
 contract Case is Ownable, MultiSig {
 
     event SigningRequestE(string title,uint caseNumber);
-    event getCaseE(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string indexed region, string confirmation);
+    event getCaseE(uint indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string region);
     event getUsersE(uint usersWithSameRegionAndUserType); 
     event getUserE(string region, string userType); 
     event totalVotesE(uint toalVotes);
@@ -150,6 +150,7 @@ contract Case is Ownable, MultiSig {
 
         emit confirmationE("Case created successfully!");
         emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
+        emit getCaseE(caseNumber, _title, _description, _cases[caseNumber]._boolCase["openForVoting"], _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alt"], _cases[caseNumber]._uintArrayCase["Alt"], _cases[caseNumber]._uintCase["TotalVotes"], _region);
     }
 
     function deactivateCase(uint _caseNumber) public onlyOwner {
@@ -197,7 +198,7 @@ contract Case is Ownable, MultiSig {
                     _cases[_caseNumber]._stringCase["Description"], _cases[_caseNumber]._boolCase["OpenForVoting"], 
                     _cases[_caseNumber]._uintCase["StartDate"],     _cases[_caseNumber]._uintCase["EndDate"], 
                     _cases[_caseNumber]._stringArrayCase["Alt"],    _cases[_caseNumber]._uintArrayCase["Alt"], 
-                    _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"], "");
+                    _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"]);
     }
 
     function getMyVote(uint256 _caseNumber) public {

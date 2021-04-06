@@ -573,7 +573,7 @@ https://templatemo.com/tm-538-digital-trend
 
   .newsletter-form button,
   .contact-form #cancel-button {
-    background: red;
+    background: rgb(173, 20, 20);
     border-radius: var(--border-radius-large);
     color: var(--white-color);
     cursor: pointer;

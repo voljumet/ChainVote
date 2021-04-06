@@ -94,10 +94,10 @@ https://templatemo.com/tm-538-digital-trend
             </nav>
 
             <!-- Display User Name-->
-            <h5 class="user-text">Rune Alexander Laursen</h5>
+            <h5 class="user-text" id="userNameFront"></h5>
 
             <li class="nav-item">
-              <a href="contact.html" class="nav-link contact">
+              <a href="login.html" class="nav-link contact">
                 <img src="images/avatar.png" alt="Avatar" class="avatar" />
               </a>
             </li>
@@ -111,7 +111,7 @@ https://templatemo.com/tm-538-digital-trend
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-      <div class="container">
+      
         <div class="row">
           <div class="input-group rounded">
             <input
@@ -126,15 +126,12 @@ https://templatemo.com/tm-538-digital-trend
             </span>
           </div>
 
-          <h4 class="month" data-aos="fade-up">
-           
-          </h4>
 
           <div class="container2" id="here" data-aos="fade-up" >
           </div>
 
           </div>
-        </div>
+        
      
       
     </section>
@@ -151,36 +148,8 @@ https://templatemo.com/tm-538-digital-trend
     <script src="js/custom.js"></script>
     <script scr="js/timeBar.js"></script>
     <script type="text/javascript" src="js/mainy.js"></script>
+    <script type="text/javascript" src="js/username.js"></script>
     
-
-  
-    
-
-    <!--Deadline function -->
-    <script>
-      var i = 0;
-      function move(time) {
-        if (i == 0) {
-          i = 1;
-          var elem = document.getElementById('myBar');
-          elem.style.backgroundColor = '#4CAF50';
-          var width = 10;
-          var id = setInterval(frame, time);
-          function frame() {
-            if (width >= time) {
-              clearInterval(id);
-              i = 0;
-            } else {
-              width++;
-              elem.style.width = width + '%';
-              if (width == time) {
-                elem.style.backgroundColor = 'red';
-              }
-            }
-          }
-        }
-      }
-    </script>
 
     </script>
    <!--   
@@ -255,4 +224,3 @@ https://templatemo.com/tm-538-digital-trend
     <script type="text/javascript" src="./main.js"></script>
   </body>
 </html>
--->   

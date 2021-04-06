@@ -54,7 +54,7 @@ module.exports = async function (deployer, network, accounts) {
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
   // console.log("User5: " + await proxyCaseReDir.getUser({from: accounts[4] }));
   
-  await proxyCaseReDir.createCase("First Case", "This is the description",16171804,1234564,"en","to","tre","fire","fem", { from: accounts[1] });
+  await proxyCaseReDir.createCase("First Case", "This is the description",1623012343000,1623012343000,"en","to","tre","fire","fem", { from: accounts[1] });
   console.log("Case created: ");
   // await proxyCaseReDir
   //   .getCase(1, { from: accounts[1] })
