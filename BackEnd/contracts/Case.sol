@@ -72,33 +72,33 @@ contract Case is Ownable, MultiSig {
         emit confirmationE("Voting closed successfully");
     }
 
-    function addAlternatives(uint256 _caseNumber, string memory _alternative) public onlyOwner {
-        require(_cases[_caseNumber]._boolCase["openForVoting"] == false &&
-            _cases[_caseNumber]._boolCase["CaseDeactivated"] == false, "ERR20");
+    function addAlternatives(uint256 _caseNumber, string memory _alternative) public onlyOwners(_caseNumber) {
+        require(_cases[_caseNumber]._boolCase["openForVoting"] == false && _cases[_caseNumber]._boolCase["CaseDeactivated"] == false && 
+                _caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0 && keccak256(abi.encodePacked(_alternative)) != keccak256(abi.encodePacked("")), "ERR20");
         _cases[_caseNumber]._stringArrayCase["Alt"].push(_alternative);
         _cases[_caseNumber]._uintArrayCase["Alt"].push(0);
         assert(keccak256(abi.encodePacked(_cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._stringArrayCase["Alt"].length-1 ])) == keccak256(abi.encodePacked(_alternative)));
    }
 
     function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2) public {
-        require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Regional")) ||
-            keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("National")), "ERR4"); // checks that the userType is "Regional" or "National"
-        require(keccak256(bytes(_title)) != keccak256(bytes("")) && keccak256(bytes(_description)) != keccak256(bytes("")) && _startDate > block.timestamp 
-            && _endDate > block.timestamp && keccak256(bytes(_alt1)) != keccak256(bytes("")) && keccak256(bytes(_alt2)) != keccak256(bytes("")), "ERR12");
+        require(keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("Regional")) ||
+            keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("National")), "ERR4"); // checks that the userType is "Regional" or "National"
+        require(keccak256(abi.encodePacked(_title)) != keccak256(abi.encodePacked("")) && keccak256(abi.encodePacked(_description)) != keccak256(abi.encodePacked("")) && _startDate > block.timestamp 
+            && _endDate > block.timestamp && keccak256(abi.encodePacked(_alt1)) != keccak256(abi.encodePacked("")) && keccak256(abi.encodePacked(_alt2)) != keccak256(abi.encodePacked("")), "ERR12");
 
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
-        // string [] memory _result = new string [](_startDate);
 
         // What region is the case for, only users with same region will be able to vote on this proposal
-        //adding first alternative to Array and giving it all the votes
+        // adding first alternative to Array and giving it all the votes
         _cases[caseNumber]._stringArrayCase["Alt"].push("Not voted");
         _cases[caseNumber]._uintArrayCase["Alt"].push(_cases[caseNumber]._uintCase["TotalVotes"]);
 
         _cases[caseNumber]._stringArrayCase["Alt"].push(_alt1);
         _cases[caseNumber]._stringArrayCase["Alt"].push(_alt2);
-         
-
+        _cases[caseNumber]._uintArrayCase["Alt"].push(0);
+        _cases[caseNumber]._uintArrayCase["Alt"].push(0);
+       
         // This creates a case
         string memory _region = _users[msg.sender]._stringUser["Region"];
         _cases[caseNumber]._stringCase["Title"] = _title;
@@ -132,7 +132,7 @@ contract Case is Ownable, MultiSig {
         _cases[caseNumber]._boolCase["CaseDeactivated"] = false;
         
         // checks if the information that is going to be stored is the same as the information entered into the function
-        // for(uint i = 0; i < _numberOfAlternatives; i++){
+        // for(uint i = 0; i < _cases[caseNumber]._stringArrayCase["Alt"].length; i++){
         //     assert(keccak256(abi.encodePacked(_cases[caseNumber]._stringArrayCase["Alt"][i+1])) == keccak256(abi.encodePacked(alt[i])) && 
         //             _cases[caseNumber]._uintArrayCase["Alt"][i+1] == 0);
         // }
