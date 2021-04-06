@@ -6,8 +6,6 @@ const CaseTwo = artifacts.require("CaseTwo");
 // import fs module in which writeFile function is defined.
 const fsLibrary = require('fs')
 
-
-
 module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(CaseOne);
   let instanceCase = await CaseOne.deployed();
