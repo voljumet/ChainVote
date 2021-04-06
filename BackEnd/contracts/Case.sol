@@ -194,41 +194,41 @@ contract Case is Ownable, MultiSig {
         emit confirmationE("Vote has been registered");
     }
 
-    function getCase(uint _caseNumber) public {
-        require(!_cases[_caseNumber]._boolCase["CaseDeactivated"], "ERR10");
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR11");
-        emit getCaseE(_caseNumber,                                  _cases[_caseNumber]._stringCase["Title"], 
-                    _cases[_caseNumber]._stringCase["Description"], _cases[_caseNumber]._boolCase["OpenForVoting"], 
-                    _cases[_caseNumber]._uintCase["StartDate"],     _cases[_caseNumber]._uintCase["EndDate"], 
-                    _cases[_caseNumber]._stringArrayCase["Alt"],    _cases[_caseNumber]._uintArrayCase["Alt"], 
-                    _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"]);
-    }
+    // function getCase(uint _caseNumber) public {
+    //     require(!_cases[_caseNumber]._boolCase["CaseDeactivated"], "ERR10");
+    //     require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR11");
+    //     emit getCaseE(_caseNumber,                                  _cases[_caseNumber]._stringCase["Title"], 
+    //                 _cases[_caseNumber]._stringCase["Description"], _cases[_caseNumber]._boolCase["OpenForVoting"], 
+    //                 _cases[_caseNumber]._uintCase["StartDate"],     _cases[_caseNumber]._uintCase["EndDate"], 
+    //                 _cases[_caseNumber]._stringArrayCase["Alt"],    _cases[_caseNumber]._uintArrayCase["Alt"], 
+    //                 _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"]);
+    // }
 
     function getMyVote(uint256 _caseNumber) public {
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR13");
         emit myVoteE( _cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
     }
 
-    function getUserArrayLength(string memory _region, string memory _userType) public {
-        emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
-    }
+    // function getUserArrayLength(string memory _region, string memory _userType) public {
+    //     emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
+    // }
     
-    function getTotalVotes(uint _caseNumber) public {
-        require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR14");
-        emit totalVotesE(_cases[_caseNumber]._uintCase["TotalVotes"]);
-    }
+    // function getTotalVotes(uint _caseNumber) public {
+    //     require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR14");
+    //     emit totalVotesE(_cases[_caseNumber]._uintCase["TotalVotes"]);
+    // }
 
     function getApprovalsAndLimit(uint _caseNumber) public {
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR15");
         emit approvalsE(_cases[_caseNumber]._uintCase["Approvals"], _cases[_caseNumber]._uintCase["Limit"]);
     }
 
-    function getUser() public {
-        emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
-    }
+    // function getUser() public {
+    //     emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
+    // }
 
-    function getCasesWaitingForApproval() public {
-        emit casesWaitingForApprovalE(_uintArrayStorage["WaitingForApproval"]);
-    }
+    // function getCasesWaitingForApproval() public {
+    //     emit casesWaitingForApprovalE(_uintArrayStorage["WaitingForApproval"]);
+    // }
 
 }
