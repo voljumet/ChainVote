@@ -2,13 +2,19 @@
 
 const CaseOne = artifacts.require("Case");
 const Proxey = artifacts.require("Proxy");
+const CaseTwo = artifacts.require("CaseTwo");
 
 module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(CaseOne);
   let instanceCase = await CaseOne.deployed();
 
   await deployer.deploy(Proxey, instanceCase.address);
-   await Proxey.deployed();
+  await Proxey.deployed();
+
+  await deployer.deploy(CaseTwo);
+  await CaseTwo.deployed();
+  
+  
   /*
   let proxyCase = await Proxey.deployed();
   

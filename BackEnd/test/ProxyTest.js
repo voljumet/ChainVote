@@ -1,5 +1,5 @@
 const CaseOne = artifacts.require('Case');
-const CaseTwo = artifacts.require('Case');
+const CaseTwo = artifacts.require('CaseTwo');
 const Proxey = artifacts.require('Proxy');
 const truffleAssert = require('truffle-assertions');
 
@@ -14,7 +14,7 @@ const truffleAssert = require('truffle-assertions');
       const caseTwo = await CaseTwo.new();
       //create proxy Case to fool truffle
       instance = await CaseOne.at(proxey.address);
-      instance2 = await CaseTwo.at(caseTwo.address);
+      instance2 = await CaseTwo.at(proxey.address);
       instance3 = await Proxey.at(proxey.address);
     });
 
@@ -25,23 +25,47 @@ const truffleAssert = require('truffle-assertions');
         truffleAssert.ErrorType.REVERT
       )})
 
-    it("Should be able to pause contract", async ()=>{
+    it("Should be able to use new contract functions", async ()=>{
+      await instance3.pause({from: accounts[0]})
+      await instance3.upgrade(CaseTwo.address, {from: accounts[0]})
+      await instance3.unPause({from: address[0]})
+      await truffleAssert.passes(
+        instance2.verifyNewCase(),
+        truffleAssert.ErrorType.REVERT
+     )})
+
+    it("Owner should be able to pause contract", async ()=>{
         await truffleAssert.passes(
           instance3.pause({from: accounts[0]}),
           truffleAssert.ErrorType.REVERT
         )})
 
-    it("Should be able to unpause contract", async ()=>{
+    it("Owner should be able to unpause contract", async ()=>{
         await instance3.pause({from: accounts[0]})
          await truffleAssert.passes(
           instance3.unPause({from: accounts[0]}),
           truffleAssert.ErrorType.REVERT
          )})
 
-    // it("Should only allow the owner to upgrade", async ()=>{
-    //       await truffleAssert.passes(
-    //         instance3.pause({from: accounts[2]}),
-    //         instance3.upgrade(CaseTwo.address, {from: accounts[2]}),
-    //         truffleAssert.ErrorType.REVERT
-    //       )})
+    it("Only owner should be able to unpause contract", async ()=>{
+        await truffleAssert.fails(
+          instance3.pause({from: accounts[2]}),
+          truffleAssert.ErrorType.REVERT
+        )})
+
+
+   it("Should only allow the owner to upgrade", async ()=>{
+        await instance3.pause({from: accounts[0]});
+           await truffleAssert.fails(
+             instance3.upgrade(CaseTwo.address, {from: accounts[2]}),
+             truffleAssert.ErrorType.REVERT
+           )})
+
+    it("Should not be able to Upgrade when not paused", async () =>{
+      await truffleAssert.fails(
+        instance3.upgrade(CaseTwo.address, {from: accounts[0]}),
+        truffleAssert.ErrorType.REVERT
+      )})
+
+    
 })
