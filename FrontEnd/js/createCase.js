@@ -1,6 +1,19 @@
 Moralis.initialize("2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj"); // Application id from moralis.io
 Moralis.serverURL = "https://rnonp7vwlz3d.moralis.io:2053/server"; //Server url from moralis.io
 
+     
+
+
+async function getNewCaseNumber(){
+  let reuslt  = await Moralis.Cloud.run("Cases",{});
+  let array=[];
+    reuslt.forEach(element =>{
+      array.push(element.attributes.caseNumber)
+    })
+  var num = Math.max(...array)+1;
+  var myObject = { proposal_number: num };
+  w3.displayObject('id03', myObject); 
+}
 
 // createCase
 async function createCase(
@@ -61,4 +74,30 @@ document.getElementById("create-button").onclick = function () {
     document.getElementById("alternatives1").value,
     document.getElementById("alternatives2").value
   );
+  
 };
+
+$('#startDate').datetimepicker({
+  timepicker: true,
+  datepicker: true,
+  minDate: new Date(),
+  format: 'Y-m-d H:i',
+  onShow: function (ct) {
+    this.setOptions({
+      maxDate: $('#endDate').val() ? $('#endDate').val() : false,
+    }),
+      console.log($('#startDate').val());
+  },
+});
+$('#endDate').datetimepicker({
+  timepicker: true,
+  datepicker: true,
+  format: 'Y-m-d H:i',
+  onShow: function (ct) {
+    this.setOptions({
+      minDate: $('#startDate').val() ? $('#startDate').val() : false,
+    });
+  },
+});
+
+getNewCaseNumber();

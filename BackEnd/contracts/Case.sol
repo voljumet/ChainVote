@@ -8,7 +8,7 @@ import "./MultiSig.sol";
 contract Case is Ownable, MultiSig {
 
     event SigningRequestE(string title,uint caseNumber);
-    event getCaseE(uint indexed caseNumber, string indexed title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string indexed region);
+    event getCaseE(uint indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string region);
     event getUsersE(uint usersWithSameRegionAndUserType); 
     event getUserE(string region, string userType); 
     event totalVotesE(uint toalVotes);
