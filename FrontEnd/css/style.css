@@ -111,7 +111,7 @@ a {
   display: block;
 }
 .avatar {
-  position: fixed;
+  position: relative;
   vertical-align: middle;
   width: 50px;
   height: 50px;
@@ -293,8 +293,8 @@ a {
 /*                 */
 .container2 {
   display: flex;
-        justify-content: space-between;
         margin-left: 0px;
+        margin-top: 50px;
         margin-right: -670px;
         flex-direction: row;
         flex-wrap: wrap;
@@ -403,19 +403,34 @@ span.psw {
   -webkit-border-radius: 15px 15px 15px 15px;
   border-radius: 15px 15px 15px 15px;
   background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  padding: 0px;
+  width: 100%;
+  max-width: 750px;
+  position:relative;
+  padding: 10px 10px 10px 10px;
+  margin: auto;
   -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
   text-align: center;
 }
+#formContent-createCase
+  {
+    -webkit-border-radius: 15px 15px 15px 15px;
+    border-radius: 15px 15px 15px 15px;
+    background: #fff;
+    width: 100%;
+    max-width: 750px;
+    position:relative;
+    padding: 10px 10px 10px 10px;
+   
+    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+    text-align: center;
+  }
+
 
 #formFooter {
   background-color: #f6f6f6;
-  border-top: 1px solid #dce8f1;
+  border-top: 1px solid #f1dce3;
   padding: 15px;
   text-align: center;
   -webkit-border-radius: 0 0 10px 10px;
@@ -429,7 +444,7 @@ span.psw {
   border-radius: 50%;
 
 }
-#input-button{
+#input-buttony {
   background-color: #3160c4;
   color: white;
   padding: 14px 20px;
@@ -439,3 +454,98 @@ span.psw {
   width: 30%;
   
 }
+#logout-buttony {
+  background-color: #3160c4;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 30%;
+}
+
+#userinfobutton {
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #3160c4;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+#logout {
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #dc4015;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#save {
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #3160c4;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#closeInfo{
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #3160c4;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#connect{
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #1db712;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#userNameFront{
+  font-size: 24px;
+  text-align: center;
+  
+}
+#cancel-buttony{
+  background: rgb(226, 29, 29);
+  border-radius: var(--border-radius-large);
+  color: var(--white-color);
+  cursor: pointer;
+  font-size: var(--p-font-size);
+  line-height: 0px;
+  padding: 1.5em 1.3em;
+}
+#create-button {
+  background: rgb(13, 185, 13);
+  border-radius: var(--border-radius-large);
+  color: var(--white-color);
+  cursor: pointer;
+  font-size: var(--p-font-size);
+  line-height: 0px;
+  padding: 1.5em 1.3em;
+}
+

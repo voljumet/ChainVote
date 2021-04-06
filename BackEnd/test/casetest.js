@@ -1,6 +1,6 @@
 
 const CaseOne = artifacts.require('Case');
-const Proxy = artifacts.require('Proxy');
+const Proxey = artifacts.require('Proxy');
 const truffleAssert = require('truffle-assertions');
 
   contract('Proxy', async function (accounts) {
@@ -8,9 +8,9 @@ const truffleAssert = require('truffle-assertions');
 
     beforeEach(async function () {
       const caseOne = await CaseOne.new();
-      const proxy = await Proxy.new(caseOne.address);
+      const proxey = await Proxey.new(caseOne.address);
       //create proxy Case to fool truffle
-      instance = await CaseOne.at(proxy.address);
+      instance = await CaseOne.at(proxey.address);
     });
     
     //////////////////Create User//////////////////////////

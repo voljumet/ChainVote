@@ -1,5 +1,5 @@
-Moralis.initialize('I65RnUxauoNa8j0LUyYuLnPNHkVt94JJxtfWzxiy'); // Application id from moralis.io
-Moralis.serverURL = 'https://8eb5frfqjkbo.moralis.io:2053/server'; //Server url from moralis.io
+Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application id from moralis.io
+Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
 var web3 = new Web3(Web3.givenProvider);
 
 const tabele = document.getElementsByClassName('container2')[0];
@@ -9,7 +9,7 @@ function createCard(_number, _title, _stratDate, _endDate){
     const monthDiv = document.createElement('div');
 
     const month = document.createElement('u');
-    month.innerHTML = getDate(_stratDate);
+    month.innerHTML = getMyDate(_stratDate);
 
     const card = document.createElement('div');
     card.className ="card"; 
@@ -34,14 +34,9 @@ function createCard(_number, _title, _stratDate, _endDate){
     const timeLeft = document.createElement('p');
     timeLeft.id = "time";
     var txt2= "Time Left: ";
-    timeLeft.innerHTML= txt2.fontsize(5).fontcolor("black")+ timeIt( _endDate, bar, _stratDate);
-    getDate(_stratDate);
+    timeLeft.innerHTML= txt2.fontsize(5).fontcolor("black")+ timeIt( _endDate, bar);
+    getMyDate(_stratDate);
   
-    
-    
-  
-
-
     monthDiv.appendChild(month);
     card.appendChild(monthDiv);
     card.append(tapNumber);
@@ -51,14 +46,11 @@ function createCard(_number, _title, _stratDate, _endDate){
     card.append(timeLeft);
     card.append(pro);
     pro.appendChild(bar);
-   
 
-    
     return card;
 }
 
-
-function getDate(t) {
+function getMyDate(t) {
     var month = new Array();
     month[0] = "January";
     month[1] = "February";
@@ -72,17 +64,16 @@ function getDate(t) {
     month[9] = "October";
     month[10] = "November";
     month[11] = "December";
-
-    var w = new Date(t);
-    var n = month[w.getMonth()];
-    var y = w.getFullYear();
+    
+    var d = new Date(t/1);
+    var n = month[d.getMonth()];
+    var y = d.getFullYear();
     return n + " "+ y;
- 
   }
 
 ////////////////////////
-function timeIt(date, End, Start){
-    var countDownDate = new Date(date).getTime();
+function timeIt(date, timeBar){
+    var countDownDate = date
     // Get today's date and time
     var now = new Date().getTime();
     // Find the distance between now and the count down date
@@ -93,16 +84,21 @@ function timeIt(date, End, Start){
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+    //Change the color of Time Bar based on date
     if (days <= 0 & hours <=0 & minutes <=0 &seconds <= 0 || isNaN(days) )
     {
-        End.style.backgroundColor='red';
+        timeBar.style.backgroundColor='red';
         return "Expired";
     }
     if (days <= 0 & hours >0 )
     {
-        End.style.backgroundColor='orange';
-      
+        timeBar.style.backgroundColor='orange';
     }
+    if (hours <= 0 & minutes >0 )
+    {
+        timeBar.style.backgroundColor='#baef1c';
+    }
+
     if (days == 0){
         return [ hours + " H "
         + minutes + " M "];
@@ -112,13 +108,7 @@ function timeIt(date, End, Start){
     }else{
         return [days + " D " + hours + " H "];
     }
-
 }
-
-// Reload the page
-setTimeout(function(){
-    window.location.reload(1);
- }, 60000);
 
  function unpack(str) {
     var bytes = [];
@@ -130,18 +120,22 @@ setTimeout(function(){
     return bytes;
 }
 
-
 ///////////////////////////
+// Render Case Card on the Index page
 async function AddCardsToPage() {
-    let reuslt  = await Moralis.Cloud.run("test",{});
+    let reuslt  = await Moralis.Cloud.run("Cases",{});
     reuslt.forEach(element =>{
-        tabele.appendChild(createCard(element.attributes.CaseNumber,element.attributes.Title,element.attributes.StartDate,element.attributes.EndDate))
+        tabele.appendChild(createCard(element.attributes.caseNumber,element.attributes.title,element.attributes.startDate,element.attributes.endDate))
     })
  
 }
 
-  AddCardsToPage()
+AddCardsToPage()
     
+// Reload the page
+setTimeout(function(){
+    window.location.reload(1);
+ }, 60000);
 
 
 

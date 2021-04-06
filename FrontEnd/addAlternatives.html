@@ -40,11 +40,7 @@
     <script type="text/javascript" src="./abi.js"></script>
     <script type="text/javascript" src="./address.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 
     <!-- MAIN CSS -->
@@ -93,14 +89,13 @@
             </nav>
 
             <!-- Display User Name-->
-            <h5 class="user-text" id="userNameFront"></h5>
+            <h5 class="user-text">Rune Alexander Laursen</h5>
 
             <li class="nav-item">
-              <a href="login.html" class="nav-link contact">
+              <a href="contact.html" class="nav-link contact">
                 <img src="images/avatar.png" alt="Avatar" class="avatar" />
               </a>
             </li>
-            
           </ul>
         </div>
       </div>
@@ -110,23 +105,24 @@
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-     
+      <div class="container">
+        <div class="row">
+          <div class="input-group rounded">
             <div
               class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
             >
-              <div id="formContent-createCase">
+
                 <div id="id03" class="proposal_number">
                   <h2>Propoasal {{proposal_number}}</h2>
                 </div>
 
                 <div>
                   <input
-                    required
+                    readonly
                     id="title"
                     type="text"
                     class="form-control"
                     name="name"
-                    placeholder="Title"
                     autocomplete="off"
                   />
                 </div>
@@ -226,25 +222,27 @@
                   <button id="create-button">Create Case</button>
                 </div>
 
-               
+                <div>
                   <button
+                    type="submit"
                     class="form-control"
-                    id="cancel-buttony"
+                    id="cancel-button"
                     name="cancel"
                   >
                     Cancel
                   </button>
-               
-              </div>
-
-              <div class="col-md-12">
-                <div class="info">
-                  <i class="icon-info-sign"></i>
-                  <span class="extra-info"> Extra Info about Proposal </span>
                 </div>
-              </div>
+
+                <div class="col-md-12">
+                  <div class="info">
+                    <i class="icon-info-sign"></i>
+                    <span class="extra-info"> Extra Info about Proposal </span>
+                  </div>
+                </div>
             </div>
-          
+          </div>
+        </div>
+      </div>
     </section>
     <button onclick="myFunction()">Click me</button>
     <p id="demo"></p>
@@ -264,10 +262,30 @@
     <script src="jquery.datetimepicker.full.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
     <script type="text/javascript" src="./js/createCase.js"></script>
-    <script type="text/javascript" src="js/username.js"></script>
     <!-- Time Picker -->
     <script>
-    
+      $("#startDate").datetimepicker({
+        timepicker: true,
+        datepicker: true,
+        minDate: new Date(),
+        format: "Y-m-d H:i",
+        onShow: function (ct) {
+          this.setOptions({
+            maxDate: $("#endDate").val() ? $("#endDate").val() : false,
+          }),
+            console.log($("#startDate").val());
+        },
+      });
+      $("#endDate").datetimepicker({
+        timepicker: true,
+        datepicker: true,
+        format: "Y-m-d H:i",
+        onShow: function (ct) {
+          this.setOptions({
+            minDate: $("#startDate").val() ? $("#startDate").val() : false,
+          });
+        },
+      });
     </script>
     <!-- Convert time to long -->
     <!-- <script>
@@ -279,7 +297,9 @@
     </script> -->
 
     <script>
-      
+      var num = 8;
+      var myObject = { proposal_number: num };
+      w3.displayObject("id03", myObject);
     </script>
   </body>
 </html>

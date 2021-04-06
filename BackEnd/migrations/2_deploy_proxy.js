@@ -1,7 +1,21 @@
 // 'Case' is contract name, NOT FILENAME!
-
 const CaseOne = artifacts.require("Case");
 const Proxey = artifacts.require("Proxy");
+
+// import fs module in which writeFile function is defined.
+const fsLibrary = require('fs')
+
+// function readTextFile(file, callback) {
+//   var rawFile = new XMLHttpRequest();
+//   rawFile.overrideMimeType("application/json");
+//   rawFile.open("GET", file, true);
+//   rawFile.onreadystatechange = function () {
+//     if (rawFile.readyState === 4 && rawFile.status == "200") {
+//       callback(rawFile.responseText);
+//     }
+//   };
+//   rawFile.send(null);
+// }
 
 module.exports = async function (deployer, network, accounts) {
   await deployer.deploy(CaseOne);
@@ -11,32 +25,56 @@ module.exports = async function (deployer, network, accounts) {
    await Proxey.deployed();
   /*
   let proxyCase = await Proxey.deployed();
+
+  // save address and store in address.js that is loaded in html, for use in main.js
+  let data = "const contractAddress = '" + proxyCase.address + "';";
+  fsLibrary.writeFile('../FrontEnd/address.js', data, (error) => { 
+    if (error) throw err; 
+  })
+
+  // let data1 = readTextFile("../Backend/build/contracts/Case.json", function (text) {
+  //   var data = JSON.parse(text);
+  //   return data;
+  // });
+  
+  // fsLibrary.writeFile("../FrontEnd/abi.js", data1, (error) => {
+  //   if (error) throw err;
+  // }); 
   
   //create proxy Case to fool truffle
   var proxyCaseReDir = await CaseOne.at(proxyCase.address);
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[0] });
-  var user = await proxyCaseReDir.getUser({from: accounts[0] })
-  console.log("User1: " + user);
+  // var user = await proxyCaseReDir.getUser({from: accounts[0] })
+  // console.log("User1: " + user);
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[1] });
-  console.log("User2: " + await proxyCaseReDir.getUser({from: accounts[1] }));
+  // console.log("User2: " + await proxyCaseReDir.getUser({from: accounts[1] }));
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[2] });
-  console.log("User3: " + await proxyCaseReDir.getUser({from: accounts[2] }));
+  // console.log("User3: " + await proxyCaseReDir.getUser({from: accounts[2] }));
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[3] });
-  console.log("User4: " + await proxyCaseReDir.getUser({from: accounts[3] }));
+  // console.log("User4: " + await proxyCaseReDir.getUser({from: accounts[3] }));
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
-  console.log("User5: " + await proxyCaseReDir.getUser({from: accounts[4] }));
+  // console.log("User5: " + await proxyCaseReDir.getUser({from: accounts[4] }));
   
-  await proxyCaseReDir.createCase("First Case", "This is the description",16171804,1234564,"en","to","tre","fire","fem", { from: accounts[1] });
-  console.log("Case created");
-  console.log( await proxyCaseReDir.getCase(1, {from: accounts[1]}))
+  await proxyCaseReDir.createCase("First Case", "This is the description", Date.now()+30000, Date.now()+30000, "one", "two", { from: accounts[1] });
+  console.log("Case created: ");
+  // await proxyCaseReDir
+  //   .getCase(1, { from: accounts[1] })
+    // .on("receipt", function (receipt) {
+      // console.log(receipt.events.caseCreated.returnValues.title);
+      // alert(
+      //   "Title: " +
+      //     receipt.events.caseCreated.returnValues.title +
+      //     "\nRegion: " +
+      //     receipt.events.getUserE.returnValues.region
+      // );
+    // });
+  /*
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[2] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[3] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[4] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[5] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[6] });
   await proxyCaseOne.createUser('Grimstad', 'Regional', { from: accounts[7] });
-
-  //set the nr of dogs through the proxy
 
   // await proxyCaseOne.createCase("First Case", 1617086800, ["Ja", "Nei"]);
   // console.log("Case created");

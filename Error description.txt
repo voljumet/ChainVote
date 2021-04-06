@@ -1,45 +1,33 @@
 Error codes 
 -- ERR#, explanation, file --
 
-1: The "Region" or "Usertype" already exists. -> Case.sol
-2: Already initialized. -> Case.sol
-3: Voting for case not ended. -> Case.sol
+1: Already initialized. -> Case.sol
+2: The "Region" or "Usertype" already exists. -> Case.sol
+3: Voting for case not ended, case cannot be closed yet. -> Case.sol
 4: "UserType" has to be "Regional" or "National". -> Case.sol
 5: Number of decitionmakers that needs to aprove cases is not an add number. -> Case.sol
-6: This case has been deactivated. -> Case.sol
-7: Case does not exist. -> Case.sol
-8: Case is open for voting, cannot be deactivated. -> Case.sol
-9: Case is not open for voting yet. -> Case.sol
-10: This option does not exist, pick an option that exists. -> Case.sol
-11: Voting for this case has ended. -> Case.sol
-12: This case is not open for voting yet. -> Case.sol
+6: Case is open for voting, cannot be deactivated. -> Case.sol
+7: Case is not open for voting yet. -> Case.sol
+8: This option does not exist, pick an option that exists. -> Case.sol
+9: Voting for this case has ended. -> Case.sol
+10: This case has been deactivated. -> Case.sol
+11: Case does not exist. -> Case.sol
+12: Fields cannot be empty. -> Case.sol
 13: Case does not exist. -> Case.sol
 14: Case does not exist. -> Case.sol
 15: Case does not exist. -> Case.sol
-16: Case does not exist. -> MultiSig.sol
-17: Case does not exist. -> Case.sol
-18: Case does not exist. -> Case.sol
-19: Case does not exist. -> Case.sol
-20: "UserType" is not "Regional" or "National". -> MultiSig.sol
-21: This address has already approved this case. -> MultiSig.sol
-22: Case open for voting, cant be approved. -> MultiSig.sol
-23: This function is restricted to the contract's owner. -> Migrations.sol
-24: Contract cant be paused to do this action. -> Proxy.sol
-25: Contract has to be paused. -> Proxy.sol
-26: Address cannot be empty -> Proxy.sol
-27: This requires you to be the owner of the contract. -> Ownable.sol
+16: "UserType" is not "Regional" or "National". -> MultiSig.sol
+17: Case does not exist. -> MultiSig.sol
+18: This address has already approved this case. -> MultiSig.sol
+19: Case open for voting, cant be approved. -> MultiSig.sol
+20: Alternatives cannot be added because the case is open for voting or deactivated. -> Case.sol
+21: 
+22: 
+23: 
+24: 
+25: 
+26: 
+27: 
 28: 
 29: 
 30: 
-31: 
-32: 
-33: 
-34: 
-35: 
-36: 
-37: 
-38: 
-39: 
-40: 
-
-
