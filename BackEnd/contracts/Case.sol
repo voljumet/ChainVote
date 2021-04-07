@@ -62,14 +62,14 @@ contract Case is Ownable, MultiSig {
                     length+=1     
                 ))
         );
-        emit confirmationE("User created successfully!");
+        emit confirmationE(true);
     }
     
     function endVoting(uint _caseNumber)public onlyOwners(_caseNumber){
         require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
         _cases[_caseNumber]._boolCase["openForVoting"] = false; 
         assert(_cases[_caseNumber]._boolCase["openForVoting"] = false);
-        emit confirmationE("Voting closed successfully");
+        emit confirmationE(true);
     }
 
     function addAlternatives(uint256 _caseNumber, string memory _alternative) public onlyOwners(_caseNumber) {
@@ -84,7 +84,7 @@ contract Case is Ownable, MultiSig {
         require(keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("Regional")) ||
             keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("National")), "ERR4"); // checks that the userType is "Regional" or "National"
         require(keccak256(abi.encodePacked(_title)) != keccak256(abi.encodePacked("")) && keccak256(abi.encodePacked(_description)) != keccak256(abi.encodePacked("")) && _startDate > block.timestamp 
-            && _endDate > block.timestamp && keccak256(abi.encodePacked(_alt1)) != keccak256(abi.encodePacked("")) && keccak256(abi.encodePacked(_alt2)) != keccak256(abi.encodePacked("")), "ERR12");
+           && _endDate > block.timestamp && keccak256(abi.encodePacked(_alt1)) != keccak256(abi.encodePacked("")) && keccak256(abi.encodePacked(_alt2)) != keccak256(abi.encodePacked("")), "ERR12");
 
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
@@ -152,7 +152,7 @@ contract Case is Ownable, MultiSig {
         _cases[caseNumber]._uintCase["Approvals"] = 0;                 // Initialize approvals
         _uintArrayStorage["WaitingForApproval"].push(caseNumber);    // Add to waiting list
 
-        emit confirmationE("Case created successfully!");
+        emit confirmationE(true);
         emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
         emit getCaseE(caseNumber, _title, _description, _cases[caseNumber]._boolCase["openForVoting"], _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alt"], _cases[caseNumber]._uintArrayCase["Alt"], _cases[caseNumber]._uintCase["TotalVotes"], _region);
     }
@@ -163,14 +163,13 @@ contract Case is Ownable, MultiSig {
         clearFromWaiting(_caseNumber);
 
         assert(_cases[_caseNumber]._boolCase["CaseDeactivated"] == true);
-        emit confirmationE("Case deactivated successfully");
+        emit confirmationE(true);
     }
    
     function vote(uint256 _caseNumber, uint256 _optionVoted) public {
         require(_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR7");  // Checks that the case is open for voting
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alt"].length, "ERR8");   // Checks that the voting option exists
-        require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp, "ERR9");
-        // require(_cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9.2");
+        require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp && _cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9" );
         
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
@@ -193,7 +192,8 @@ contract Case is Ownable, MultiSig {
                     true
                 ))
         );
-        emit confirmationE("Vote has been registered");
+        emit confirmationE(true);
+        emit casesWaitingForApprovalE(_cases[_caseNumber]._uintArrayCase["Alt"]);
     }
 
     function getCase(uint _caseNumber) public {

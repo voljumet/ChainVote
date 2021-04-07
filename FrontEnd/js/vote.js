@@ -4,12 +4,6 @@ Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url 
 const tabele = document.getElementsByClassName('case-details')[0];
 
 
-function showCase(_number, _title, _stringAlternatives) {
-  writeAlt(_stringAlternatives);
-
-  return card;
-}
-
 function showCase(_number, _title, _stringAlternatives, _description, _endDate, _totalVotes) {
   var totalVotes = { totalVotes: _totalVotes };
   w3.displayObject('total-votes-vote', totalVotes); 
@@ -17,7 +11,7 @@ function showCase(_number, _title, _stringAlternatives, _description, _endDate, 
   var caseNum = { proposal_number: _number };
   w3.displayObject('case-num-vote', caseNum); 
 
-  var timeLeft = { timeLeft: timeIt(_endDate) };
+  var timeLeft = { timeLeft: timeIt(_endDate*1000) };
   w3.displayObject('time-left-vote', timeLeft);
 
   const cardy = document.createElement('ul');
@@ -89,6 +83,7 @@ function timeIt(date){
 }
 
 async function AddCaseToPage(_caseNumber) {
+  
   let reuslt = await Moralis.Cloud.run('Cases', {});
   reuslt.forEach((element) => {
     if (element.attributes.caseNumber == _caseNumber) {
@@ -103,6 +98,7 @@ async function AddCaseToPage(_caseNumber) {
         )
       );
     }
+    
   });
 }
 
@@ -165,3 +161,4 @@ document.getElementById('vote_').onclick = function () {
     document.getElementById('alternative').value
   );
 };
+

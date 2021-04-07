@@ -28,8 +28,8 @@ module.exports = async function (deployer, network, accounts) {
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[2] });
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[3] });
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
-  var start = Date.now() - 1000;
-  var end = Date.now() + 100000;
+  var start = Math.round(new Date() / 1000) ;
+  var end = Math.round(new Date() / 1000) + 60*60;
 
   await proxyCaseReDir.createCase("First Case", "This is the description", start, end, "one", "two", { from: accounts[1] });
   console.log("Start: "+start);
@@ -43,8 +43,10 @@ module.exports = async function (deployer, network, accounts) {
   await proxyCaseReDir.approve(1, { from: accounts[3] });
   await proxyCaseReDir.getApprovalsAndLimit(1)
   await proxyCaseReDir.getMyVote(1);
-  await proxyCaseReDir.vote(1,1, { from: accounts[3] });
-  await proxyCaseReDir.getMyVote(1);
+  setTimeout(async function(){ 
+    await proxyCaseReDir.vote(1,1, { from: accounts[3] });
+    await proxyCaseReDir.getMyVote(1);
+  }, 2000);
 
   // endDate = 15:00
   // startDate = 13:00

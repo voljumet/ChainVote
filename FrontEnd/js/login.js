@@ -206,15 +206,9 @@ openUerInfo = async()=>{
 saveUserInfo = async()=>{
 
     try {
-        user.set('UserType', userTypeField.value);
-        user.set('username', userNameField.value);
-        user.set('Region', userRegionField.value);
-        user.set('Email', userEmailField.value);
-       
-
-        await user.save();
-        alert("user ifo saved successfully");
-      openUerInfo();
+      
+        
+      
       createUser(userRegionField.value, userTypeField.value);
     } catch (error) {
         alert(error)
@@ -229,13 +223,18 @@ async function createUser(_region, _userType) {
   contractInstance.methods
     .createUser(_region, _userType)
     .send({ from: ethereum.selectedAddress })
-    .on("receipt", function (receipt) {
+    .on("receipt", async function (receipt) {
       console.log(receipt);
-      if (
-        receipt.events.confirmationE.returnValues.confirmation ==
-        "User Created successfully"
-      ) {
+      if (receipt.events.confirmationE.returnValues.confirmation ){
         alert("user created successfully");
+        user.set('UserType', userTypeField.value);
+        user.set('username', userNameField.value);
+        user.set('Region', userRegionField.value);
+        user.set('Email', userEmailField.value);
+      
+        await user.save();
+        alert("user ifo saved successfully in Morakis");
+        openUerInfo();
       }
     });
     
