@@ -34,7 +34,7 @@ contract Storage {
     mapping(string => bool) _boolStorage;
     mapping(string => bytes4) _bytesStorage;
 
-    mapping(uint => Case) _cases;
+    mapping(uint256 => Case) _cases;
     mapping(address => User) _users;
     
 }
