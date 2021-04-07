@@ -7,7 +7,7 @@ import "./Storage.sol";
 contract MultiSig is Storage{
     
     event caseApprovedE(uint256 caseNumber, string title);
-    event confirmationE(string confirmation);
+    event confirmationE(bool confirmation);
 
     // Checks that only "Regional" or "National" userType can run the function
     function onlyOwners(uint256 _caseNumber) internal view returns(bool o){
@@ -37,7 +37,7 @@ contract MultiSig is Storage{
             emit caseApprovedE(_caseNumber, _cases[_caseNumber]._stringCase["Title"]);
         }
         assert(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == true);
-        emit confirmationE("Your approval has been recieved");
+        emit confirmationE(true);
     }
 
     // Removes caseNumber from the array "WaitingForApproval"
