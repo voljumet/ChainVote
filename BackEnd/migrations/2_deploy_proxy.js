@@ -54,7 +54,7 @@ module.exports = async function (deployer, network, accounts) {
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
   // console.log("User5: " + await proxyCaseReDir.getUser({from: accounts[4] }));
   
-  await proxyCaseReDir.createCase("First Case", "This is the description", Date.now()+30000, Date.now()+30000, "one", "two", { from: accounts[1] });
+  await proxyCaseReDir.createCase("First Case", "This is the description", Date.now(), Date.now()+1000000, "one", "two", { from: accounts[1] });
   console.log("Case created: ");
   // await proxyCaseReDir
   //   .getCase(1, { from: accounts[1] })
@@ -86,17 +86,20 @@ module.exports = async function (deployer, network, accounts) {
 
   // var total = await proxyCaseOne.returnTotalVotes(1);
   // console.log("Total: " + total); // skal bli 14
+*/
+    await proxyCaseReDir.getApprovalsAndLimit(1)
 
-  // await proxyCaseOne.approvalZ(1, { from: accounts[1] });
-  // var getWait = await proxyCaseOne.getWaitinglistCount();
-  // var approvalZ = await proxyCaseOne.getApprovalZ(1);
-  // console.log("approvals on case 1: " + approvalZ);
-  // console.log("Waiting list count" + getWait);
+   await proxyCaseReDir.approve(1, { from: accounts[1] });
+   await proxyCaseReDir.approve(1, { from: accounts[2] });
+   await proxyCaseReDir.approve(1, { from: accounts[3] });
+   await proxyCaseReDir.getApprovalsAndLimit(1)
+   await proxyCaseReDir.getMyVote(1);
+   await proxyCaseReDir.vote(1,1, { from: accounts[3] });
+   await proxyCaseReDir.getMyVote(1);
 
-  // await proxyCaseOne.approvalZ(1, { from: accounts[2] });
-  // approvalZ = await proxyCaseOne.getApprovalZ(1);
-  // console.log("approvals on case 1: " + approvalZ);
-
+  // endDate = 15:00
+  // startDate = 13:00
+  // TimeStamp = 14:00
   // await proxyCaseOne.approvalZ(1, { from: accounts[3] });
   // approvalZ = await proxyCaseOne.getApprovalZ(1);
   // console.log("approvals on case 1: " + approvalZ);
@@ -112,7 +115,7 @@ module.exports = async function (deployer, network, accounts) {
   // console.log("Waiting list count " + getWait);
 
   // console.log("approvals done");
-
+/*
 
 
   // await proxyCaseOne.closeForVoting(1, {from: accounts[9]})
