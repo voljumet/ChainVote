@@ -20,6 +20,9 @@ body {
 a {
   text-decoration: none;
 }
+a:hover{
+  color: #2196f3;
+}
 
 .logo {
   width: 100px;
