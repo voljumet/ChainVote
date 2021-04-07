@@ -6,22 +6,23 @@ import "./Storage.sol";
 
 contract MultiSig is Storage{
     
-    event caseApprovedE(uint caseNumber, string title);
+    event caseApprovedE(uint256 caseNumber, string title);
     event confirmationE(string confirmation);
 
     // Checks that only "Regional" or "National" userType can run the function
-    modifier onlyOwners(uint _caseNumber){
-        require(keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("Regional")) ||
-            keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("National")) , "ERR16");
+    function onlyOwners(uint256 _caseNumber) internal view returns(bool o){
+        require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Regional")) ||
+            keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("National")) , "ERR16");
 
-        for(uint i = 0; i< _addressArrayStorage[ string(abi.encodePacked(_cases[_caseNumber]._stringCase["Region"], _users[msg.sender]._stringUser["UserType"] )) ].length ; i++){
+        for(uint256 i = 0; i< _addressArrayStorage[ string(abi.encodePacked(_cases[_caseNumber]._stringCase["Region"], _users[msg.sender]._stringUser["UserType"] )) ].length ; i++){
             if(_addressArrayStorage[ string(abi.encodePacked(_cases[_caseNumber]._stringCase["Region"], _users[msg.sender]._stringUser["UserType"] )) ][i] == msg.sender){
-                _;
+                return true;
             }
         }
     }
         
-    function approve(uint _caseNumber) public onlyOwners(_caseNumber){
+    function approve(uint256 _caseNumber) public {
+        onlyOwners(_caseNumber);
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR17");
         require(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == false, "ERR18");
         require(_cases[_caseNumber]._boolCase["OpenForVoting"] == false, "ERR19");
@@ -40,8 +41,8 @@ contract MultiSig is Storage{
     }
 
     // Removes caseNumber from the array "WaitingForApproval"
-    function clearFromWaiting(uint _caseNumber) internal {
-        for(uint i = 0; i < _uintArrayStorage["WaitingForApproval"].length; i++){
+    function clearFromWaiting(uint256 _caseNumber) internal {
+        for(uint256 i = 0; i < _uintArrayStorage["WaitingForApproval"].length; i++){
             if(_uintArrayStorage["WaitingForApproval"][i] == _caseNumber){
                 _uintArrayStorage["WaitingForApproval"][i] = _uintArrayStorage["WaitingForApproval"][ SafeMath.sub(_uintArrayStorage["WaitingForApproval"].length, 1) ];
                 _uintArrayStorage["WaitingForApproval"].pop();
