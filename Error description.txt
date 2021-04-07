@@ -21,12 +21,12 @@ Error codes
 18: This address has already approved this case. -> MultiSig.sol
 19: Case open for voting, cant be approved. -> MultiSig.sol
 20: Alternatives cannot be added because the case is open for voting or deactivated. -> Case.sol
-21: 
-22: 
-23: 
-24: 
-25: 
-26: 
+21: OnlyOwners required. -> MultiSig.sol
+22: OnlyOwners required. -> Case.sol
+23: OnlyOwners required. -> Case.sol
+24: Contract has to not be paused -> Proxy.sol
+25: Contract has to be paused -> Proxy.sol
+26: currentAddress is not the same as
 27: 
 28: 
 29: 

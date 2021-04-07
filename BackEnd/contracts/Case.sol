@@ -66,7 +66,7 @@ contract Case is Ownable, MultiSig {
     }
     
     function endVoting(uint256 _caseNumber)public {
-        onlyOwners(_caseNumber);
+        require(onlyOwners(_caseNumber), "ERR22");
         require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
         _cases[_caseNumber]._boolCase["openForVoting"] = false; 
         assert(_cases[_caseNumber]._boolCase["openForVoting"] = false);
@@ -74,7 +74,7 @@ contract Case is Ownable, MultiSig {
     }
 
     function addAlternatives(uint256 _caseNumber, string memory _alternative) public {
-        onlyOwners(_caseNumber);
+        require(onlyOwners(_caseNumber), "ERR23");
         require(_cases[_caseNumber]._boolCase["openForVoting"] == false && _cases[_caseNumber]._boolCase["CaseDeactivated"] == false && 
                 _caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0 && keccak256(bytes(_alternative)) != keccak256(bytes("")), "ERR20");
         _cases[_caseNumber]._stringArrayCase["Alt"].push(_alternative);
@@ -108,7 +108,7 @@ contract Case is Ownable, MultiSig {
         _cases[caseNumber]._stringCase["Region"] = _region;     // Sets proposals region to same as the creator of the case
         
         // Calculate half of the votes needed +1
-        _cases[caseNumber]._uintCase["Limit"] = 
+        _cases[caseNumber]._uintCase["ApprovalsNeeded"] = 
         SafeMath.div(
             SafeMath.add(
                 SafeMath.div(
@@ -120,7 +120,7 @@ contract Case is Ownable, MultiSig {
         10);
 
         // Checks that there is an odd number of people that needs to approve the case, odd number of poeple avoids deadlock
-        require(_cases[caseNumber]._uintCase["Limit"] % 2 != 0, "ERR5");
+        require(_cases[caseNumber]._uintCase["ApprovalsNeeded"] % 2 != 0, "ERR5");
         
         // Counts total voters (TotalVotes = Standard + Regional + National).
         _cases[caseNumber]._uintCase["TotalVotes"] = 
@@ -150,7 +150,7 @@ contract Case is Ownable, MultiSig {
                     false,      "Not voted"))
         );
 
-        _cases[caseNumber]._uintCase["Approvals"] = 0;                 // Initialize approvals
+        _cases[caseNumber]._uintCase["ApprovalsSigned"] = 0;                 // Initialize approvals
         _uintArrayStorage["WaitingForApproval"].push(caseNumber);    // Add to waiting list
 
         emit confirmationE("Case created successfully!");
@@ -223,7 +223,7 @@ contract Case is Ownable, MultiSig {
 
     function getApprovalsAndLimit(uint256 _caseNumber) public {
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR15");
-        emit approvalsE(_cases[_caseNumber]._uintCase["Approvals"], _cases[_caseNumber]._uintCase["Limit"]);
+        emit approvalsE(_cases[_caseNumber]._uintCase["ApprovalsSigned"], _cases[_caseNumber]._uintCase["ApprovalsNeeded"]);
     }
 
     // function getUser() public {
