@@ -89,16 +89,6 @@ contract Case is Ownable, MultiSig {
         _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
         uint caseNumber = _uintStorage["caseNumber"];
 
-        // What region is the case for, only users with same region will be able to vote on this proposal
-        // adding first alternative to Array and giving it all the votes
-        _cases[caseNumber]._stringArrayCase["Alt"].push("Not voted");
-        _cases[caseNumber]._uintArrayCase["Alt"].push(_cases[caseNumber]._uintCase["TotalVotes"]);
-
-        _cases[caseNumber]._stringArrayCase["Alt"].push(_alt1);
-        _cases[caseNumber]._stringArrayCase["Alt"].push(_alt2);
-        _cases[caseNumber]._uintArrayCase["Alt"].push(0);
-        _cases[caseNumber]._uintArrayCase["Alt"].push(0);
-       
         // This creates a case
         string memory _region = _users[msg.sender]._stringUser["Region"];
         _cases[caseNumber]._stringCase["Title"] = _title;
@@ -126,8 +116,19 @@ contract Case is Ownable, MultiSig {
                 SafeMath.add(_addressArrayStorage[ string(abi.encodePacked(_region,"Standard")) ].length, 
                                 _addressArrayStorage[ string(abi.encodePacked(_region,"Regional")) ].length));
 
+        // adding mandatory first alternative to Array and giving it all the votes
+        _cases[caseNumber]._stringArrayCase["Alt"].push("Not voted");
+        _cases[caseNumber]._uintArrayCase["Alt"].push(_cases[caseNumber]._uintCase["TotalVotes"]);
+
+        _cases[caseNumber]._stringArrayCase["Alt"].push(_alt1);
+        _cases[caseNumber]._stringArrayCase["Alt"].push(_alt2);
+        _cases[caseNumber]._uintArrayCase["Alt"].push(0);
+        _cases[caseNumber]._uintArrayCase["Alt"].push(0);
+    
+
         _cases[caseNumber]._uintCase["StartDate"] = _startDate;
         _cases[caseNumber]._uintCase["EndDate"] = _endDate;
+        emit approvalsE(_startDate, _endDate);
         _cases[caseNumber]._boolCase["openForVoting"] = false;
         _cases[caseNumber]._boolCase["CaseDeactivated"] = false;
         
@@ -168,7 +169,8 @@ contract Case is Ownable, MultiSig {
     function vote(uint256 _caseNumber, uint256 _optionVoted) public {
         require(_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR7");  // Checks that the case is open for voting
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alt"].length, "ERR8");   // Checks that the voting option exists
-       // require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp && _cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9");
+        require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp, "ERR9");
+        // require(_cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9.2");
         
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
