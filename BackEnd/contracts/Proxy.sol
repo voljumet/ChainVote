@@ -5,13 +5,19 @@ pragma solidity 0.7.5;
 import "./MultiSig.sol";
 
 contract Proxy is MultiSig {
-
     constructor(address[] memory _superAdminArray) {
+
         require(!_boolStorage["initialized"], "ERR1");
+        //This is to fool everyone
+        _uintStorage["neededApprovals"] = 0;
+        _boolStorage["instanceInProgress"] = true;
+        //Change it
         _boolStorage["paused"] = true;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
+            _addressArrayStorage["superAdmins"].push(_superAdminArray[i]);
         }
+        
          _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
 
         assert( keccak256(abi.encodePacked(
@@ -25,7 +31,14 @@ contract Proxy is MultiSig {
     }
 
     function upgrade(address _newAddress) public superAdmin whenPaused {
-        _addressStorage["functionContractAddress"] = _newAddress;
+        
+        if(!_boolStorage["instanceInProgress"]){
+            createMultisigInstance();
+        }
+        if(_uintStorage["neededApprovals"] == 0){
+            _addressStorage["functionContractAddress"] = _newAddress;
+            _boolStorage["instanceInProgress"] = false;
+        }
     }
 
     modifier whenNotPaused() {
@@ -38,19 +51,26 @@ contract Proxy is MultiSig {
     }
     
     function pause() public superAdmin whenNotPaused {
-        _boolStorage["paused"] = true;
+        if(!_boolStorage["instanceInProgress"]){
+            createMultisigInstance();
+        }
+        if(_uintStorage["neededApprovals"] == 0){
+            _boolStorage["paused"] = true;
+            _boolStorage["instanceInProgress"] = false;
+            _uintStorage["pauseTimer"] = SafeMath.add(block.timestamp, 604800);
+         }
     }
     
     function unPause() public superAdmin whenPaused{
-        if(_boolStorage["initialized"]){
-            // multisig comes here
+        if(_boolStorage["initialized"] && _uintStorage["pauseTimer"] < block.timestamp){
             _boolStorage["paused"] = false;
         } else {
-            // will be unpaused without multisig if contract is not initialized yet
+            // will be unpaused if contract is not initialized yet
             _boolStorage["paused"] = false;
             _boolStorage["initialized"] = true;
         }
     }
+    
 
     // Fallback function, last call..
     fallback() payable external whenNotPaused {

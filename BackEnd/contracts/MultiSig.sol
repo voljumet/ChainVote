@@ -21,6 +21,7 @@ contract MultiSig is Storage{
         }
     }
 
+    //SuperAdmin modifier ensures that a function is run only if it is called by a user in the superadmin array. Meaning a user has to be a superAdmin in order to run a functin with this modifier. 
     modifier superAdmin(){
         require(keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("SuperAdmin")) , "ERR27");
             _;
@@ -43,6 +44,30 @@ contract MultiSig is Storage{
         }
         assert(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] == true);
         emit confirmationE(true);
+    }
+
+    function createMultisigInstance()public superAdmin {
+        _uintStorage["multisigInstance"] = SafeMath.add(_uintStorage["multisigInstance"], 1); 
+        
+        _uintStorage["neededApprovals"] = 
+            SafeMath.sub(
+                SafeMath.div(
+                    _addressArrayStorage["superAdmins"].length,      
+                2),
+            1);
+        _uintStorage[string(abi.encodePacked(_uintStorage["multisigInstance"]))] = _uintStorage["neededApprovals"];
+        _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["multisigInstance"]))] = true;
+        _boolStorage["instanceInProgress"] = true;
+
+        emit caseApprovedE(_uintStorage["multisigInstance"], "New pause, unpause or upgrade request");
+    }
+
+    function signMultisigInstance() public superAdmin{
+        require(!_boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["multisigInstance"]))]);
+        _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["multisigInstance"]))] = true;
+        _uintStorage["neededApprovals"] = SafeMath.sub(_uintStorage["neededApprovals"], 1);
+
+        emit caseApprovedE(_uintStorage["neededApprovals"], "signed request");
     }
 
     // Removes caseNumber from the array "WaitingForApproval"
