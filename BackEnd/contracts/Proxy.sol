@@ -5,9 +5,13 @@ pragma solidity 0.7.5;
 import "./MultiSig.sol";
 
 contract Proxy is MultiSig {
-
     constructor(address[] memory _superAdminArray) {
+
         require(!_boolStorage["initialized"], "ERR1");
+        //This is to fool everyone
+        _uintStorage["neededApprovals"] = 0;
+        _boolStorage["instanceInProgress"] = true;
+        //Change it
         _boolStorage["paused"] = true;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
@@ -27,6 +31,7 @@ contract Proxy is MultiSig {
     }
 
     function upgrade(address _newAddress) public superAdmin whenPaused {
+        
         if(!_boolStorage["instanceInProgress"]){
             createMultisigInstance();
         }
