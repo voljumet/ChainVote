@@ -28,6 +28,6 @@ Error codes
 25: Contract has to be paused -> Proxy.sol
 26: currentAddress is not the same as
 27: User is not superadmin and does not have permission to run this function -> multisig.sol
-28: 
+28: Requires that no approvals has been signed yet -> Case.sol
 29: 
 30: 
