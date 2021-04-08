@@ -2,10 +2,10 @@
 pragma solidity 0.7.5;
 pragma abicoder v2;
 
-import "./Ownable.sol";
+
 import "./MultiSig.sol";
 
-contract Case is Ownable, MultiSig {
+contract Case is MultiSig {
 
     event SigningRequestE(string title,uint256 caseNumber);
     event getCaseE(uint256 indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint256[] uintAlt, uint256 totalVotes, string region);
@@ -21,21 +21,7 @@ contract Case is Ownable, MultiSig {
         used for userCreatedE(x x, string confirmation)
     */
 
-    constructor() {
-        require(!_boolStorage["initialized"], "ERR1");
-        _addressStorage["owner"] = msg.sender;
-        _boolStorage["initialized"] = true;
 
-        assert( keccak256(abi.encodePacked(
-                     _addressStorage["owner"],
-                   _boolStorage["initialized"]))
-            ==
-                keccak256(abi.encodePacked(
-                    msg.sender,
-                    true))
-        );
-    }
-    
     function createUser(string memory _region, string memory _userType) public {
         require(keccak256( bytes(_users[msg.sender]._stringUser["Region"])) != keccak256(bytes(_region)) ||
                 keccak256( bytes(_users[msg.sender]._stringUser["UserType"])) != keccak256(bytes(_userType)), "ERR2");
@@ -161,7 +147,7 @@ contract Case is Ownable, MultiSig {
 
     function deactivateCase(uint256 _caseNumber) public {
         onlyOwners(_caseNumber);
-        require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR6");
+        require(!_cases[_caseNumber]._boolCase["OpenForVoting"] && _cases[_caseNumber]._uintCase["Approvals"] == 0, "ERR6");
         _cases[_caseNumber]._boolCase["CaseDeactivated"] = true;
         clearFromWaiting(_caseNumber);
 

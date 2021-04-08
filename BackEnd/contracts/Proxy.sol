@@ -1,16 +1,32 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.7.5;
 
-import "./Ownable.sol";
 
-contract Proxy is Ownable {
+import "./MultiSig.sol";
 
-    constructor(address _currenAddress) {
-        _addressStorage["functionContractAddress"] = _currenAddress;
+contract Proxy is MultiSig {
+
+    constructor(address[] memory _superAdminArray) {
+        require(!_boolStorage["initialized"], "ERR1");
+        // index 0, not sure if ok
         _boolStorage["paused"] = false;
+        for(uint i = 0; i < _superAdminArray.length; i++){
+            _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
+        }
+         _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
+        _boolStorage["initialized"] = true;
+
+        assert( keccak256(abi.encodePacked(
+                     _users[msg.sender]._stringUser["UserType"],
+                   _boolStorage["initialized"]))
+            ==
+                keccak256(abi.encodePacked(
+                    "SuperAdmin",
+                    true))
+        );
     }
 
-    function upgrade(address _newAddress) public onlyOwner whenPaused {
+    function upgrade(address _newAddress) public superAdmin whenPaused {
         _addressStorage["functionContractAddress"] = _newAddress;
     }
 
@@ -23,11 +39,11 @@ contract Proxy is Ownable {
         _;
     }
     
-    function pause() public onlyOwner whenNotPaused {
+    function pause() public superAdmin whenNotPaused {
         _boolStorage["paused"] = true;
     }
     
-    function unPause() public onlyOwner whenPaused{
+    function unPause() public superAdmin whenPaused{
         _boolStorage["paused"] = false;
     }
 

@@ -20,6 +20,11 @@ contract MultiSig is Storage{
             }
         }
     }
+
+    modifier superAdmin(){
+        require(keccak256(abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) == keccak256(abi.encodePacked("SuperAdmin")) , "ERR27");
+            _;
+    }
         
     function approve(uint256 _caseNumber) public {
         require(onlyOwners(_caseNumber), "ERR21");

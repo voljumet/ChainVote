@@ -6,7 +6,7 @@ Error codes
 3: Voting for case not ended, case cannot be closed yet. -> Case.sol
 4: "UserType" has to be "Regional" or "National". -> Case.sol
 5: Number of decitionmakers that needs to aprove cases is not an add number. -> Case.sol
-6: Case is open for voting, cannot be deactivated. -> Case.sol
+6: Case is open for voting, cannot be deactivated and has no approvals -> Case.sol
 7: Case is not open for voting yet. -> Case.sol
 8: This option does not exist, pick an option that exists. -> Case.sol
 9: Voting for this case has ended. -> Case.sol
@@ -27,7 +27,7 @@ Error codes
 24: Contract has to not be paused -> Proxy.sol
 25: Contract has to be paused -> Proxy.sol
 26: currentAddress is not the same as
-27: 
+27: User is not superadmin and does not have permission to run this function -> multisig.sol
 28: 
 29: 
 30: 
