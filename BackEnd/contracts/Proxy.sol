@@ -8,13 +8,11 @@ contract Proxy is MultiSig {
 
     constructor(address[] memory _superAdminArray) {
         require(!_boolStorage["initialized"], "ERR1");
-        // index 0, not sure if ok
         _boolStorage["paused"] = true;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
         }
          _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
-        //_boolStorage["initialized"] = true;
 
         assert( keccak256(abi.encodePacked(
                      _users[msg.sender]._stringUser["UserType"],
