@@ -111,4 +111,3 @@ async function checkUserType(){
 }
 
 getNewCaseNumber();
-checkUserType();

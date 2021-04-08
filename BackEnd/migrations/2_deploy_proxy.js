@@ -31,7 +31,7 @@ module.exports = async function (deployer, network, accounts) {
   var start = Math.round(new Date() / 1000) ;
   var end = Math.round(new Date() / 1000) + 60*60;
 
-  await proxyCaseReDir.createCase("First Case", "This is the description", start, end, "one", "two", { from: accounts[1] });
+  await proxyCaseReDir.createCase("First Case", "This is the description", Math.round(new Date() / 1000),  Math.round(new Date() / 1000) + 60*60, "one", "two", { from: accounts[1] });
   console.log("Start: "+start);
   console.log("End: "+end);
   
