@@ -159,7 +159,7 @@ const caseNumber = document.getElementById('proposal-number');
 const result = document.getElementById('h1');
 
 AddCaseToPage(globalCaseNumber);
-//showVote()
+showVote()
 
 document.getElementById('vote_').onclick = function () {
   vote(

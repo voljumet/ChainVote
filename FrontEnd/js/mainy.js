@@ -133,7 +133,6 @@ async function AddCardsToPage() {
 
 AddCardsToPage()
 checkUserType();
-localStorage.clear();
     
 // Reload the page
 setTimeout(function(){
