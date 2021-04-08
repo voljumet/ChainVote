@@ -9,12 +9,12 @@ contract Proxy is MultiSig {
     constructor(address[] memory _superAdminArray) {
         require(!_boolStorage["initialized"], "ERR1");
         // index 0, not sure if ok
-        _boolStorage["paused"] = false;
+        _boolStorage["paused"] = true;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
         }
          _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
-        _boolStorage["initialized"] = true;
+        //_boolStorage["initialized"] = true;
 
         assert( keccak256(abi.encodePacked(
                      _users[msg.sender]._stringUser["UserType"],
@@ -44,7 +44,14 @@ contract Proxy is MultiSig {
     }
     
     function unPause() public superAdmin whenPaused{
-        _boolStorage["paused"] = false;
+        if(_boolStorage["initialized"]){
+            // multisig comes here
+            _boolStorage["paused"] = false;
+        } else {
+            // will be unpaused without multisig if contract is not initialized yet
+            _boolStorage["paused"] = false;
+            _boolStorage["initialized"] = true;
+        }
     }
 
     // Fallback function, last call..
