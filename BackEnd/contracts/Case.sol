@@ -54,8 +54,15 @@ contract Case is MultiSig {
     
     function endVoting(uint256 _caseNumber)public {
         require(onlyOwners(_caseNumber), "ERR22");
-        require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
-        _cases[_caseNumber]._boolCase["openForVoting"] = false; 
+        if(_cases[_caseNumber]._boolCase["OpenForVoting"]){
+            require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
+            _cases[_caseNumber]._boolCase["openForVoting"] = false; 
+            emit addApprovalsE(_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
+        } else {
+            require(_cases[_caseNumber]._uintCase["ApprovalsSigned"] == 0, "ERR6");
+            clearFromWaiting(_caseNumber);
+            _cases[_caseNumber]._boolCase["CaseDeactivated"] = true;
+        }
         assert(_cases[_caseNumber]._boolCase["openForVoting"] = false);
         emit confirmationE(true);
     }
@@ -69,7 +76,7 @@ contract Case is MultiSig {
         _cases[_caseNumber]._uintArrayCase["Alt"].push(0);
         assert(keccak256(bytes(_cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._stringArrayCase["Alt"].length-1 ])) == keccak256(bytes(_alternative)));
         emit addApprovalsE(_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
-   }
+    }
 
     function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2) public {
         require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Regional")) ||
@@ -146,16 +153,6 @@ contract Case is MultiSig {
         emit confirmationE(true);
         emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
         emit getCaseE(caseNumber, _title, _description, _cases[caseNumber]._boolCase["openForVoting"], _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alt"], _cases[caseNumber]._uintArrayCase["Alt"], _cases[caseNumber]._uintCase["TotalVotes"], _region);
-    }
-
-    function deactivateCase(uint256 _caseNumber) public {
-        onlyOwners(_caseNumber);
-        require(!_cases[_caseNumber]._boolCase["OpenForVoting"] && _cases[_caseNumber]._uintCase["Approvals"] == 0, "ERR6");
-        _cases[_caseNumber]._boolCase["CaseDeactivated"] = true;
-        clearFromWaiting(_caseNumber);
-
-        assert(_cases[_caseNumber]._boolCase["CaseDeactivated"] == true);
-        emit confirmationE(true);
     }
    
     function vote(uint256 _caseNumber, uint256 _optionVoted) public {

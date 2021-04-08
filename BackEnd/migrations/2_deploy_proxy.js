@@ -1,64 +1,83 @@
+// import contractAddress as ok from "../address.js";
 // 'Case' is contract name, NOT FILENAME!
 const CaseOne = artifacts.require("Case");
 const Proxey = artifacts.require("Proxy");
 const CaseTwo = artifacts.require("CaseTwo");
 
-
-
 // import fs module in which writeFile function is defined.
-const fsLibrary = require('fs')
+const fsLibrary = require("fs");
 
 module.exports = async function (deployer, network, accounts) {
-  let adminarray = [accounts[1], accounts[3]];
+  let adminarray = [
+    accounts[0],
+    accounts[1],
+    accounts[2],
+    accounts[3],
+    accounts[4],
+  ];
   await deployer.deploy(CaseOne);
- 
 
   let proxyinstance = await deployer.deploy(Proxey, adminarray);
-  await Proxey.deployed();
+
   let instanceCase = await CaseOne.deployed();
-  await proxyinstance.pause();
   await proxyinstance.upgrade(instanceCase.address);
   await proxyinstance.unPause();
   await deployer.deploy(CaseTwo);
   await CaseTwo.deployed();
-  
-  
-  /*
+
   let proxyCase = await Proxey.deployed();
 
   // save address and store in address.js that is loaded in html, for use in main.js
   let data = "const contractAddress = '" + proxyCase.address + "';";
-  fsLibrary.writeFile('../FrontEnd/address.js', data, (error) => { 
-    if (error) throw err; 
-  })
+  fsLibrary.writeFile("../FrontEnd/address.js", data, (error) => {
+    if (error) throw err;
+  });
 
   //create proxy Case to fool truffle
   var proxyCaseReDir = await CaseOne.at(proxyCase.address);
-  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[0] });
-  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[1] });
-  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[2] });
-  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[3] });
-  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
-  var start = Math.round(new Date() / 1000) ;
-  var end = Math.round(new Date() / 1000) + 60*60;
+  await proxyCaseReDir.createUser("Grimstad", "Regional", {
+    from: accounts[0],
+  });
+  await proxyCaseReDir.createUser("Grimstad", "Regional", {
+    from: accounts[1],
+  });
+  await proxyCaseReDir.createUser("Grimstad", "Regional", {
+    from: accounts[2],
+  });
+  await proxyCaseReDir.createUser("Grimstad", "Regional", {
+    from: accounts[3],
+  });
+  await proxyCaseReDir.createUser("Grimstad", "Regional", {
+    from: accounts[4],
+  });
+  var start = Math.round(new Date() / 1000);
+  var end = Math.round(new Date() / 1000) + 60 * 60;
 
-  await proxyCaseReDir.createCase("First Case", "This is the description", Math.round(new Date() / 1000),  Math.round(new Date() / 1000) + 60*60, "one", "two", { from: accounts[1] });
-  console.log("Start: "+start);
-  console.log("End: "+end);
-  
+  await proxyCaseReDir.createCase(
+    "First Case",
+    "This is the description",
+    Math.round(new Date() / 1000),
+    Math.round(new Date() / 1000) + 60 * 60,
+    "one",
+    "two",
+    { from: accounts[1] }
+  );
+  console.log("Start: " + start);
+  console.log("End: " + end);
 
-  await proxyCaseReDir.getApprovalsAndLimit(1)
+  await proxyCaseReDir.getApprovalsAndLimit(1);
 
   await proxyCaseReDir.approve(1, { from: accounts[1] });
   await proxyCaseReDir.approve(1, { from: accounts[2] });
   await proxyCaseReDir.approve(1, { from: accounts[3] });
-  await proxyCaseReDir.getApprovalsAndLimit(1)
+  await proxyCaseReDir.getApprovalsAndLimit(1);
   await proxyCaseReDir.getMyVote(1);
-  setTimeout(async function(){ 
-    await proxyCaseReDir.vote(1,1, { from: accounts[3] });
+  setTimeout(async function () {
+    await proxyCaseReDir.vote(1, 1, { from: accounts[3] });
     await proxyCaseReDir.getMyVote(1);
   }, 2000);
 
+  /*
   // endDate = 15:00
   // startDate = 13:00
   // TimeStamp = 14:00
