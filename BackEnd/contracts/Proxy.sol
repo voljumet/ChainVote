@@ -12,7 +12,9 @@ contract Proxy is MultiSig {
         _boolStorage["paused"] = false;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
+            _addressArrayStorage["superAdmins"].push(_superAdminArray[i]);
         }
+        
          _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
         _boolStorage["initialized"] = true;
 
@@ -27,7 +29,13 @@ contract Proxy is MultiSig {
     }
 
     function upgrade(address _newAddress) public superAdmin whenPaused {
-        _addressStorage["functionContractAddress"] = _newAddress;
+        if(!_boolStorage["instanceInProgress"]){
+            createMultisigInstance();
+        }
+        if(_uintStorage["neededApprovals"] == 0){
+            _addressStorage["functionContractAddress"] = _newAddress;
+            _boolStorage["instanceInProgress"] = false;
+        }
     }
 
     modifier whenNotPaused() {
@@ -40,12 +48,21 @@ contract Proxy is MultiSig {
     }
     
     function pause() public superAdmin whenNotPaused {
-        _boolStorage["paused"] = true;
+        if(!_boolStorage["instanceInProgress"]){
+            createMultisigInstance();
+        }
+        if(_uintStorage["neededApprovals"] == 0){
+            _boolStorage["paused"] = true;
+            _boolStorage["instanceInProgress"] = false;
+            _uintStorage["pauseTimer"] = SafeMath.add(block.timestamp, 604800);
+         }
     }
     
     function unPause() public superAdmin whenPaused{
+        require(_uintStorage["pauseTimer"] < block.timestamp);
         _boolStorage["paused"] = false;
     }
+    
 
     // Fallback function, last call..
     fallback() payable external whenNotPaused {
