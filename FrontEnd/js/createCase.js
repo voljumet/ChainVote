@@ -73,8 +73,7 @@ document.getElementById("create-button").onclick = function () {
     ).getTime()),
     document.getElementById("alternatives1").value,
     document.getElementById("alternatives2").value
-  );
-  
+  ); 
 };
 
 $('#startDate').datetimepicker({
@@ -99,5 +98,16 @@ $('#endDate').datetimepicker({
     });
   },
 });
+
+
+async function checkUserType(){
+    user = await Moralis.User.current();
+    if (user.get('UserType') == "Standard") {
+        hideElment(document.getElementById("createCaseHerf"))
+        
+    } else {
+        showElment(document.getElementById("createCaseHerf"))
+    }
+}
 
 getNewCaseNumber();

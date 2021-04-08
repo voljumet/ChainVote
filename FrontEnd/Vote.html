@@ -10,6 +10,7 @@ https://templatemo.com/tm-538-digital-trend
 
 -->
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width.device.width, initial.scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -30,6 +31,7 @@ https://templatemo.com/tm-538-digital-trend
       rel="stylesheet"
     />
     <link rel="stylesheet" />
+    
 
     <!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
@@ -98,10 +100,9 @@ https://templatemo.com/tm-538-digital-trend
             </nav>
 
             <!-- Display User Name-->
-            <h5 class="user-text">Rune Alexander Laursen</h5>
-
-            <li class="nav-item">
-              <a href="contact.html" class="nav-link contact">
+            <h5 class="user-text" id="userNameFront"></h5>
+           
+              <a href="login.html" class="nav-link contact">
                 <img src="images/avatar.png" alt="Avatar" class="avatar" />
               </a>
             </li>
@@ -114,68 +115,41 @@ https://templatemo.com/tm-538-digital-trend
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-      <div class="container">
-        <div class="row">
-          <form
-            method="post"
-            class="contact-form"
-            id="proposal_discription"
-            data-aos="fade-up"
-            data-aos-delay="300"
-            role="form"
-          >
-            <div id="id03" class="proposal_number">
+    <div
+    class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
+  >
+  <div id="formContent-createCase">
+     
+            <div id="case-num-vote" class="proposal_number">
               <h2>Propoasal {{proposal_number}}</h2>
             </div>
 
-            <div class="row">
-              <h3 class="form-control">Ha lue på hele året</h3>
-              <div class="form-control">
-                <label class="container1"
-                  >Option One
-                  <input type="radio" checked="checked" name="radio" />
-                  <span class="checkmark"></span>
-                </label>
-                <label class="container1"
-                  >Option Two
-                  <input type="radio" name="radio" />
-                  <span class="checkmark"></span>
-                </label>
-                <label class="container1"
-                  >Option Three
-                  <input type="radio" name="radio" />
-                  <span class="checkmark"></span>
-                </label>
-                <label class="container1"
-                  >Option Four
-                  <input type="radio" name="radio" />
-                  <span class="checkmark"></span>
-                </label>
+            <!-- Case Details Display  -->
+            <div class="container6">
+              <div class="case-details">
               </div>
             </div>
+              
             <button
-              id="vote_"
-              type="submit"
               class="fa fa-check"
-              id="confirm-vote-button"
+              id="confirm-myVote"
               name="create"
             >
               Confirm Vote
             </button>
             <button
-              type="submit"
               class="fa fa-refresh"
-              id="change-vote-button"
+              id="change-myvote"
               name="cancel"
             >
               Change Vote
             </button>
             <div class="col-lg-7 ">
-              <div id="id01" class="time_left">
-                <h2>Time Left To Vote: {{timeLeft}}</h2>
+              <div id="time-left-vote" class="time_left">
+                <h2 style="color: aliceblue;"> Time Left To Vote: {{timeLeft}}</h2>
               </div>
-              <div id="id02">
-                <h3>Total cast votes: {{votes}}</h3>
+              <div id="total-votes-vote">
+                <h3 style="color: aliceblue;" >Total cast votes: {{totalVotes}}</h3>
               </div>
             </div>
 
@@ -187,9 +161,17 @@ https://templatemo.com/tm-538-digital-trend
                 </div>
               </div>
             </div>
-          </form>
-        </div>
-      </div>
+
+  
+ 
+    <button id ="button">show</button>
+    <h1 id="h1">Result</h1>
+
+  
+
+
+    </div>
+    </div>
     </section>
 
     <!-- SCRIPTS -->
@@ -207,25 +189,12 @@ https://templatemo.com/tm-538-digital-trend
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="jquery.datetimepicker.full.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
-    <script type="text/javascript" src="./js/createCase.js"></script>
+    <script type="text/javascript" src="./js/vote.js"></script>
+    <script type="text/javascript" src="js/username.js"></script>
     
 
-    <!-- Time -->
-    <script>
-      var numTime = '15:30 min';
-      var myObject = { timeLeft: numTime };
-      w3.displayObject('id01', myObject);
-    </script>
-    <!-- Number of votes -->
-    <script>
-      var numVotes = 1234;
-      var myObject = { votes: numVotes };
-      w3.displayObject('id02', myObject);
-    </script>
-    <!-- Proposal Number -->
-    <script>
-      var myObject = { proposal_number: '9' };
-      w3.displayObject('id03', myObject);
+  
+      
     </script>
   </body>
 </html>

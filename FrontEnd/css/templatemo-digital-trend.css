@@ -562,14 +562,7 @@ https://templatemo.com/tm-538-digital-trend
     background: var(--secondary-color);
   }
   /*_____________ Cancel button ___________________*/
-   .newsletter-form .form-control,
-  .contact-form .form-control {
-    box-shadow: none;
-    background: var(--project-bg);
-    border: 0;
-    padding: 1.7em 1.3em;
-    margin: 14px 0;
-  }
+ 
 
   .newsletter-form button,
   .contact-form #cancel-button {
@@ -585,65 +578,7 @@ https://templatemo.com/tm-538-digital-trend
   .newsletter-form button {
     background: var(--secondary-color);
   }
-  /*_____________ Confirm  button ___________________*/
   
-  .newsletter-form button,
-  .contact-form #confirm-vote-button {
-    padding: 15px 25px;
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color: #4CAF50;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-  }
- .newsletter-form button,
-  .contact-form #confirm-vote-button :hover {background-color: #3e8e41}
-
- .newsletter-form button,
-  .contact-form #confirm-vote-button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-  
-}
-  
-   /*_____________ Change  button ___________________*/
-  
-.newsletter-form button,
-  .contact-form #change-vote-button {
-    padding: 15px 25px;
-  font-size: 24px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-  background-color: #dc473c;
-  border: none;
-  border-radius: 15px;
-  box-shadow: 0 9px #999;
-  }
- .newsletter-form button,
-  .contact-form #change-vote-button :hover {background-color: #3e8e41}
-
- .newsletter-form button,
-  .contact-form #change-vote-button:active {
-  background-color: #9f220c;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-  
-}
-
-
-
-
-
-
-
-
 
   /*---------------------------------------
      FOOTER              
@@ -793,6 +728,10 @@ https://templatemo.com/tm-538-digital-trend
     .footer-link li {
       margin-left: 0;
     }
+  }
+  .form-control{
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 
 

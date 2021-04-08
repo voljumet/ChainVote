@@ -144,7 +144,8 @@ openUserInfo();
 init = async() =>{
     hideElment(userInfo);
     window.web3 = await Moralis.Web3.enable();
-    initUser()
+  
+    initUser();
 }
 initUser = async () =>{
     user = await Moralis.User.current()
@@ -205,15 +206,9 @@ openUerInfo = async()=>{
 saveUserInfo = async()=>{
 
     try {
-        user.set('UserType', userTypeField.value);
-        user.set('username', userNameField.value);
-        user.set('Region', userRegionField.value);
-        user.set('Email', userEmailField.value);
-       
-
-        await user.save();
-        alert("user ifo saved successfully");
-      openUerInfo();
+      
+        
+      
       createUser(userRegionField.value, userTypeField.value);
     } catch (error) {
         alert(error)
@@ -228,15 +223,21 @@ async function createUser(_region, _userType) {
   contractInstance.methods
     .createUser(_region, _userType)
     .send({ from: ethereum.selectedAddress })
-    .on("receipt", function (receipt) {
+    .on("receipt", async function (receipt) {
       console.log(receipt);
-      if (
-        receipt.events.confirmationE.returnValues.confirmation ==
-        "User Created successfully"
-      ) {
+      if (receipt.events.confirmationE.returnValues.confirmation ){
         alert("user created successfully");
+        user.set('UserType', userTypeField.value);
+        user.set('username', userNameField.value);
+        user.set('Region', userRegionField.value);
+        user.set('Email', userEmailField.value);
+      
+        await user.save();
+        alert("user ifo saved successfully in Morakis");
+        openUerInfo();
       }
     });
+    
 }
 
 closeButton = async()=>{
@@ -244,6 +245,17 @@ closeButton = async()=>{
     showElment(userProfileButton);
 }
 
+
+
+async function checkUserType(){
+    user = await Moralis.User.current();
+    if (user.get('UserType') == "Standard") {
+        hideElment(document.getElementById("createCaseHerf"))
+        
+    } else {
+        showElment(document.getElementById("createCaseHerf"))
+    }
+}
 
 
 
@@ -271,3 +283,4 @@ const userTypeField= document.getElementById('usertype-input');
 const userRegionField= document.getElementById('region-input');
 
 init();
+checkUserType();

@@ -20,7 +20,6 @@ body {
 a {
   text-decoration: none;
 }
-
 .logo {
   width: 100px;
 }
@@ -136,11 +135,13 @@ a {
 }
 
 /* Remove extra left and right margins, due to padding */
-.row {margin: 0 -5px;}
+.row {
+  margin: 0 -5px;
+}
 
 /* Clear floats after the columns */
 .row:after {
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
@@ -156,7 +157,7 @@ a {
 
 /* Style the counter cards */
 
-.month{
+.month {
   color: black;
   margin-top: 30px;
 }
@@ -170,26 +171,28 @@ a {
   width: 100%;
   height: 10px;
   border-radius: 25px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
   text-align: center;
   line-height: 30px;
   color: white;
 }
 
-
 /* Info Button */
 
 * {
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 
 .extra-info {
   display: none;
   line-height: 30px;
   font-size: 12px;
-	position: absolute;
+  position: absolute;
   top: 0;
   left: 50px;
+}
+.icon-info-sign {
+  padding-left: 600px;
 }
 
 .info:hover .extra-info {
@@ -245,15 +248,14 @@ a {
 
 /* On mouse-over, add a grey background color */
 
-
 /* When the radio button is checked, add a blue background */
 .container1 input:checked ~ .checkmark {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark:after {
-  content: "";
+  content: '';
   position: absolute;
   display: none;
 }
@@ -265,25 +267,22 @@ a {
 
 /* Style the indicator (dot/circle) */
 .container1 .checkmark:after {
- 	top: 9px;
-	left: 9px;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: white;
+  top: 9px;
+  left: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
 }
 
-
-.confirm-button{
+.confirm-button {
   color: green;
 }
 
-.time_left{
-   
-    color: red;
-    
+.time_left {
+  color: red;
 }
-.disable-day{
+.disable-day {
   color: gray;
 }
 .highlight-day a:not(.disable-day) {
@@ -293,15 +292,15 @@ a {
 /*                 */
 .container2 {
   display: flex;
-        margin-left: 0px;
-        margin-top: 50px;
-        margin-right: -670px;
-        flex-direction: row;
-        flex-wrap: wrap;
-        width: 1200px;
+  margin-left: 0px;
+  margin-top: 50px;
+  margin-right: -670px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 1200px;
 }
 .Container:after {
-  content: "";
+  content: '';
   display: table;
   clear: both;
 }
@@ -316,7 +315,7 @@ a {
 }
 @media screen and (max-width: 600px) {
   .card {
-     width: 100%;
+    width: 100%;
   }
 }
 
@@ -326,7 +325,8 @@ form {
 }
 
 /* Full-width inputs */
-input[type=text], input[type=password] {
+input[type='text'],
+input[type='password'] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -337,7 +337,7 @@ input[type=text], input[type=password] {
 
 /* Set a style for all buttons */
 button {
-  background-color: #4CAF50;
+  background-color: #4caf50;
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
@@ -363,7 +363,6 @@ button:hover {
   text-align: center;
   margin: 24px 0 12px 0;
 }
-
 
 /* Add padding to containers */
 .containery {
@@ -392,7 +391,7 @@ span.psw {
 .wrapper {
   display: flex;
   align-items: center;
-  flex-direction: column; 
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   min-height: 100%;
@@ -405,28 +404,26 @@ span.psw {
   background: #fff;
   width: 100%;
   max-width: 750px;
-  position:relative;
+  position: relative;
   padding: 10px 10px 10px 10px;
   margin: auto;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
   text-align: center;
 }
-#formContent-createCase
-  {
-    -webkit-border-radius: 15px 15px 15px 15px;
-    border-radius: 15px 15px 15px 15px;
-    background: #fff;
-    width: 100%;
-    max-width: 750px;
-    position:relative;
-    padding: 10px 10px 10px 10px;
-   
-    -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    text-align: center;
-  }
+#formContent-createCase {
+  -webkit-border-radius: 15px 15px 15px 15px;
+  border-radius: 15px 15px 15px 15px;
+  background: #fff;
+  width: 100%;
+  max-width: 750px;
+  position: relative;
+  padding: 10px 10px 10px 10px;
 
+  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
 
 #formFooter {
   background-color: #f6f6f6;
@@ -437,12 +434,9 @@ span.psw {
   border-radius: 0 0 10px 10px;
 }
 
-
-
 #icon {
   width: 25%;
   border-radius: 50%;
-
 }
 #input-buttony {
   background-color: #3160c4;
@@ -452,7 +446,6 @@ span.psw {
   border: none;
   cursor: pointer;
   width: 30%;
-  
 }
 #logout-buttony {
   background-color: #3160c4;
@@ -501,7 +494,7 @@ span.psw {
   border-radius: 15px;
   box-shadow: 0 9px #999;
 }
-#closeInfo{
+#closeInfo {
   padding: 15px 25px;
   font-size: 20px;
   text-align: center;
@@ -513,7 +506,7 @@ span.psw {
   border-radius: 15px;
   box-shadow: 0 9px #999;
 }
-#connect{
+#connect {
   padding: 15px 25px;
   font-size: 20px;
   text-align: center;
@@ -525,12 +518,11 @@ span.psw {
   border-radius: 15px;
   box-shadow: 0 9px #999;
 }
-#userNameFront{
+#userNameFront {
   font-size: 24px;
   text-align: center;
-  
 }
-#cancel-buttony{
+#cancel-buttony {
   background: rgb(226, 29, 29);
   border-radius: var(--border-radius-large);
   color: var(--white-color);
@@ -549,3 +541,179 @@ span.psw {
   padding: 1.5em 1.3em;
 }
 
+#btny1 {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  width: auto;
+  position: relative;
+}
+.input-group-text {
+  border-radius: 25px;
+  width: 10px;
+  height: 10px;
+}
+#change-myvote {
+  background: white;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: red;
+  color: red;
+  cursor: pointer;
+  font-size: var(--p-font-size);
+  line-height: 0px;
+  padding: 1.5em 1.3em;
+  width: auto;
+  margin-left: 15px;
+}
+#change-myvote:hover{
+  background: red;
+  color: #eee;
+}
+#confirm-myVote {
+  
+  background: white;
+  border-radius: 10px;
+  border-style: solid;
+  border-color: green;
+  color: green;
+  cursor: pointer;
+  font-size: var(--p-font-size);
+  line-height: 0px;
+  padding: 1.5em 1.3em;
+  width: auto;
+}
+#confirm-myVote:hover{
+  background: green;
+  color: #eee;
+}
+
+.container6 {
+  display: block;
+  position: relative;
+  margin: 40px auto;
+  height: auto;
+  width: 500px;
+  padding: 20px;
+}
+
+h2 {
+  color: black;
+}
+
+.container6 ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+}
+
+ul li {
+  color: black;
+  display: block;
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid #333;
+}
+
+ul li input[type='radio'] {
+  position: absolute;
+  visibility: hidden;
+}
+
+ul li label {
+  display: block;
+  position: relative;
+  font-weight: 300;
+  font-size: 1.35em;
+  padding: 25px 25px 25px 80px;
+  margin: 10px auto;
+  height: 30px;
+  z-index: 9;
+  cursor: pointer;
+  -webkit-transition: all 0.25s linear;
+}
+
+ul li:hover label {
+  color: #3160c4;
+}
+
+ul li .check {
+  display: block;
+  position: absolute;
+  border: 5px solid #aaaaaa;
+  border-radius: 100%;
+  height: 25px;
+  width: 25px;
+  top: 30px;
+  left: 20px;
+  z-index: 5;
+  transition: border 0.25s linear;
+  -webkit-transition: border 0.25s linear;
+}
+
+ul li:hover .check {
+  border: 5px solid #3160c4;
+}
+
+ul li .check::before {
+  display: block;
+  position: absolute;
+  content: '';
+  border-radius: 100%;
+  height: 11px;
+  width: 11px;
+  top: 2px;
+  left: 2px;
+  margin: auto;
+  transition: background 0.25s linear;
+  -webkit-transition: background 0.25s linear;
+}
+
+input[type='radio']:checked ~ .check {
+  border: 5px solid #3160c4;
+}
+
+input[type='radio']:checked ~ .check::before {
+  background: #3160c4;
+}
+
+input[type='radio']:checked ~ label {
+  color: #3160c4;
+}
+textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+#total-votes-vote{
+  padding: 10px;
+  border-radius: 10px;
+  width: fit-content;
+  margin: auto;
+  margin-bottom: 20px;
+  background-color: rgb(155, 161, 157);
+}
+#time-left-vote{
+  
+  padding: 10px;
+  border-radius: 10px;
+  width: fit-content;
+  margin-left: auto ;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  background-color: rgb(172, 57, 57);
+}

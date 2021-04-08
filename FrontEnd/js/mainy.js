@@ -4,6 +4,7 @@ var web3 = new Web3(Web3.givenProvider);
 
 const tabele = document.getElementsByClassName('container2')[0];
 
+
 function createCard(_number, _title, _stratDate, _endDate){
 
     const monthDiv = document.createElement('div');
@@ -14,12 +15,18 @@ function createCard(_number, _title, _stratDate, _endDate){
     const card = document.createElement('div');
     card.className ="card"; 
 
+    
+    window.onload = function() {
+        
+        localStorage.setItem("storageName",_number);
+     }
     const tapNumber = document.createElement('h2');
 
     tapNumber.innerText = "Proposal " + _number;
     
     const ref = document.createElement('a');
-    ref.setAttribute('href', "ended.html");
+
+    ref.setAttribute('href', "Vote.html?id"+_number);
 
     const title= document.createElement('p');
     let txt = "Title: ";
@@ -110,32 +117,40 @@ function timeIt(date, timeBar){
     }
 }
 
- function unpack(str) {
-    var bytes = [];
-    for(var i = 0; i < str.length; i++) {
-        var char = str.charCodeAt(i);
-        bytes.push(char >>> 8);
-        bytes.push(char & 0xFF);
-    }
-    return bytes;
-}
-
 ///////////////////////////
 // Render Case Card on the Index page
 async function AddCardsToPage() {
     let reuslt  = await Moralis.Cloud.run("Cases",{});
+    console.log(reuslt);
     reuslt.forEach(element =>{
         tabele.appendChild(createCard(element.attributes.caseNumber,element.attributes.title,element.attributes.startDate,element.attributes.endDate))
+        console.log( "id:" +element.id)
+        console.log( "alt1:" +element.attributes.uintAlt[1])
     })
+    
  
 }
 
 AddCardsToPage()
+checkUserType();
     
 // Reload the page
 setTimeout(function(){
     window.location.reload(1);
  }, 60000);
 
+ 
+async function checkUserType(){
+    user = await Moralis.User.current();
+    if (user.get('UserType') == "Standard") {
+        hideElment(document.getElementById("createCaseHerf"))
+        
+    } else {
+        showElment(document.getElementById("createCaseHerf"))
+    }
+}
 
+hideElment = (element) => element.style.display = "none";
+showElment = (element) => element.style.display = "block";
 
+console.log(element.attributes.objectId)

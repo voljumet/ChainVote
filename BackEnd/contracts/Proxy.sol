@@ -6,13 +6,12 @@ import "./Ownable.sol";
 contract Proxy is Ownable {
 
     constructor(address _currenAddress) {
-        // index 0, not sure if ok
-        _addressStorage["currentAddress"] = _currenAddress;
+        _addressStorage["functionContractAddress"] = _currenAddress;
         _boolStorage["paused"] = false;
     }
 
     function upgrade(address _newAddress) public onlyOwner whenPaused {
-        _addressStorage["currentAddress"] = _newAddress;
+        _addressStorage["functionContractAddress"] = _newAddress;
     }
 
     modifier whenNotPaused() {
@@ -34,8 +33,9 @@ contract Proxy is Ownable {
 
     // Fallback function, last call..
     fallback() payable external whenNotPaused {
-        address implementation = _addressStorage["currentAddress"];
-        require(_addressStorage["currentAddress"] != address(0), "ERR26");
+        address implementation = _addressStorage["functionContractAddress"];
+        // checks that address(0) is not an empty address
+        require(_addressStorage["functionContractAddress"] != address(0), "ERR26");
         bytes memory data = msg.data;
 
         assembly{
