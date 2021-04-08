@@ -16,7 +16,7 @@ contract Proxy is MultiSig {
 
         assert( keccak256(abi.encodePacked(
                      _users[msg.sender]._stringUser["UserType"],
-                   _boolStorage["initialized"]))
+                   _boolStorage["paused"]))
             ==
                 keccak256(abi.encodePacked(
                     "SuperAdmin",
