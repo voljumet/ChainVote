@@ -1,4 +1,4 @@
-window.abi = [
+window.abi =[
   {
     "inputs": [],
     "stateMutability": "nonpayable",
@@ -351,51 +351,7 @@ window.abi = [
         "type": "uint256"
       }
     ],
-    "name": "getCase",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_caseNumber",
-        "type": "uint256"
-      }
-    ],
     "name": "getMyVote",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_region",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_userType",
-        "type": "string"
-      }
-    ],
-    "name": "getUserArrayLength",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_caseNumber",
-        "type": "uint256"
-      }
-    ],
-    "name": "getTotalVotes",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -409,20 +365,6 @@ window.abi = [
       }
     ],
     "name": "getApprovalsAndLimit",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getUser",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "getCasesWaitingForApproval",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -62,7 +62,7 @@ function showCase(
   return cardy;
 }
 function timeIt(date) {
-  var countDownDate = date;
+  var countDownDate = date*1000;
   // Get today's date and time
   var now = new Date().getTime();
   // Find the distance between now and the count down date
@@ -159,14 +159,7 @@ const caseNumber = document.getElementById('proposal-number');
 const result = document.getElementById('h1');
 
 AddCaseToPage(globalCaseNumber);
-showVote()
-
-document.getElementById('vote_').onclick = function () {
-  vote(
-    document.getElementById('caseNumber4').value,
-    document.getElementById('alternative').value
-  );
-};
+showVote(globalCaseNumber)
 
 async function updateMoralis(_caseNum, _resultArray) {
   let reuslt = await Moralis.Cloud.run('Cases', {});
@@ -218,6 +211,6 @@ async function getMyVote(_caseNumber) {
     });
 }
 
-async function showVote() {
-  getMyVote(1);
+async function showVote(_caseNum) {
+  getMyVote(_caseNum);
 }

@@ -35,37 +35,25 @@ module.exports = async function (deployer, network, accounts) {
 
   //create proxy Case to fool truffle
   var proxyCaseReDir = await CaseOne.at(proxyCase.address);
-  await proxyCaseReDir.createUser("Grimstad", "Regional", {
-    from: accounts[0],
-  });
-  await proxyCaseReDir.createUser("Grimstad", "Regional", {
-    from: accounts[1],
-  });
-  await proxyCaseReDir.createUser("Grimstad", "Regional", {
-    from: accounts[2],
-  });
-  await proxyCaseReDir.createUser("Grimstad", "Regional", {
-    from: accounts[3],
-  });
-  await proxyCaseReDir.createUser("Grimstad", "Regional", {
-    from: accounts[4],
-  });
-  var start = Math.round(new Date() / 1000);
-  var end = Math.round(new Date() / 1000) + 60 * 60;
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[0] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[1] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[2] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[3] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[5] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[6] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[7] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[8] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[9] });
+  var start = Math.round(new Date() / 1000) ;
+  var end = Math.round(new Date() / 1000) + 60*60;
 
-  await proxyCaseReDir.createCase(
-    "First Case",
-    "This is the description",
-    Math.round(new Date() / 1000),
-    Math.round(new Date() / 1000) + 60 * 60,
-    "one",
-    "two",
-    { from: accounts[1] }
-  );
-  console.log("Start: " + start);
-  console.log("End: " + end);
+  await proxyCaseReDir.createCase("First Case", "This is the description", Math.round(new Date() / 1000),  Math.round(new Date() / 1000) + 60*60, "one", "two", { from: accounts[1] });
+  console.log("Start: "+start);
+  console.log("End: "+end);
+  
 
-  await proxyCaseReDir.getApprovalsAndLimit(1);
+  await proxyCaseReDir.getApprovalsAndLimit(1)
 
   await proxyCaseReDir.approve(1, { from: accounts[1] });
   await proxyCaseReDir.approve(1, { from: accounts[2] });

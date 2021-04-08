@@ -160,7 +160,8 @@ contract Case is MultiSig {
     function vote(uint256 _caseNumber, uint256 _optionVoted) public {
         require(_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR7");  // Checks that the case is open for voting
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alt"].length, "ERR8");   // Checks that the voting option exists
-        require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp && _cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9" );
+        require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp , "ERR9" );
+        require(_cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9.1");
         
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
