@@ -28,6 +28,11 @@ module.exports = async function (deployer, network, accounts) {
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[2] });
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[3] });
   await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[4] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[5] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[6] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[7] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[8] });
+  await proxyCaseReDir.createUser('Grimstad', 'Regional', { from: accounts[9] });
   var start = Math.round(new Date() / 1000) ;
   var end = Math.round(new Date() / 1000) + 60*60;
 

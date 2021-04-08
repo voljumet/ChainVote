@@ -585,6 +585,7 @@ span.psw {
   line-height: 0px;
   padding: 1.5em 1.3em;
   width: auto;
+  margin-bottom: 40px;
 }
 #confirm-myVote:hover{
   background: green;
@@ -600,7 +601,7 @@ span.psw {
   padding: 20px;
 }
 
-h2 {
+.container6  h2 {
   color: black;
 }
 
@@ -611,7 +612,7 @@ h2 {
   overflow: auto;
 }
 
-ul li {
+.container6  ul li {
   color: black;
   display: block;
   position: relative;
@@ -621,12 +622,12 @@ ul li {
   border-bottom: 1px solid #333;
 }
 
-ul li input[type='radio'] {
+.container6  ul li input[type='radio'] {
   position: absolute;
   visibility: hidden;
 }
 
-ul li label {
+.container6  ul li label {
   display: block;
   position: relative;
   font-weight: 300;
@@ -639,11 +640,11 @@ ul li label {
   -webkit-transition: all 0.25s linear;
 }
 
-ul li:hover label {
+.container6  ul li:hover label {
   color: #3160c4;
 }
 
-ul li .check {
+.container6  ul li .check {
   display: block;
   position: absolute;
   border: 5px solid #aaaaaa;
@@ -657,11 +658,11 @@ ul li .check {
   -webkit-transition: border 0.25s linear;
 }
 
-ul li:hover .check {
+.container6 ul li:hover .check {
   border: 5px solid #3160c4;
 }
 
-ul li .check::before {
+.container6  ul li .check::before {
   display: block;
   position: absolute;
   content: '';
@@ -705,15 +706,35 @@ textarea {
   width: fit-content;
   margin: auto;
   margin-bottom: 20px;
+  margin-top: 20px;
   background-color: rgb(155, 161, 157);
 }
 #time-left-vote{
-  
   padding: 10px;
   border-radius: 10px;
   width: fit-content;
-  margin-left: auto ;
   margin-bottom: 20px;
   margin-top: 20px;
+  margin: auto;
   background-color: rgb(172, 57, 57);
+  
 }
+#search-addon{
+  width: 35px;
+  height: 35px;
+  margin: auto;
+}
+
+#openForVoting{
+  margin-top: 10px;
+}
+#search-button{
+  font-size: 1.2em;
+  position: relative;
+  margin-left: -4px;
+
+}
+#search-button:hover{
+  color:#2196f3
+}
+

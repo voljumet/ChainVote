@@ -43,8 +43,8 @@ async function createCase(
     .createCase(
       _title,
       _description,
-      _startDate,
-      _endDate,
+      _startDate/1000,
+      _endDate/1000,
       alt1,
       alt2,
     )
