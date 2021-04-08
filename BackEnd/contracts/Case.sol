@@ -9,6 +9,7 @@ contract Case is MultiSig {
 
     event SigningRequestE(string title,uint256 caseNumber);
     event getCaseE(uint256 indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint256[] uintAlt, uint256 totalVotes, string region);
+    event addApprovalsE(string[] stringAlt, uint256[] uintAlt);
     event getUsersE(uint256 usersWithSameRegionAndUserType); 
     event getUserE(string region, string userType); 
     event totalVotesE(uint256 toalVotes);
@@ -61,11 +62,13 @@ contract Case is MultiSig {
 
     function addAlternatives(uint256 _caseNumber, string memory _alternative) public {
         require(onlyOwners(_caseNumber), "ERR23");
+        require(_cases[_caseNumber]._uintCase["ApprovalsSigned"] == 0, "ERR28");
         require(_cases[_caseNumber]._boolCase["openForVoting"] == false && _cases[_caseNumber]._boolCase["CaseDeactivated"] == false && 
                 _caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0 && keccak256(bytes(_alternative)) != keccak256(bytes("")), "ERR20");
         _cases[_caseNumber]._stringArrayCase["Alt"].push(_alternative);
         _cases[_caseNumber]._uintArrayCase["Alt"].push(0);
         assert(keccak256(bytes(_cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._stringArrayCase["Alt"].length-1 ])) == keccak256(bytes(_alternative)));
+        emit addApprovalsE(_cases[_caseNumber]._stringArrayCase["Alt"], _cases[_caseNumber]._uintArrayCase["Alt"]);
    }
 
     function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2) public {
