@@ -5,7 +5,7 @@ var web3 = new Web3(Web3.givenProvider);
 const tabele = document.getElementsByClassName('container2')[0];
 
 
-function createCard(_number, _title, _stratDate, _endDate){
+function createCard(_number, _title, _stratDate, _endDate,_openForVoting){
 
     const monthDiv = document.createElement('div');
 
@@ -29,8 +29,8 @@ function createCard(_number, _title, _stratDate, _endDate){
     ref.setAttribute('href', "Vote.html?id"+_number);
 
     const title= document.createElement('p');
-    let txt = "Title: ";
-    title.innerHTML = txt.fontsize(5).fontcolor("black")+ _title;
+    let txt = _title;
+    title.innerHTML = txt.fontsize(5).fontcolor("black");
 
     const pro = document.createElement('div');
     pro.id = "myProgress";
@@ -39,10 +39,24 @@ function createCard(_number, _title, _stratDate, _endDate){
     bar.id = "myBar";
 
     const timeLeft = document.createElement('p');
-    timeLeft.id = "time";
+     
     var txt2= "Time Left: ";
-    timeLeft.innerHTML= txt2.fontsize(5).fontcolor("black")+ timeIt( _endDate, bar);
+    timeLeft.innerHTML= txt2.fontsize(5).fontcolor("black")+ timeIt( _endDate, bar,_openForVoting);
     getMyDate(_stratDate);
+
+    const openForVoting = document.createElement('p');
+    var now = new Date().getTime();
+    var text = "Open: ";
+    var value = _openForVoting.toString().toUpperCase()
+    openForVoting.id= "openForVoting"
+
+    if(value=="TRUE" && _endDate*1000 > now)
+    {openForVoting.innerHTML= "Voting Open".fontsize(5).fontcolor("black");}
+    else if(value=="FALSE" && _endDate*1000 > now)
+    {openForVoting.innerHTML= "Opening Soon".fontsize(5).fontcolor("black");}
+    else if(value=="FALSE" && _endDate*1000 < now)
+    {openForVoting.innerHTML= "Voting Closed".fontsize(5).fontcolor("black");}
+    
   
     monthDiv.appendChild(month);
     card.appendChild(monthDiv);
@@ -53,6 +67,7 @@ function createCard(_number, _title, _stratDate, _endDate){
     card.append(timeLeft);
     card.append(pro);
     pro.appendChild(bar);
+    card.appendChild(openForVoting)
 
     return card;
 }
@@ -72,15 +87,15 @@ function getMyDate(t) {
     month[10] = "November";
     month[11] = "December";
     
-    var d = new Date(t/1);
+    var d = new Date(t/1*1000);
     var n = month[d.getMonth()];
     var y = d.getFullYear();
     return n + " "+ y;
   }
 
 ////////////////////////
-function timeIt(date, timeBar){
-    var countDownDate = date
+function timeIt(date, timeBar,_openForVoting){
+    var countDownDate = date *1000;
     // Get today's date and time
     var now = new Date().getTime();
     // Find the distance between now and the count down date
@@ -94,7 +109,7 @@ function timeIt(date, timeBar){
     //Change the color of Time Bar based on date
     if (days <= 0 & hours <=0 & minutes <=0 &seconds <= 0 || isNaN(days) )
     {
-        timeBar.style.backgroundColor='red';
+        timeBar.style.backgroundColor='gray';
         return "Expired";
     }
     if (days <= 0 & hours >0 )
@@ -103,15 +118,19 @@ function timeIt(date, timeBar){
     }
     if (hours <= 0 & minutes >0 )
     {
-        timeBar.style.backgroundColor='#baef1c';
+        timeBar.style.backgroundColor='red';
     }
+    if(!_openForVoting){
+        timeBar.style.backgroundColor='rgba(248, 252, 6, 0.5)';
+    }
+    
 
     if (days == 0){
         return [ hours + " H "
         + minutes + " M "];
     } else if(hours == 0){
         return [
-    + minutes + " M " + seconds + "S"];
+    + minutes + " M " + seconds + " S"];
     }else{
         return [days + " D " + hours + " H "];
     }
@@ -123,7 +142,13 @@ async function AddCardsToPage() {
     let reuslt  = await Moralis.Cloud.run("Cases",{});
     console.log(reuslt);
     reuslt.forEach(element =>{
-        tabele.appendChild(createCard(element.attributes.caseNumber,element.attributes.title,element.attributes.startDate,element.attributes.endDate))
+        tabele.appendChild(createCard(element.attributes.caseNumber,
+            element.attributes.title,
+            element.attributes.startDate,
+            element.attributes.endDate,
+            element.attributes.openForVoting
+            
+            ))
         console.log( "id:" +element.id)
         console.log( "alt1:" +element.attributes.uintAlt[1])
     })
@@ -136,8 +161,9 @@ checkUserType();
     
 // Reload the page
 setTimeout(function(){
-    window.location.reload(1);
- }, 60000);
+    //$('#here').load(document.URL +  ' #here');
+   
+ }, 10000);
 
  
 async function checkUserType(){
@@ -150,7 +176,48 @@ async function checkUserType(){
     }
 }
 
+async function search(_title){
+    $('#here').load(document.URL +  ' #here');
+    var tempy = false
+    document.getElementById("noMatch").innerText = ""
+
+    let reuslt  = await Moralis.Cloud.run("Cases",{});
+    console.log(reuslt);
+    if(_title == "" && tempy == false){
+        AddCardsToPage()}
+    reuslt.every(element =>{
+        console.log("title: "+_title + "  caseNum: "+element.attributes.caseNumber )
+        if(element.attributes.caseNumber == _title 
+        || element.attributes.title.toUpperCase() == _title.toUpperCase() ){
+            tabele.appendChild(createCard(element.attributes.caseNumber,
+                element.attributes.title,
+                element.attributes.startDate,
+                element.attributes.endDate,
+                element.attributes.openForVoting))
+                tempy = true;
+                return false
+        }
+        else { return true  }
+    })
+    if(_title != "" && tempy == false ){
+        document.getElementById("noMatch").innerText = "No Match Found"
+        
+    }
+    
+}
+
 hideElment = (element) => element.style.display = "none";
 showElment = (element) => element.style.display = "block";
 
-console.log(element.attributes.objectId)
+document.getElementById("search-button").onclick = function () {
+    search(document.getElementById("search-input").value);
+  };
+
+  /// Using Enter To clcik the search button
+ var input = document.getElementById("search-input")
+  input.addEventListener("keyup", function(event) {
+    if (event.keyCode === 13) {
+     event.preventDefault();
+     document.getElementById("search-button").click();
+    }
+  });

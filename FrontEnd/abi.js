@@ -1,4 +1,4 @@
-window.abi = [
+window.abi =[
   {
     anonymous: false,
     inputs: [

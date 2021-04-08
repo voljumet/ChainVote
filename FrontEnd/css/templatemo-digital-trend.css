@@ -91,11 +91,9 @@ https://templatemo.com/tm-538-digital-trend
   }
 
   h4 {
-    color: var(--gray-color);
-    font-family: var(--base-font-family);
+    color: black;
     font-size: var(--p-font-size);
     letter-spacing: 1px;
-    text-transform: uppercase;
   }
 
   p {
