@@ -3,6 +3,8 @@ const CaseOne = artifacts.require("Case");
 const Proxey = artifacts.require("Proxy");
 const CaseTwo = artifacts.require("CaseTwo");
 
+
+
 // import fs module in which writeFile function is defined.
 const fsLibrary = require('fs')
 
@@ -19,12 +21,16 @@ const fsLibrary = require('fs')
 // }
 
 module.exports = async function (deployer, network, accounts) {
+  let adminarray = [accounts[1], accounts[3]];
   await deployer.deploy(CaseOne);
-  let instanceCase = await CaseOne.deployed();
+ 
 
-  await deployer.deploy(Proxey, instanceCase.address);
+  let proxyinstance = await deployer.deploy(Proxey, adminarray);
   await Proxey.deployed();
-
+  let instanceCase = await CaseOne.deployed();
+  await proxyinstance.pause();
+  await proxyinstance.upgrade(instanceCase.address);
+  await proxyinstance.unPause();
   await deployer.deploy(CaseTwo);
   await CaseTwo.deployed();
   

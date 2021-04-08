@@ -7,32 +7,39 @@ const truffleAssert = require('truffle-assertions');
     let instance;
     let instance2;
     let instance3;
+    let adminarray = [accounts[1], accounts[3]];
 
     beforeEach(async function () {
+      console.log("AdminArray:  " + adminarray)
+      const proxey = await Proxey.new(adminarray);
       const caseOne = await CaseOne.new();
-      const proxey = await Proxey.new(caseOne.address);
       const caseTwo = await CaseTwo.new();
       //create proxy Case to fool truffle
+      
       instance = await CaseOne.at(proxey.address);
       instance2 = await CaseTwo.at(proxey.address);
       instance3 = await Proxey.at(proxey.address);
+      await instance3.pause();
+      await instance3.upgrade(caseOne.address);
+      await instance3.unPause();
     });
-
+ 
+        
+    it("Should be able to use new contract functions", async ()=>{
+      await instance3.pause({from: accounts[0]})
+      await instance3.upgrade(CaseTwo.address, {from: accounts[0]})
+      await instance3.unPause({from: accounts[0]})
+      await truffleAssert.passes(
+        instance2.verifyNewCase(),
+        truffleAssert.ErrorType.REVERT
+        )})
+          
     it("Should change the address of case contract", async ()=>{
       await instance3.pause({from: accounts[0]})
       await truffleAssert.passes(
         instance3.upgrade(CaseTwo.address, {from: accounts[0]}),
         truffleAssert.ErrorType.REVERT
-      )})
-
-    it("Should be able to use new contract functions", async ()=>{
-      await instance3.pause({from: accounts[0]})
-      await instance3.upgrade(CaseTwo.address, {from: accounts[0]})
-      await instance3.unPause({from: address[0]})
-      await truffleAssert.passes(
-        instance2.verifyNewCase(),
-        truffleAssert.ErrorType.REVERT
-     )})
+        )})
 
     it("Owner should be able to pause contract", async ()=>{
         await truffleAssert.passes(
@@ -66,6 +73,5 @@ const truffleAssert = require('truffle-assertions');
         instance3.upgrade(CaseTwo.address, {from: accounts[0]}),
         truffleAssert.ErrorType.REVERT
       )})
-
     
 })

@@ -2,10 +2,10 @@
 pragma solidity 0.7.5;
 pragma abicoder v2;
 
-import "./Ownable.sol";
+
 import "./MultiSig.sol";
 
-contract Case is Ownable, MultiSig {
+contract Case is MultiSig {
 
     event SigningRequestE(string title,uint caseNumber);
     event getCaseE(uint indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint[] uintAlt, uint totalVotes, string region);
@@ -21,21 +21,7 @@ contract Case is Ownable, MultiSig {
         used for userCreatedE(x x, string confirmation)
     */
 
-    constructor() {
-        require(!_boolStorage["initialized"], "ERR1");
-        _addressStorage["owner"] = msg.sender;
-        _boolStorage["initialized"] = true;
 
-        assert( keccak256(abi.encodePacked(
-                     _addressStorage["owner"],
-                   _boolStorage["initialized"]))
-            ==
-                keccak256(abi.encodePacked(
-                    msg.sender,
-                    true))
-        );
-    }
-    
     function createUser(string memory _region, string memory _userType) public {
         require(keccak256( abi.encodePacked(_users[msg.sender]._stringUser["Region"])) != keccak256(abi.encodePacked(_region)) ||
                 keccak256( abi.encodePacked(_users[msg.sender]._stringUser["UserType"])) != keccak256(abi.encodePacked(_userType)), "ERR2");
@@ -65,12 +51,12 @@ contract Case is Ownable, MultiSig {
         emit confirmationE("User created successfully!");
     }
     
-    function endVoting(uint _caseNumber)public onlyOwners(_caseNumber){
-        require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
-        _cases[_caseNumber]._boolCase["openForVoting"] = false; 
-        assert(_cases[_caseNumber]._boolCase["openForVoting"] = false);
-        emit confirmationE("Voting closed successfully");
-    }
+     function endVoting(uint _caseNumber)public onlyOwners(_caseNumber){
+         require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
+         _cases[_caseNumber]._boolCase["openForVoting"] = false; 
+         assert(_cases[_caseNumber]._boolCase["openForVoting"] = false);
+         emit confirmationE("Voting closed successfully");
+     }
 
     function addAlternatives(uint256 _caseNumber, string memory _alternative) public onlyOwners(_caseNumber) {
         require(_cases[_caseNumber]._boolCase["openForVoting"] == false && _cases[_caseNumber]._boolCase["CaseDeactivated"] == false && 
@@ -156,8 +142,9 @@ contract Case is Ownable, MultiSig {
         emit getCaseE(caseNumber, _title, _description, _cases[caseNumber]._boolCase["openForVoting"], _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alt"], _cases[caseNumber]._uintArrayCase["Alt"], _cases[caseNumber]._uintCase["TotalVotes"], _region);
     }
 
-    function deactivateCase(uint _caseNumber) public onlyOwner {
-        require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR6");
+    function deactivateCase(uint _caseNumber) public onlyOwners(_caseNumber) {
+
+        require(!_cases[_caseNumber]._boolCase["OpenForVoting"]  && _cases[_caseNumber]._uintCase["Approvals"] == 0, "ERR6");
         _cases[_caseNumber]._boolCase["CaseDeactivated"] = true;
         clearFromWaiting(_caseNumber);
 
