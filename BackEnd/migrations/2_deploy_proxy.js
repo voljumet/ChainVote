@@ -52,6 +52,8 @@ module.exports = async function (deployer, network, accounts) {
     await proxyCaseReDir.vote(1,1, { from: accounts[3] });
     await proxyCaseReDir.getMyVote(1);
   }, 2000);
+  let block = await web3.eth.getBlock("latest")
+  console.log(block.number);
 
   // endDate = 15:00
   // startDate = 13:00

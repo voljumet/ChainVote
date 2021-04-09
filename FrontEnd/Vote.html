@@ -2,15 +2,9 @@
 <html lang="en">
   <head>
     <title>Digital Voting System</title>
-    <!--
 
-DIGITAL TREND
-
-https://templatemo.com/tm-538-digital-trend
-
--->
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width.device.width, initial.scale=1.0">
+    <meta name="viewport" content="width.device.width, initial.scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="description" content="" />
     <meta name="keywords" content="" />
@@ -31,9 +25,7 @@ https://templatemo.com/tm-538-digital-trend
       rel="stylesheet"
     />
     <link rel="stylesheet" />
-    
 
-    <!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/aos.css" />
     <link rel="stylesheet" href="css/owl.carousel.min.css" />
@@ -43,7 +35,11 @@ https://templatemo.com/tm-538-digital-trend
     <script type="text/javascript" src="./abi.js"></script>
     <script type="text/javascript" src="./address.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 
     <!-- MAIN CSS -->
@@ -76,14 +72,6 @@ https://templatemo.com/tm-538-digital-trend
 
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
-            <!-- 
-            <li class="nav-item">
-              <a href="#project" class="nav-link smoothScroll contact ">Our Works</a>
-            </li>
-            <li class="nav-item">
-              <a href="blog.html" class="nav-link contact">Blog</a>
-            </li>
-            -->
             <!-- Language Menu -->
             <nav>
               <div class="lang-menu">
@@ -101,11 +89,10 @@ https://templatemo.com/tm-538-digital-trend
 
             <!-- Display User Name-->
             <h5 class="user-text" id="userNameFront"></h5>
-           
-              <a href="login.html" class="nav-link contact">
-                <img src="images/avatar.png" alt="Avatar" class="avatar" />
-              </a>
-            </li>
+
+            <a href="login.html" class="nav-link contact">
+              <img src="images/avatar.png" alt="Avatar" class="avatar" />
+            </a>
           </ul>
         </div>
       </div>
@@ -115,63 +102,47 @@ https://templatemo.com/tm-538-digital-trend
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-    <div
-    class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
-  >
-  <div id="formContent-createCase">
-     
-            <div id="case-num-vote" class="proposal_number">
-              <h2>Propoasal {{proposal_number}}</h2>
-            </div>
+      <div
+        class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
+      >
+        <div id="formContent-createCase">
+          <div id="case-num-vote" class="proposal_number">
+            <h2>Propoasal {{proposal_number}}</h2>
+          </div>
 
-            <!-- Case Details Display  -->
-            <div class="container6">
-              <div class="case-details">
+          <!-- Case Details Display  -->
+          <div class="container6">
+            <div class="case-details"></div>
+          </div>
+
+          <button class="fa fa-check" id="confirm-myVote" name="create">
+            Confirm Vote
+          </button>
+          <button class="fa fa-refresh" id="change-myvote" name="cancel">
+            Change Vote
+          </button>
+          <div>
+            <div id="time-left-vote">
+              <h2 style="color: aliceblue">Time Left To Vote: {{timeLeft}}</h2>
+            </div>
+            <div id="total-votes-vote">
+              <h3 style="color: aliceblue">Total cast votes: {{totalVotes}}</h3>
+            </div>
+          </div>
+
+          <div class="Help">
+            <div class="col-md-12">
+              <div class="info">
+                <i class="icon-info-sign"></i>
+                <span class="extra-info"> Extra Info about Proposal </span>
               </div>
             </div>
-              
-            <button
-              class="fa fa-check"
-              id="confirm-myVote"
-              name="create"
-            >
-              Confirm Vote
-            </button>
-            <button
-              class="fa fa-refresh"
-              id="change-myvote"
-              name="cancel"
-            >
-              Change Vote
-            </button>
-            <div >
-              <div id="time-left-vote">
-                <h2 style="color: aliceblue;"> Time Left To Vote: {{timeLeft}}</h2>
-              </div>
-              <div id="total-votes-vote">
-                <h3 style="color: aliceblue;" >Total cast votes: {{totalVotes}}</h3>
-              </div>
-            </div>
+          </div>
 
-            <div class="Help">
-              <div class="col-md-12">
-                <div class="info">
-                  <i class="icon-info-sign"></i>
-                  <span class="extra-info"> Extra Info about Proposal </span>
-                </div>
-              </div>
-            </div>
-
-  
- 
-    <button id ="button">show my vote</button>
-    <h1 id="h1">you have voted:  </h1>
-
-  
-
-
-    </div>
-    </div>
+          <button id="button">show my vote</button>
+          <h1 id="h1">you have voted:</h1>
+        </div>
+      </div>
     </section>
 
     <!-- SCRIPTS -->
@@ -191,10 +162,5 @@ https://templatemo.com/tm-538-digital-trend
     <script src="https://www.w3schools.com/lib/w3.js"></script>
     <script type="text/javascript" src="./js/vote.js"></script>
     <script type="text/javascript" src="js/username.js"></script>
-    
-
-  
-      
-    </script>
   </body>
 </html>
