@@ -3,9 +3,12 @@ Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url 
 
 const tabele = document.getElementsByClassName('case-details')[0];
 
-var url = new URL(window.location.href).href;
-console.log(url);
-var globalCaseNumber = url.substring(url.lastIndexOf('d') + 1);
+function globaNumber() {
+  var url = new URL(window.location.href).href;
+  return url.substring(url.lastIndexOf('d') + 1);
+}
+
+var globalCaseNumber = globaNumber();
 
 function showCase(
   _number,
@@ -62,7 +65,7 @@ function showCase(
   return cardy;
 }
 function timeIt(date) {
-  var countDownDate = date*1000;
+  var countDownDate = date * 1000;
   // Get today's date and time
   var now = new Date().getTime();
   // Find the distance between now and the count down date
@@ -74,7 +77,9 @@ function timeIt(date) {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
   console.log(days, hours, minutes, seconds);
   //Change the color of Time Bar based on date
-
+  if (days < 0 || hours < 0 || minutes < 0) {
+    return 'Case Closed';
+  }
   if (days == 0) {
     return [hours + ' H ' + minutes + ' M '];
   } else if (hours == 0) {
@@ -145,7 +150,7 @@ function showResult() {
 }
 
 document.getElementById('confirm-myVote').onclick = showResult;
-document.getElementById('button').onclick = showVote;
+document.getElementById('button').onclick = getMyVote(globalCaseNumber);
 
 const caseTilteFiled = document.getElementById('case-title');
 const alternative_1_Field = document.getElementById('alt1');
@@ -157,9 +162,6 @@ const alternative_5_Field = document.getElementById('alt5');
 const caseNumber = document.getElementById('proposal-number');
 
 const result = document.getElementById('h1');
-
-AddCaseToPage(globalCaseNumber);
-showVote(globalCaseNumber)
 
 async function updateMoralis(_caseNum, _resultArray) {
   let reuslt = await Moralis.Cloud.run('Cases', {});
@@ -211,6 +213,5 @@ async function getMyVote(_caseNumber) {
     });
 }
 
-async function showVote(_caseNum) {
-  getMyVote(_caseNum);
-}
+AddCaseToPage(globalCaseNumber);
+getMyVote(globalCaseNumber);

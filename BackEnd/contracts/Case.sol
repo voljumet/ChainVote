@@ -50,6 +50,7 @@ contract Case is MultiSig {
                 ))
         );
         emit confirmationE(true);
+        emit getUserE(_region, _userType);
     }
     
     function endVoting(uint256 _caseNumber)public {
