@@ -27,6 +27,7 @@
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+    <link href="jquery.datetimepicker.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
@@ -44,21 +45,16 @@
         <button id="create_user">Create User</button>
       </div>
 
-      <div id="getUserArrayLength" style="display: none">
+      <!-- <div id="getUserArrayLength" style="display: none">
         <input type="text" id="Region2" placeholder="Wat Region?" />
         <input type="text" id="UserType2" placeholder="Wat UserType?" />
         <button id="get_user_array_length">Create User</button>
-      </div>
+      </div> -->
 
-      <div id="getCase" style="display: none">
+      <!-- <div id="getCase" style="display: none">
         <input type="text" id="caseNumber1" placeholder="Case Number" />
         <button id="get_case">Get Case</button>
-      </div>
-
-      <div id="deactivateCase" style="display: none">
-        <input type="text" id="caseNumber2" placeholder="Case Number" />
-        <button id="deactivate_case">Deactivate Case</button>
-      </div>
+      </div> -->
 
       <div id="endVoting" style="display: none">
         <input type="text" id="caseNumber3" placeholder="Case Number" />
@@ -67,63 +63,71 @@
 
       <div id="vote" style="display: none">
         <input type="text" id="caseNumber4" placeholder="Case to vote on" />
-        <input
-          type="text"
-          id="alternative"
-          placeholder="option to vote (ex: '1')"
-        />
-        <button id="vote_">Vote</button>
+        <input type="text" id="alternative" placeholder="option to vote (ex: '1')"/>
+        <button id="vote_">Vote on case</button>
       </div>
+
+      <div id="addAlternatives" style="display: none">
+        <input type="text" id="caseNumber1" placeholder="Case to add alternative to" />
+        <input type="text" id="alternatives3" placeholder="Alternative"/>
+        <button id="add_Alternatives">Add Alternative</button>
+      </div>
+
+
+
+
 
       <div id="getMyVote" style="display: none">
         <input type="text" id="caseNumber5" placeholder="Case number" />
-        <button id="get_my_vote">Vote</button>
+        <button id="get_my_vote">Get my vote</button>
       </div>
 
-      <div id="getTotalVotes" style="display: none">
+      <!-- <div id="getTotalVotes" style="display: none">
         <input type="text" id="caseNumber6" placeholder="Case Number" />
         <button id="get_total_votes">Get total votes</button>
-      </div>
+      </div> -->
 
       <div id="getApprovalsAndLimit" style="display: none">
         <input type="text" id="caseNumber7" placeholder="Case Number" />
         <button id="get_Approvals_And_Limit">get approvals and limit</button>
       </div>
 
-      <div id="getCasesWaitingForApproval" style="display: none">
+      
+
+      <!-- <div id="getCasesWaitingForApproval" style="display: none">
         <input type="text" id="caseNumber8" placeholder="Case Number" />
         <button id="get_Cases_Waiting_For_Approval">
           get cases waiting for approval
         </button>
-      </div>
+      </div> -->
 
       <div id="approve" style="display: none">
         <input type="text" id="caseNumber9" placeholder="Case Number" />
-        <button id="approve_">End voting</button>
+        <button id="approve_">Approve case</button>
       </div>
 
-      <div id="getUserArrLen" style="display: none">
+      <!-- <div id="getUserArrLen" style="display: none">
         <button id="get_users">Get number of users</button>
-      </div>
+      </div> -->
 
-      <div id="getUser" style="display: none">
+      <!-- <div id="getUser" style="display: none">
         <button id="get_user">Get user</button>
-      </div>
+      </div> -->
 
-      <div id="newCase" style="display: none">
+      <div id="createCase" style="display: none">
         <input type="text" id="title" placeholder="title" />
         <input type="text" id="description" placeholder="description" />
-        <input type="date" id="startDate" />
-        <input type="date" id="endDate" />
+        <input type="text" id="startDate" />
+        <input type="text" id="endDate" />
         <input type="text" id="alternatives1" placeholder="alternatives" />
         <input type="text" id="alternatives2" placeholder="alternatives" />
-        <input type="text" id="alternatives3" placeholder="alternatives" />
-        <input type="text" id="alternatives4" placeholder="alternatives" />
-        <input type="text" id="alternatives5" placeholder="alternatives" />
         <button id="create_case">Create Case</button>
       </div>
     </div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-    <script type="text/javascript" src="./main.js"></script>
+<script src="jquery.datetimepicker.full.min.js"></script>
+
+    <script type="text/javascript" src="./testFunctions.js"></script>
   </body>
 </html>
