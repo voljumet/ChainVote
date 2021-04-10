@@ -5,6 +5,8 @@ pragma solidity 0.7.5;
 import "./MultiSig.sol";
 
 contract Proxy is MultiSig {
+    using SafeMath for uint256;
+
     constructor(address[] memory _superAdminArray) {
 
         require(!_boolStorage["initialized"], "ERR1");
@@ -57,7 +59,7 @@ contract Proxy is MultiSig {
         if(_uintStorage["neededApprovals"] == 0){
             _boolStorage["paused"] = true;
             _boolStorage["instanceInProgress"] = false;
-            _uintStorage["pauseTimer"] = SafeMath.add(block.timestamp, 604800);
+            _uintStorage["pauseTimer"] = (block.timestamp).add(604800);
          }
     }
     

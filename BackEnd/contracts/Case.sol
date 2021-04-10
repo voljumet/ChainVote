@@ -5,7 +5,10 @@ pragma abicoder v2;
 
 import "./MultiSig.sol";
 
+
 contract Case is MultiSig {
+
+    using SafeMath for uint256;
 
     event SigningRequestE(string title,uint256 caseNumber);
     event getCaseE(uint256 indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint256[] uintAlt, uint256 totalVotes, string region);
@@ -70,7 +73,7 @@ contract Case is MultiSig {
     function addAlternatives(uint256 _caseNumber, string memory _alternative) public {
         require(onlyOwners(_caseNumber), "ERR23");
         require(_cases[_caseNumber]._uintCase["ApprovalsSigned"] == 0, "ERR28");
-        require(_cases[_caseNumber]._boolCase["openForVoting"] == false && _cases[_caseNumber]._boolCase["CaseDeactivated"] == false && 
+        require(!_cases[_caseNumber]._boolCase["openForVoting"] && !_cases[_caseNumber]._boolCase["CaseDeactivated"] && 
                 _caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0 && keccak256(bytes(_alternative)) != keccak256(bytes("")), "ERR20");
         _cases[_caseNumber]._stringArrayCase["Alt"].push(_alternative);
         _cases[_caseNumber]._uintArrayCase["Alt"].push(0);
@@ -79,42 +82,32 @@ contract Case is MultiSig {
     }
 
     function createCase(string memory _title, string memory _description, uint256 _startDate, uint256 _endDate, string memory _alt1, string memory _alt2) public {
-        require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Regional")) ||
-            keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("National")), "ERR4"); // checks that the userType is "Regional" or "National"
+        require(keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("Admin")) ||
+            keccak256(bytes(_users[msg.sender]._stringUser["UserType"])) == keccak256(bytes("SuperAdmin")), "ERR4"); // checks that the userType is "Admin" or "SuperAdmin"
+        require(_startDate > block.timestamp && _endDate > block.timestamp, "ERR12");
         require(keccak256(bytes(_title)) != keccak256(bytes("")) && keccak256(bytes(_description)) != keccak256(bytes(""))&& 
-                keccak256(bytes(_alt1)) != keccak256(bytes("")) && keccak256(bytes(_alt2)) != keccak256(bytes("")), "ERR12");
-       // require(_startDate > block.timestamp , "ERR12.1");
-        require( _endDate > block.timestamp, "ERR12.2");
+                keccak256(bytes(_alt1)) != keccak256(bytes("")) && keccak256(bytes(_alt2)) != keccak256(bytes("")), "ERR29");
+        string memory _region = _users[msg.sender]._stringUser["Region"];
+        
+        // Checks that there is an odd number of people that needs to approve the case to avoid a tie
+        require(_addressArrayStorage[ string(abi.encodePacked(_region, _users[msg.sender]._stringUser["UserType"] )) ].length % 2 != 0, "ERR31");
 
-        _uintStorage["caseNumber"] = SafeMath.add(_uintStorage["caseNumber"], 1); // "Global" Case Number Counter
+        _uintStorage["caseNumber"] = _uintStorage["caseNumber"].add(1); // "Global" Case Number Counter
         uint256 caseNumber = _uintStorage["caseNumber"];
 
         // This creates a case
-        string memory _region = _users[msg.sender]._stringUser["Region"];
         _cases[caseNumber]._stringCase["Title"] = _title;
         _cases[caseNumber]._stringCase["Description"] = _description;
         _cases[caseNumber]._stringCase["Region"] = _region;     // Sets proposals region to same as the creator of the case
         
         // Calculate half of the votes needed +1
-        _cases[caseNumber]._uintCase["ApprovalsNeeded"] = 
-        SafeMath.div(
-            SafeMath.add(
-                SafeMath.div(
-                    SafeMath.mul(
-                        _addressArrayStorage[ string(abi.encodePacked(_region, _users[msg.sender]._stringUser["UserType"] )) ].length, 
-                    10),
-                2),
-            5),
-        10);
-
-        // Checks that there is an odd number of people that needs to approve the case, odd number of poeple avoids deadlock
-        require(_cases[caseNumber]._uintCase["ApprovalsNeeded"] % 2 != 0, "ERR5");
+        _cases[caseNumber]._uintCase["ApprovalsNeeded"] = _addressArrayStorage[ string(abi.encodePacked(_region, _users[msg.sender]._stringUser["UserType"] )) ].length.mul(10).div(2).add(5).div(10);
         
         // Counts total voters (TotalVotes = Standard + Regional + National).
         _cases[caseNumber]._uintCase["TotalVotes"] = 
-            SafeMath.add(_addressArrayStorage[ string(abi.encodePacked(_region,"National")) ].length, 
-                SafeMath.add(_addressArrayStorage[ string(abi.encodePacked(_region,"Standard")) ].length, 
-                                _addressArrayStorage[ string(abi.encodePacked(_region,"Regional")) ].length));
+            _addressArrayStorage[ string(abi.encodePacked(_region,"SuperAdmin")) ].length
+            .add(_addressArrayStorage[ string(abi.encodePacked(_region,"Admin")) ].length)
+            .add(_addressArrayStorage[ string(abi.encodePacked(_region,"Standard")) ].length);
 
         // adding mandatory first alternative to Array and giving it all the votes
         _cases[caseNumber]._stringArrayCase["Alt"].push("Not voted");
@@ -128,7 +121,6 @@ contract Case is MultiSig {
 
         _cases[caseNumber]._uintCase["StartDate"] = _startDate;
         _cases[caseNumber]._uintCase["EndDate"] = _endDate;
-        emit approvalsE(_startDate, _endDate);
         _cases[caseNumber]._boolCase["openForVoting"] = false;
         _cases[caseNumber]._boolCase["CaseDeactivated"] = false;
         
@@ -149,8 +141,8 @@ contract Case is MultiSig {
                     false,      "Not voted"))
         );
 
-        _cases[caseNumber]._uintCase["ApprovalsSigned"] = 0;                 // Initialize approvals
-        _uintArrayStorage["WaitingForApproval"].push(caseNumber);    // Add to waiting list
+        _cases[caseNumber]._uintCase["ApprovalsSigned"] = 0;        // Initialize approvals
+        _uintArrayStorage["WaitingForApproval"].push(caseNumber);   // Add to waiting list
 
         emit confirmationE(true);
         emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
@@ -164,12 +156,12 @@ contract Case is MultiSig {
         
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
-                SafeMath.sub(_cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]], 1); // SUBTRACT
+                _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]].sub(1); // SUBTRACT
         } else { // Has not voted
             _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] = true; // Voting = TRUE
-            _cases[_caseNumber]._uintArrayCase["Alt"][0] = SafeMath.sub(_cases[_caseNumber]._uintArrayCase["Alt"][0], 1); // SUBTRACT
+            _cases[_caseNumber]._uintArrayCase["Alt"][0] = _cases[_caseNumber]._uintArrayCase["Alt"][0].sub(1); // SUBTRACT
         }
-        _cases[_caseNumber]._uintArrayCase["Alt"][_optionVoted] = SafeMath.add(_cases[_caseNumber]._uintArrayCase["Alt"][_optionVoted], 1); // ADD
+        _cases[_caseNumber]._uintArrayCase["Alt"][_optionVoted] = _cases[_caseNumber]._uintArrayCase["Alt"][_optionVoted].add(1); // ADD
 
         uint256 oldVote = _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))];
         _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] = _optionVoted; // Map msg.sender => _optionVoted
@@ -213,6 +205,7 @@ contract Case is MultiSig {
 
     function getApprovalsAndLimit(uint256 _caseNumber) public {
         require(_caseNumber <= _uintStorage["caseNumber"] && _caseNumber != 0, "ERR15");
+        require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR30");
         emit approvalsE(_cases[_caseNumber]._uintCase["ApprovalsSigned"], _cases[_caseNumber]._uintCase["ApprovalsNeeded"]);
     }
 

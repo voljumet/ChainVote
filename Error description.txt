@@ -4,7 +4,7 @@ Error codes
 1: Already initialized. -> Case.sol
 2: The "Region" or "Usertype" already exists. -> Case.sol
 3: Voting for case not ended, case cannot be closed yet. -> Case.sol
-4: "UserType" has to be "Regional" or "National". -> Case.sol
+4: "UserType" has to be "Admin" or "SuperAdmin". -> Case.sol
 5: Number of decitionmakers that needs to aprove cases is not an add number. -> Case.sol
 6: Case is open for voting, cannot be deactivated and has no approvals -> Case.sol
 7: Case is not open for voting yet. -> Case.sol
@@ -12,11 +12,11 @@ Error codes
 9: Voting for this case has ended. -> Case.sol
 10: This case has been deactivated. -> Case.sol
 11: Case does not exist. -> Case.sol
-12: Fields cannot be empty. -> Case.sol
+12: Startdate and/or endDate has to be after current time. -> Case.sol
 13: Case does not exist. -> Case.sol
 14: Case does not exist. -> Case.sol
 15: Case does not exist. -> Case.sol
-16: "UserType" is not "Regional" or "National". -> MultiSig.sol
+16: "UserType" is not "Admin" or "SuperAdmin". -> MultiSig.sol
 17: Case does not exist. -> MultiSig.sol
 18: This address has already approved this case. -> MultiSig.sol
 19: Case open for voting, cant be approved. -> MultiSig.sol
@@ -26,8 +26,9 @@ Error codes
 23: OnlyOwners required. -> Case.sol
 24: Contract has to not be paused -> Proxy.sol
 25: Contract has to be paused -> Proxy.sol
-26: currentAddress is not the same as
+26: functionContractAddress cannot be empty, use upgrade function to assign function contract address. -> Proxy.sol
 27: User is not superadmin and does not have permission to run this function -> multisig.sol
 28: Requires that no approvals has been signed yet -> Case.sol
-29: 
-30: 
+29: Fields cannot be empty. -> Case.sol
+30: Case has already been approved. -> Case.sol
+31: Your userType has to be an odd number to avoid a tie -> Case.sol
