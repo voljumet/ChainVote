@@ -198,7 +198,12 @@ async function moreInfoy(_caseNumber) {
             result.innerText =  "Approvals: "+ numberOfApprovals+ " of " + limit; 
       });
   }
-
+  Moralis.Web3.onAccountsChanged(function(accounts) {
+    // window.location.replace("http://www.w3schools.com");
+    location.hash = "runLogOut";
+    location.href = 'login.html' + location.hash ;
+  
+  });
 AddCardsToPage()
 //moreInfo(1)
 

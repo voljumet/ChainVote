@@ -139,6 +139,12 @@ doit()
 openUserInfo();
 
 */
+function reloadUrl(){
+  if(location.hash == "#runLogOut"){
+    logOut()
+  }
+  location.hash=""
+}
 
 
 
@@ -317,3 +323,4 @@ checkUserType();
 Moralis.Web3.onAccountsChanged(function(accounts) {
   logOut()
 });
+reloadUrl()

@@ -103,5 +103,11 @@ async function checkUserType() {
     showElment(document.getElementById('createCaseHerf'));
   }
 }
+Moralis.Web3.onAccountsChanged(function(accounts) {
+  // window.location.replace("http://www.w3schools.com");
+  location.hash = "runLogOut";
+  location.href = 'login.html' + location.hash ;
+
+});
 
 getNewCaseNumber();

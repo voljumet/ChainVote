@@ -134,9 +134,7 @@ https://templatemo.com/tm-538-digital-trend
             <button type="button" id="logout" class="fadeIn second"  >Logout</button>
           
               <!-- Remind Passowrd -->
-              <div id="formFooter">
-                <a class="underlineHover" href="#">Forgot Password?</a>
-              </div>
+              
           
             </div>
           </div>
@@ -174,31 +172,6 @@ https://templatemo.com/tm-538-digital-trend
     
 
     <!--Deadline function -->
-    <script>
-      var i = 0;
-      function move(time) {
-        if (i == 0) {
-          i = 1;
-          var elem = document.getElementById('myBar');
-          elem.style.backgroundColor = '#4CAF50';
-          var width = 10;
-          var id = setInterval(frame, time);
-          function frame() {
-            if (width >= time) {
-              clearInterval(id);
-              i = 0;
-            } else {
-              width++;
-              elem.style.width = width + '%';
-              if (width == time) {
-                elem.style.backgroundColor = 'red';
-              }
-            }
-          }
-        }
-      }
-    </script>
-
     </script>
     
   </body>

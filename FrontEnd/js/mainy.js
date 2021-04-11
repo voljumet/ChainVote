@@ -139,7 +139,11 @@ function timeIt(date, timeBar, _openForVoting) {
 ///////////////////////////
 // Render Case Card on the Index page
 async function AddCardsToPage() {
-  user = await Moralis.User.current();
+  user = await Moralis.User.current()
+  if(!user){
+    alert("Please Log in")
+    location.href = 'login.html' + location.hash ;
+  }
   let reuslt = await Moralis.Cloud.run('Cases', {});
 
   console.log("userRegion: "+ user.get("Region"))

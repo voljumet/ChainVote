@@ -17,7 +17,8 @@ function showCase(
   _description,
   _endDate,
   _totalVotes,
-  _UintAlt
+  _UintAlt,
+  _stratDate
 ) {
   var totalVotes = { totalVotes: _totalVotes };
   w3.displayObject('total-votes-vote', totalVotes);
@@ -25,7 +26,7 @@ function showCase(
   var caseNum = { proposal_number: _number };
   w3.displayObject('case-num-vote', caseNum);
 
-  var timeLeft = { timeLeft: timeIt(_endDate) };
+  var timeLeft = { timeLeft: timeIt(_stratDate) };
   w3.displayObject('time-left-vote', timeLeft);
 
   const cardy = document.createElement('ul');
@@ -109,7 +110,8 @@ async function AddCaseToPage(_caseNumber) {
           element.attributes.description,
           element.attributes.endDate,
           element.attributes.totalVotes,
-          element.attributes.UintAlt
+          element.attributes.UintAlt,
+          element.attributes.startDate
         )
       );
     }
@@ -225,6 +227,13 @@ function disapleButtons(){
   document.getElementById('confirm-myVote').disabled=true;
   document.getElementById('change-myvote').disabled=true;
 }
+
+Moralis.Web3.onAccountsChanged(function(accounts) {
+  // window.location.replace("http://www.w3schools.com");
+  location.hash = "runLogOut";
+  location.href = 'login.html' + location.hash ;
+
+});
 
 
 
