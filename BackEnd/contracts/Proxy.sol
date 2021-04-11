@@ -11,13 +11,13 @@ contract Proxy is MultiSig {
 
         require(!_boolStorage["initialized"], "ERR1");
         //This is to fool everyone
-        _uintStorage["neededApprovals"] = 0;
-        _boolStorage["instanceInProgress"] = true;
+        _uintStorage["ApprovalsNeeded"] = 0;
+        _boolStorage["InstanceInProgress"] = true;
         //Change it
         _boolStorage["paused"] = true;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
-            _addressArrayStorage["superAdmins"].push(_superAdminArray[i]);
+            _addressArrayStorage["SuperAdmin"].push(_superAdminArray[i]);
         }
         
          _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
@@ -32,14 +32,14 @@ contract Proxy is MultiSig {
         );
     }
 
-    function upgrade(address _newAddress) public superAdmin whenPaused {
-        
-        if(!_boolStorage["instanceInProgress"]){
+    function upgrade(address _newAddress) public whenPaused {
+        require(onlyOwners());
+        if(!_boolStorage["InstanceInProgress"]){
             createMultisigInstance();
         }
-        if(_uintStorage["neededApprovals"] == 0){
+        if(_uintStorage["ApprovalsNeeded"] == 0){
             _addressStorage["functionContractAddress"] = _newAddress;
-            _boolStorage["instanceInProgress"] = false;
+            _boolStorage["InstanceInProgress"] = false;
         }
     }
 
@@ -52,18 +52,20 @@ contract Proxy is MultiSig {
         _;
     }
     
-    function pause() public superAdmin whenNotPaused {
-        if(!_boolStorage["instanceInProgress"]){
+    function pause() public whenNotPaused {
+        require(onlyOwners());
+        if(!_boolStorage["InstanceInProgress"]){
             createMultisigInstance();
         }
-        if(_uintStorage["neededApprovals"] == 0){
+        if(_uintStorage["ApprovalsNeeded"] == 0){
             _boolStorage["paused"] = true;
-            _boolStorage["instanceInProgress"] = false;
+            _boolStorage["InstanceInProgress"] = false;
             _uintStorage["pauseTimer"] = (block.timestamp).add(604800);
          }
     }
     
-    function unPause() public superAdmin whenPaused{
+    function unPause() public whenPaused {
+        require(onlyOwners());
         if(_boolStorage["initialized"] && _uintStorage["pauseTimer"] < block.timestamp){
             _boolStorage["paused"] = false;
         } else {
