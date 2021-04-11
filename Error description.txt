@@ -32,3 +32,5 @@ Error codes
 29: Fields cannot be empty. -> Case.sol
 30: Case has already been approved. -> Case.sol
 31: Your userType has to be an odd number to avoid a tie -> Case.sol
+32: This case does not apply to your region -> Case.sol
+
