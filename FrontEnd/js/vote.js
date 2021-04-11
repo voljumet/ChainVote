@@ -16,7 +16,8 @@ function showCase(
   _stringAlternatives,
   _description,
   _endDate,
-  _totalVotes
+  _totalVotes,
+  _UintAlt
 ) {
   var totalVotes = { totalVotes: _totalVotes };
   w3.displayObject('total-votes-vote', totalVotes);
@@ -38,6 +39,7 @@ function showCase(
   caseDes.disabled = true;
   cardy.appendChild(caseDes);
 
+
   for (let i = 0; i < _stringAlternatives.length; i++) {
     const card = document.createElement('li');
     const labelInput = document.createElement('input');
@@ -49,7 +51,6 @@ function showCase(
     if(_endDate*1000 < now){
       labelInput.disabled = true;
       disapleButtons();
-      console.log("waat")
     }
     if (i == 0) {
       labelInput.checked = 'checked';
@@ -67,6 +68,7 @@ function showCase(
     card.append(div2);
     cardy.appendChild(card);
   }
+
   console.log(cardy);
   return cardy;
 }
@@ -106,7 +108,8 @@ async function AddCaseToPage(_caseNumber) {
           element.attributes.stringAlt,
           element.attributes.description,
           element.attributes.endDate,
-          element.attributes.totalVotes
+          element.attributes.totalVotes,
+          element.attributes.UintAlt
         )
       );
     }
@@ -223,8 +226,11 @@ function disapleButtons(){
   document.getElementById('change-myvote').disabled=true;
 }
 
-AddCaseToPage(globalCaseNumber);
-//getMyVote(globalCaseNumber)
+
+
+getMyVote(globalCaseNumber)
+AddCaseToPage(globalCaseNumber)
+
 
 
 

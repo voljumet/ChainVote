@@ -4,7 +4,7 @@ var web3 = new Web3(Web3.givenProvider);
 
 const tabele = document.getElementsByClassName('container2')[0];
 
-function createCard(_number, _title, _stratDate, _endDate, _openForVoting) {
+function createCard(_number, _title, _stratDate, _endDate, _openForVoting, _uintAlt, _stingAlt) {
   const monthDiv = document.createElement('div');
 
   const month = document.createElement('u');
@@ -51,6 +51,13 @@ function createCard(_number, _title, _stratDate, _endDate, _openForVoting) {
     openForVoting.innerHTML = 'Voting Closed'.fontsize(5).fontcolor('black');
   }
 
+  var voteResult = _stingAlt[indexOfMax(_uintAlt)];
+  const result = document.createElement('h2')
+  result.innerHTML = 'Result: '+ voteResult
+
+  
+  
+
   monthDiv.appendChild(month);
   card.appendChild(monthDiv);
   card.append(tapNumber);
@@ -61,6 +68,9 @@ function createCard(_number, _title, _stratDate, _endDate, _openForVoting) {
   card.append(pro);
   pro.appendChild(bar);
   card.appendChild(openForVoting);
+  if(_endDate*1000 < now ){
+    card.appendChild(result);
+  }
 
   return card;
 }
@@ -145,12 +155,31 @@ async function AddCardsToPage() {
         element.attributes.title,
         element.attributes.startDate,
         element.attributes.endDate,
-        element.attributes.openForVoting
+        element.attributes.openForVoting,
+        element.attributes.uintAlt,
+        element.attributes.stringAlt
       )
     );
     console.log('id:' + element.id);
     console.log('alt1:' + element.attributes.uintAlt[1]);
   });
+}
+function indexOfMax(arr) {
+  if (arr.length === 0) {
+      return -1;
+  }
+
+  var max = arr[0];
+  var maxIndex = 0;
+
+  for (var i = 1; i < arr.length; i++) {
+      if (arr[i] > max) {
+          maxIndex = i;
+          max = arr[i];
+      }
+  }
+
+  return maxIndex;
 }
 
 
@@ -223,4 +252,12 @@ input.addEventListener('keyup', function (event) {
     event.preventDefault();
     document.getElementById('search-button').click();
   }
+});
+
+
+Moralis.Web3.onAccountsChanged(function(accounts) {
+  // window.location.replace("http://www.w3schools.com");
+  location.hash = "runLogOut";
+  location.href = 'login.html' + location.hash ;
+
 });
