@@ -129,9 +129,16 @@ function timeIt(date, timeBar, _openForVoting) {
 ///////////////////////////
 // Render Case Card on the Index page
 async function AddCardsToPage() {
+  user = await Moralis.User.current();
   let reuslt = await Moralis.Cloud.run('Cases', {});
+
+  console.log("userRegion: "+ user.get("Region"))
   console.log(reuslt);
-  reuslt.forEach((element) => {
+  var newArray = reuslt.filter(function (el) {
+    return el.attributes.region == user.get("Region")
+        
+  });
+  newArray.forEach((element) => {
     tabele.appendChild(
       createCard(
         element.attributes.caseNumber,
@@ -145,6 +152,7 @@ async function AddCardsToPage() {
     console.log('alt1:' + element.attributes.uintAlt[1]);
   });
 }
+
 
 AddCardsToPage();
 checkUserType();

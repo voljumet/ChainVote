@@ -77,8 +77,8 @@ function timeIt(date) {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
   console.log(days, hours, minutes, seconds);
   //Change the color of Time Bar based on date
-  if (days < 0 || hours < 0 || minutes < 0) {
-    return 'Case Closed';
+  if(days < 0 || hours < 0 || minutes < 0){
+    return "Case Closed"
   }
   if (days == 0) {
     return [hours + ' H ' + minutes + ' M '];
@@ -214,4 +214,6 @@ async function getMyVote(_caseNumber) {
 }
 
 AddCaseToPage(globalCaseNumber);
-getMyVote(globalCaseNumber);
+getMyVote(globalCaseNumber)
+
+
