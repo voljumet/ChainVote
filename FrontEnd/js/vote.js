@@ -45,6 +45,12 @@ function showCase(
     labelInput.id = 'option' + i;
     labelInput.name = 'selector';
     labelInput.value = i;
+    var now = new Date().getTime();
+    if(_endDate*1000 < now){
+      labelInput.disabled = true;
+      disapleButtons();
+      console.log("waat")
+    }
     if (i == 0) {
       labelInput.checked = 'checked';
     }
@@ -150,7 +156,6 @@ function showResult() {
 }
 
 document.getElementById('confirm-myVote').onclick = showResult;
-document.getElementById('button').onclick = getMyVote(globalCaseNumber);
 
 const caseTilteFiled = document.getElementById('case-title');
 const alternative_1_Field = document.getElementById('alt1');
@@ -213,7 +218,13 @@ async function getMyVote(_caseNumber) {
     });
 }
 
+function disapleButtons(){
+  document.getElementById('confirm-myVote').disabled=true;
+  document.getElementById('change-myvote').disabled=true;
+}
+
 AddCaseToPage(globalCaseNumber);
-getMyVote(globalCaseNumber)
+//getMyVote(globalCaseNumber)
+
 
 
