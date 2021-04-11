@@ -141,6 +141,7 @@ openUserInfo();
 */
 
 
+
 init = async() =>{
     hideElment(userInfo);
     window.web3 = await Moralis.Web3.enable();
@@ -169,7 +170,7 @@ login = async()=>{
         disaprearAlert(2000)
         initUser()
     } catch (error) {
-      showErrorAlert('Not Been signed');
+      showErrorAlert('Canceled');
       disaprearAlert(2000)
     }
 }
@@ -308,5 +309,11 @@ const userNameField= document.getElementById('username-input');
 const userTypeField= document.getElementById('usertype-input');
 const userRegionField= document.getElementById('region-input');
 
+window.location.href.split('#')[0]
+console.log(window.location.href)
 init();
 checkUserType();
+
+Moralis.Web3.onAccountsChanged(function(accounts) {
+  logOut()
+});
