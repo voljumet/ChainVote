@@ -573,6 +573,11 @@ span.psw {
   background: red;
   color: #eee;
 }
+#change-myvote[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
 #confirm-myVote {
   
   background: white;
@@ -590,6 +595,11 @@ span.psw {
 #confirm-myVote:hover{
   background: green;
   color: #eee;
+}
+#confirm-myVote[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
 
 .container6 {
