@@ -165,15 +165,20 @@ initUser = async () =>{
 login = async()=>{
     try {
         await Moralis.Web3.authenticate();
+        showSuccessAlert('You have been sigend in successfully');
+        disaprearAlert(2000)
         initUser()
     } catch (error) {
-        alert(error)
+      showErrorAlert('Not Been signed');
+      disaprearAlert(2000)
     }
 }
 
 logOut = async()=>{
   await  Moralis.User.logOut();
   hideElment(userInfo);
+  showSuccessAlert('You have been loged out successfully');
+  disaprearAlert(2000)
   initUser();
 }
 
@@ -206,9 +211,6 @@ openUerInfo = async()=>{
 saveUserInfo = async()=>{
 
     try {
-      
-        
-      
       createUser(userRegionField.value, userTypeField.value);
     } catch (error) {
         alert(error)
@@ -217,7 +219,7 @@ saveUserInfo = async()=>{
 }
 
 async function createUser(_region, _userType) {
-  alert("Region: " + _region + "\nUserType: " + _userType);
+  confirm("Region: " + _region + "\nUserType: " + _userType);
   window.web3 = await Moralis.Web3.enable();
   let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
   contractInstance.methods
@@ -226,14 +228,15 @@ async function createUser(_region, _userType) {
     .on("receipt", async function (receipt) {
       console.log(receipt);
       if (receipt.events.confirmationE.returnValues.confirmation ){
-        alert("user created successfully");
+        showSuccessAlert("user created successfully");
+        disaprearAlert(2000)
         user.set('UserType', userTypeField.value);
         user.set('username', userNameField.value);
         user.set('Region', userRegionField.value);
         user.set('Email', userEmailField.value);
       
         await user.save();
-        alert("user ifo saved successfully in Morakis");
+
         openUerInfo();
       }
     });
@@ -256,6 +259,29 @@ async function checkUserType(){
         showElment(document.getElementById("createCaseHerf"))
     }
 }
+
+function disaprearAlert(after){
+  window.setTimeout(function() {
+    $("#alert").hide('fade')
+  }, after);
+}
+
+
+function showErrorAlert(message) {
+  $('#alert').html("<div class='alert alert-danger' role='alert'>"
+  +"<strong>Error! </strong>"
+  +message+
+  "</div>");
+  $('#alert').show();
+}
+function showSuccessAlert(message) {
+  $('#alert').html("<div class='alert alert-success' role='alert'>"
+  +"<strong>Success! </strong>"
+  +message+
+  "</div>");
+  $('#alert').show();
+}
+
 
 
 
