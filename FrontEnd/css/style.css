@@ -34,6 +34,15 @@ a {
   font-weight: bold;
   margin-top: 25px;
   position: relative;
+  margin-left: 200px;
+}
+.lang-menu1 {
+  width: 100px;
+  text-align: right;
+  font-weight: bold;
+  margin-top: 25px;
+  position: relative;
+  margin-left: 50px;
 }
 .lang-menu .selected-lang {
   display: flex;
@@ -43,8 +52,26 @@ a {
   cursor: pointer;
   margin-top: 0px;
 }
+.lang-menu1 .selected-lang {
+  display: flex;
+  color: white;
+  justify-content: space-between;
+  line-height: 3;
+  cursor: pointer;
+  margin-top: 0px;
+}
 /* Flag setting*/
 .lang-menu .selected-lang:before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin-top: 10px;
+  background-image: url(https://www.countryflags.io/us/flat/32.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.lang-menu1 .selected-lang:before {
   content: '';
   display: inline-block;
   width: 32px;
@@ -68,8 +95,27 @@ a {
   border-radius: 5px;
   box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
 }
+.lang-menu1 ul {
+  margin: 0;
+  padding: 0;
+  display: none;
+  background-color: #fff;
+  border: 1px solid #f8f8f8;
+  position: absolute;
+  top: 45px;
+  left: 0px;
+  width: 120px;
+  border-radius: 5px;
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
+}
 
 .lang-menu ul li {
+  list-style: none;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+}
+.lang-menu1 ul li {
   list-style: none;
   text-align: left;
   display: flex;
@@ -82,12 +128,31 @@ a {
   padding: 5px 10px;
   display: block;
 }
+.lang-menu1 ul li a {
+  text-decoration: none;
+  width: 160px;
+  padding: 5px 10px;
+  display: block;
+}
 
 .lang-menu ul li:hover {
   background-color: #f2f2f2;
 }
+.lang-menu1 ul li:hover {
+  background-color: #f2f2f2;
+}
 
 .lang-menu ul li a:before {
+  content: '';
+  display: inline-block;
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+  margin-right: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.lang-menu1 ul li a:before {
   content: '';
   display: inline-block;
   width: 25px;
@@ -109,6 +174,9 @@ a {
 .lang-menu:hover ul {
   display: block;
 }
+.lang-menu1:hover ul {
+  display: block;
+}
 .avatar {
   position: relative;
   vertical-align: middle;
@@ -123,9 +191,10 @@ a {
   vertical-align: middle;
   width: 250px;
   height: 25px;
-  margin-left: 20px;
+  margin-left: 10px;
   margin-right: -10px;
   margin-top: 32px;
+  margin-bottom: 30px;
 }
 /* Float four columns side by side */
 .column {
@@ -215,25 +284,9 @@ a {
 
 /* Option */
 /* The container */
-.container1 {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
 
 /* Hide the browser's default radio button */
-.container1 input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
+
 
 /* Create a custom radio button */
 .checkmark {
@@ -249,9 +302,7 @@ a {
 /* On mouse-over, add a grey background color */
 
 /* When the radio button is checked, add a blue background */
-.container1 input:checked ~ .checkmark {
-  background-color: #2196f3;
-}
+
 
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark:after {
@@ -261,19 +312,10 @@ a {
 }
 
 /* Show the indicator (dot/circle) when checked */
-.container1 input:checked ~ .checkmark:after {
-  display: block;
-}
+
 
 /* Style the indicator (dot/circle) */
-.container1 .checkmark:after {
-  top: 9px;
-  left: 9px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
-}
+
 
 .confirm-button {
   color: green;
@@ -291,13 +333,11 @@ a {
 
 /*                 */
 .container2 {
-  display: flex;
+  display:contents;
   margin-left: 0px;
   margin-top: 50px;
   margin-right: -670px;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 1200px;
+
 }
 .Container:after {
   content: '';
@@ -573,11 +613,6 @@ span.psw {
   background: red;
   color: #eee;
 }
-#change-myvote[disabled]{
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
-}
 #confirm-myVote {
   
   background: white;
@@ -595,11 +630,6 @@ span.psw {
 #confirm-myVote:hover{
   background: green;
   color: #eee;
-}
-#confirm-myVote[disabled]{
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
 }
 
 .container6 {
@@ -747,5 +777,23 @@ textarea {
 #search-button:hover{
   color:#2196f3
 }
+#usertype-input{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 190px;
+  height: 40px;
+  font-size:large;
+  align-items:center;
 
+}
+label {
+  display:flex;
+  margin-left: 10px;
+  font: 1.6rem 'Fira Sans';
+ 
+}
 
+input,
+label {
+  margin: rem 0;
+}

@@ -21,19 +21,7 @@ async function createCase(
   alt1,
   alt2
 ) {
-  var array = [alt1, alt2];
-  alert(
-    'title: ' +
-      _title +
-      '\ndesciption: ' +
-      _description +
-      '\nstart date: ' +
-      _startDate +
-      '\nend date: ' +
-      _endDate +
-      '\nalternatives: ' +
-      array
-  );
+  try {
   window.web3 = await Moralis.Web3.enable();
   let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
   contractInstance.methods
@@ -47,14 +35,21 @@ async function createCase(
     )
     .send({ from: ethereum.selectedAddress })
     .on('receipt', function (receipt) {
-      console.log(receipt);
-      if (
-        receipt.events.confirmationE.returnValues.confirmationE ==
-        'Case created successfully'
-      ) {
-        alert('case Created successfully');
+      if (receipt.events.confirmationE.returnValues.confirmation){
+        showSuccessAlert("Case Created Successfully")
+        disaprearAlert(2000);
+      }
+      else{
+        showErrorAlert("Failed")
+        disaprearAlert(2000);
       }
     });
+  } catch (error) {
+    showErrorAlert("Failed")
+        disaprearAlert(2000);
+    
+  }
+  
 }
 
 document.getElementById('create-button').onclick = function () {
@@ -95,14 +90,39 @@ $('#endDate').datetimepicker({
   },
 });
 
-async function checkUserType() {
+ async function checkUserType() {
   user = await Moralis.User.current();
-  if (user.get('UserType') == 'Standard') {
-    hideElment(document.getElementById('createCaseHerf'));
-  } else {
-    showElment(document.getElementById('createCaseHerf'));
+  console.log("Sa:" + user)
+  if(!user){
+    alert("Please Log in")
+    location.href = 'login.html' + location.hash ;
   }
+  if (user.get('UserType') == 'Standard') {
+    alert("Access Denied")
+    location.href = 'index.html';
+  } 
 }
+function disaprearAlert(after){
+  window.setTimeout(function() {
+    $("#alert").hide('fade')
+  }, after);
+}
+
+function showErrorAlert(message) {
+  $('#alert').html("<div class='alert alert-danger' role='alert'>"
+  +"<strong>Error! </strong>"
+  +message+
+  "</div>");
+  $('#alert').show();
+}
+function showSuccessAlert(message) {
+  $('#alert').html("<div class='alert alert-success' role='alert'>"
+  +"<strong>Success! </strong>"
+  +message+
+  "</div>");
+  $('#alert').show();
+}
+
 Moralis.Web3.onAccountsChanged(function(accounts) {
   // window.location.replace("http://www.w3schools.com");
   location.hash = "runLogOut";
@@ -110,4 +130,6 @@ Moralis.Web3.onAccountsChanged(function(accounts) {
 
 });
 
+
+checkUserType();
 getNewCaseNumber();

@@ -111,117 +111,121 @@
       <div
         class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
       >
+      <div id="alert" class="hide" > </div>
         <div id="formContent-createCase">
           <div id="id03" class="proposal_number">
             <h2>Propoasal {{proposal_number}}</h2>
           </div>
+         
 
-          <div>
-            <input
-              required
+            <div>
+              <input
+              
               id="title"
               type="text"
               class="form-control"
               name="name"
               placeholder="Title"
               autocomplete="off"
+              required
             />
           </div>
 
           <div class="row">
             <div class="col-lg-12 col-12">
               <textarea
-                required
-                id="description"
-                class="form-control"
-                rows="6"
+              id="description"
+              class="form-control"
+              rows="6"
                 name="message"
                 placeholder="Proposal Discription"
                 autocomplete="off"
+                required
               ></textarea>
             </div>
 
             <div>
               <input
-                required
-                id="alternatives1"
-                type="text"
-                class="form-control"
-                name="name"
-                placeholder="Alternative Text"
-                autocomplete="off"
+              id="alternatives1"
+              type="text"
+              class="form-control"
+              name="name"
+              placeholder="Alternative Text"
+              autocomplete="off"
+              required
               />
             </div>
-
+            
             <div>
               <input
-                required
-                id="alternatives2"
-                type="text"
-                class="form-control"
-                name="name"
-                placeholder="Alternative Text"
-                autocomplete="off"
+              id="alternatives2"
+              type="text"
+              class="form-control"
+              name="name"
+              placeholder="Alternative Text"
+              autocomplete="off"
+              required
               />
             </div>
-
+            
             <div>
               <input
-                required
-                id="alternatives3"
-                type="text"
-                class="form-control"
-                name="name"
-                placeholder="Alternative Text"
-                autocomplete="off"
+              id="alternatives3"
+              type="text"
+              class="form-control"
+              name="name"
+              placeholder="Alternative Text"
+              autocomplete="off"
+              required
               />
             </div>
-
+            
             <div>
               <input
-                required
-                id="alternatives4"
-                type="text"
-                class="form-control"
-                name="name"
-                placeholder="Alternative Text"
-                autocomplete="off"
+              id="alternatives4"
+              type="text"
+              class="form-control"
+              name="name"
+              placeholder="Alternative Text"
+              autocomplete="off"
+              required
               />
             </div>
-
+            
             <div>
               <input
-                required
-                id="alternatives5"
-                type="text"
-                class="form-control"
-                name="name"
-                placeholder="Alternative Text"
-                autocomplete="off"
+              id="alternatives5"
+              type="text"
+              class="form-control"
+              name="name"
+              placeholder="Alternative Text"
+              autocomplete="off"
+              required
               />
             </div>
-
+            
             <div class="container mt-5 mb-5" style="width: 400px">
               <h3>Start Date</h3>
               <input
               
-                required
+              required
               
-                id="startDate"
-                class="form-control"
-                autocomplete="off"
+              id="startDate"
+              class="form-control"
+              autocomplete="off"
               />
               <h3>End Date</h3>
               <input
-                required
-                
-                id="endDate"
-                class="form-control"
-                autocomplete="off"
+              required
+              
+              id="endDate"
+              class="form-control"
+              autocomplete="off"
               />
             </div>
-
-            <button id="create-button">Create Case</button>
+         
+            
+            <button  id="create-button">Create Case</button>
           </div>
 
           <button class="form-control" id="cancel-buttony" name="cancel">
@@ -230,8 +234,6 @@
         </div>
       </div>
     </section>
-    <button onclick="myFunction()">Click me</button>
-    <p id="demo"></p>
 
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>

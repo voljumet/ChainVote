@@ -52,6 +52,7 @@ function createCard(_number, _title, _stratDate, _endDate, _openForVoting, _uint
   }
 
   var voteResult = _stingAlt[indexOfMax(_uintAlt)];
+  console.log( "vote: "+voteResult)
   const result = document.createElement('h2')
   result.innerHTML = 'Result: '+ voteResult
 
@@ -169,6 +170,7 @@ async function AddCardsToPage() {
   });
 }
 function indexOfMax(arr) {
+  console.log(arr)
   if (arr.length === 0) {
       return -1;
   }
@@ -199,8 +201,23 @@ async function checkUserType() {
   user = await Moralis.User.current();
   if (user.get('UserType') == 'Standard') {
     hideElment(document.getElementById('createCaseHerf'));
+    hideElment(document.getElementById('approveHerf'));
+    window.onload = function() {
+      if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+      }
+    }
+    
   } else {
     showElment(document.getElementById('createCaseHerf'));
+    showElment(document.getElementById('approveHerf'));
+    window.onload = function() {
+      if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+      }
+    }
   }
 }
 
@@ -210,7 +227,7 @@ async function search(_title) {
   document.getElementById('noMatch').innerText = '';
 
   let reuslt = await Moralis.Cloud.run('Cases', {});
-  console.log(reuslt);
+  console.log("result:" +reuslt);
   if (_title == '' && tempy == false) {
     AddCardsToPage();
   }
@@ -228,7 +245,9 @@ async function search(_title) {
           element.attributes.title,
           element.attributes.startDate,
           element.attributes.endDate,
-          element.attributes.openForVoting
+          element.attributes.openForVoting,
+          element.attributes.uintAlt,
+          element.attributes.stringAlt
         )
       );
       tempy = true;

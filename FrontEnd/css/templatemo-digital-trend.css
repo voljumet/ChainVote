@@ -228,9 +228,16 @@ https://templatemo.com/tm-538-digital-trend
   }
 
   .navbar-brand {
+    margin-left: 30px;
     color: var(--white-color);
     font-size: var(--h2-font-size);
   }
+  .navbar-brand1 {
+    margin-left: 30px;
+    color: var(--white-color);
+    font-size: var(--h2-font-size);
+  }
+
 
   .nav-link {
     color: var(--white-color);
@@ -260,6 +267,7 @@ https://templatemo.com/tm-538-digital-trend
      width: 60px;
      height: 60px;
      margin-top: 20px;
+     margin-left: 20px;
   }
 
   .navbar-expand-lg .navbar-nav .nav-link.contact:hover,

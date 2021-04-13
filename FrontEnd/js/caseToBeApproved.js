@@ -204,6 +204,15 @@ async function moreInfoy(_caseNumber) {
     location.href = 'login.html' + location.hash ;
   
   });
+
+  async function checkUserType() {
+    user = await Moralis.User.current();
+    if (user.get('UserType') == 'Standard') {
+      alert("Access Denied")
+      location.href = 'index.html';
+    } 
+  }
+checkUserType();
 AddCardsToPage()
 //moreInfo(1)
 

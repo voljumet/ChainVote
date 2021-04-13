@@ -161,12 +161,22 @@ initUser = async () =>{
         showElment(userProfileButton);
         showElment(document.getElementById("logout"));
         UserNameFront.innerText = user.get('username');
+        window.onload = function() {
+          if(!window.location.hash) {
+            console.log("wwerwer")
+            window.location = window.location + '#loaded';
+            window.location.reload();
+          }
+        }
     }else{
         showElment(userConnectButton);
         hideElment(userProfileButton);
         hideElment(document.getElementById("logout"));
         UserNameFront.innerText = "";
+        
     }
+   
+   
 }
 
 login = async()=>{
@@ -175,10 +185,12 @@ login = async()=>{
         showSuccessAlert('You have been sigend in successfully');
         disaprearAlert(2000)
         initUser()
+       
     } catch (error) {
       showErrorAlert('Canceled');
       disaprearAlert(2000)
     }
+    
 }
 
 logOut = async()=>{
@@ -218,36 +230,44 @@ openUerInfo = async()=>{
 saveUserInfo = async()=>{
 
     try {
-      createUser(userRegionField.value, userTypeField.value);
+      await createUser(userRegionField.value, userTypeField.value);
     } catch (error) {
-        alert(error)
+      showErrorAlert('Canceled');
+      disaprearAlert(2000)
     }
    
 }
 
 async function createUser(_region, _userType) {
-  confirm("Region: " + _region + "\nUserType: " + _userType);
-  window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
-  contractInstance.methods
-    .createUser(_region, _userType)
-    .send({ from: ethereum.selectedAddress })
-    .on("receipt", async function (receipt) {
-      console.log(receipt);
-      if (receipt.events.confirmationE.returnValues.confirmation ){
-        showSuccessAlert("user created successfully");
-        disaprearAlert(2000)
-        user.set('UserType', userTypeField.value);
-        user.set('username', userNameField.value);
-        user.set('Region', userRegionField.value);
-        user.set('Email', userEmailField.value);
+    if (confirm("Region: " + _region + "\nUserType: " + _userType)) {
+      window.web3 = await Moralis.Web3.enable();
+      let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+     
+      contractInstance.methods
+        .createUser(_region, _userType)
+        .send({ from: ethereum.selectedAddress })
+        .on("receipt", async function (receipt) {
+          if (receipt.events.confirmationE.returnValues.confirmation ){
+            showSuccessAlert("user created successfully");
+            disaprearAlert(2000)
+            user.set('UserType', userTypeField.value);
+            user.set('username', userNameField.value);
+            user.set('Region', userRegionField.value);
+            user.set('Email', userEmailField.value);
+            await user.save();
+            openUerInfo();
+          }
+               
+        });
+          
+    } else {
+      showErrorAlert('Canceled');
+      disaprearAlert(2000)
       
-        await user.save();
-
-        openUerInfo();
-      }
-    });
-    
+    }
+   
+  
+ 
 }
 
 closeButton = async()=>{
@@ -255,24 +275,11 @@ closeButton = async()=>{
     showElment(userProfileButton);
 }
 
-
-
-async function checkUserType(){
-    user = await Moralis.User.current();
-    if (user.get('UserType') == "Standard") {
-        hideElment(document.getElementById("createCaseHerf"))
-        
-    } else {
-        showElment(document.getElementById("createCaseHerf"))
-    }
-}
-
 function disaprearAlert(after){
   window.setTimeout(function() {
     $("#alert").hide('fade')
   }, after);
 }
-
 
 function showErrorAlert(message) {
   $('#alert').html("<div class='alert alert-danger' role='alert'>"
@@ -288,11 +295,6 @@ function showSuccessAlert(message) {
   "</div>");
   $('#alert').show();
 }
-
-
-
-
-
 
 hideElment = (element) => element.style.display = "none";
 showElment = (element) => element.style.display = "block";
@@ -318,9 +320,11 @@ const userRegionField= document.getElementById('region-input');
 window.location.href.split('#')[0]
 console.log(window.location.href)
 init();
-checkUserType();
 
 Moralis.Web3.onAccountsChanged(function(accounts) {
-  logOut()
+  var user = Moralis.User.current()
+  if(user){
+    logOut()
+  }
 });
 reloadUrl()
