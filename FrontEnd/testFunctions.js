@@ -41,8 +41,7 @@ async function createUser(_region, _userType) {
     .on("receipt", function (receipt) {
       console.log(receipt);
       if (
-        receipt.events.userCreated.returnValues.confirmation ==
-        "User Created successfully"
+        receipt.events.userCreated.returnValues.confirmation
       ) {
         alert("user created successfully");
       }
