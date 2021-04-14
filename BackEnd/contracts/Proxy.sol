@@ -1,34 +1,31 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity 0.7.5;
 
-
 import "./MultiSig.sol";
 
 contract Proxy is MultiSig {
-    using SafeMath for uint256;
 
     constructor(address[] memory _superAdminArray) {
-
         require(!_boolStorage["initialized"], "ERR1");
-        //This is to fool everyone
+
         _uintStorage["ApprovalsNeeded"] = 0;
         _boolStorage["InstanceInProgress"] = true;
-        //Change it
         _boolStorage["paused"] = true;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
             _addressArrayStorage["SuperAdmin"].push(_superAdminArray[i]);
         }
         
-         _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
+        _addressArrayStorage["SuperAdmin"].push(msg.sender);
+        _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
 
-        assert( keccak256(abi.encodePacked(
+        assert( bytes32(keccak256(abi.encodePacked(
                      _users[msg.sender]._stringUser["UserType"],
-                   _boolStorage["paused"]))
+                   _boolStorage["paused"])))
             ==
-                keccak256(abi.encodePacked(
+                bytes32(keccak256(abi.encodePacked(
                     "SuperAdmin",
-                    true))
+                    true)))
         );
     }
 
@@ -47,6 +44,7 @@ contract Proxy is MultiSig {
         require(!_boolStorage["paused"], "ERR24");
         _;
     }
+
     modifier whenPaused() {
         require(_boolStorage["paused"], "ERR25");
         _;
@@ -60,7 +58,7 @@ contract Proxy is MultiSig {
         if(_uintStorage["ApprovalsNeeded"] == 0){
             _boolStorage["paused"] = true;
             _boolStorage["InstanceInProgress"] = false;
-            _uintStorage["pauseTimer"] = (block.timestamp).add(604800);
+            _uintStorage["pauseTimer"] = (block.timestamp)+604800;
          }
     }
     
@@ -74,7 +72,6 @@ contract Proxy is MultiSig {
             _boolStorage["initialized"] = true;
         }
     }
-    
 
     // Fallback function, last call..
     fallback() payable external whenNotPaused {
@@ -93,6 +90,7 @@ contract Proxy is MultiSig {
             default {return(ptr, size)}
         }
     }
+
     // Solidity split the unnamed function into fallback() and recieve() in v 0.6.0
     receive() external payable {
         // custom function code

@@ -5,10 +5,7 @@ pragma abicoder v2;
 
 import "./MultiSig.sol";
 
-
 contract Case is MultiSig {
-
-    using SafeMath for uint256;
 
     event SigningRequestE(string title,uint256 caseNumber);
     event getCaseE(uint256 indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint256[] uintAlt, uint256 totalVotes, string region);
@@ -20,10 +17,9 @@ contract Case is MultiSig {
     event casesWaitingForApprovalE(uint[] casesWaitingForApproval);
     event myVoteE(string votedAlternative);
     
-    /* 
-        "receipt.events.userCreatedE.returnValues.confirmationE" in main.js
-        used for userCreatedE(x x, string confirmation)
-    */
+    /*  "receipt.events.userCreatedE.returnValues.confirmationE" in main.js
+     *   used for userCreatedE(x x, string confirmation)
+     */
 
 
     function createUser(string memory _region, string memory _userType) public {
@@ -50,17 +46,17 @@ contract Case is MultiSig {
         }
 
         // uint256 length = _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;     // check length of the array
-        assert(keccak256(abi.encodePacked(
+        assert(bytes32(keccak256(abi.encodePacked(
                     _users[msg.sender]._stringUser["Region"],
                     _users[msg.sender]._stringUser["UserType"]
                      // _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length
-                ))
+                )))
             ==
-            keccak256(abi.encodePacked(
+            bytes32(keccak256(abi.encodePacked(
                     _region,
                     _userType
                     // length += 1     
-                ))
+                )))
         );
         emit confirmationE(true);
     }
@@ -78,7 +74,7 @@ contract Case is MultiSig {
             clearFromWaiting(_caseNumber);
             _cases[_caseNumber]._boolCase["CaseDeactivated"] = true;
         }
-        assert(_cases[_caseNumber]._boolCase["OpenForVoting"] = false);
+        assert(!_cases[_caseNumber]._boolCase["OpenForVoting"]);
         emit confirmationE(true);
     }
 
@@ -106,7 +102,7 @@ contract Case is MultiSig {
         // Checks that there is an odd number of people that needs to approve the case to avoid a tie
         require(_addressArrayStorage[ string(abi.encodePacked(_region, _userType )) ].length % 2 != 0, "ERR31");
 
-        _uintStorage["CaseNumber"] = _uintStorage["CaseNumber"].add(1); // "Global" Case Number Counter
+        _uintStorage["CaseNumber"] += 1; // "Global" Case Number Counter
         uint256 caseNumber = _uintStorage["CaseNumber"];
 
         // This creates a case
@@ -114,20 +110,20 @@ contract Case is MultiSig {
         _cases[caseNumber]._stringCase["Description"] = _description;
         
         // Calculate half of the votes needed +1
-        _cases[caseNumber]._uintCase["ApprovalsNeeded"] = _addressArrayStorage[ string(abi.encodePacked(_region, _userType )) ].length.mul(10).div(2).add(5).div(10);
+        _cases[caseNumber]._uintCase["ApprovalsNeeded"] = (((_addressArrayStorage[ string(abi.encodePacked(_region, _userType )) ].length * 10) /2) +5) /10;
         
         // Counts total voters (TotalVotes = Standard + Regional + National).
         if(keccak256(bytes(_userType)) == keccak256(bytes("Admin"))){
             _cases[caseNumber]._stringCase["Region"] = _region; 
             _cases[caseNumber]._uintCase["TotalVotes"] = _addressArrayStorage[ string(abi.encodePacked(_region,"SuperAdmin")) ].length
-                                                        .add(_addressArrayStorage[ string(abi.encodePacked(_region,"Admin")) ].length)
-                                                        .add(_addressArrayStorage[ string(abi.encodePacked(_region,"Standard")) ].length);
+                                                        + _addressArrayStorage[ string(abi.encodePacked(_region,"Admin")) ].length
+                                                        + _addressArrayStorage[ string(abi.encodePacked(_region,"Standard")) ].length;
 
         } else if(keccak256(bytes(_userType)) == keccak256(bytes("SuperAdmin"))){
 
             _cases[caseNumber]._boolCase["National"] = true;
             _cases[caseNumber]._uintCase["TotalVotes"] = _addressArrayStorage["SuperAdmin"].length
-                .add(_addressArrayStorage["Admin"].length).add(_addressArrayStorage["Standard"].length);
+                + _addressArrayStorage["Admin"].length + _addressArrayStorage["Standard"].length;
         }
         
         // adding mandatory first alternative to Array and giving it all the votes
@@ -177,13 +173,12 @@ contract Case is MultiSig {
         require(keccak256(bytes(_users[msg.sender]._stringUser["Region"])) == keccak256(bytes(_cases[_caseNumber]._stringCase["Region"])) || _cases[_caseNumber]._boolCase["National"], "ERR32");
 
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
-            _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] = 
-                _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]].sub(1); // SUBTRACT
+            _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] -= 1; // SUBTRACT
         } else { // Has not voted
             _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] = true; // Voting = TRUE
-            _cases[_caseNumber]._uintArrayCase["Alt"][0] = _cases[_caseNumber]._uintArrayCase["Alt"][0].sub(1); // SUBTRACT
+            _cases[_caseNumber]._uintArrayCase["Alt"][0] -= 1; // SUBTRACT
         }
-        _cases[_caseNumber]._uintArrayCase["Alt"][_optionVoted] = _cases[_caseNumber]._uintArrayCase["Alt"][_optionVoted].add(1); // ADD
+        _cases[_caseNumber]._uintArrayCase["Alt"][_optionVoted] += 1; // ADD
 
         uint256 oldVote = _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))];
         _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] = _optionVoted; // Map msg.sender => _optionVoted
@@ -201,6 +196,17 @@ contract Case is MultiSig {
         emit casesWaitingForApprovalE(_cases[_caseNumber]._uintArrayCase["Alt"]);
     }
 
+    function getMyVote(uint256 _caseNumber) public {
+        require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR13");
+        emit myVoteE( _cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
+    }
+
+    function getApprovalsAndLimit(uint256 _caseNumber) public {
+        require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR15");
+        require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR30");
+        emit approvalsE(_cases[_caseNumber]._uintCase["ApprovalsSigned"], _cases[_caseNumber]._uintCase["ApprovalsNeeded"]);
+    }
+
     // function getCase(uint256 _caseNumber) public {
     //     require(!_cases[_caseNumber]._boolCase["CaseDeactivated"], "ERR10");
     //     require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR11");
@@ -211,15 +217,6 @@ contract Case is MultiSig {
     //                 _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"]);
     // }
 
-    function getVoters(uint _caseNumber) public returns(address[] memory){
-
-    }
-
-    function getMyVote(uint256 _caseNumber) public {
-        require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR13");
-        emit myVoteE( _cases[_caseNumber]._stringArrayCase["Alt"][ _cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))] ] );
-    }
-
     // function getUserArrayLength(string memory _region, string memory _userType) public {
     //     emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
     // }
@@ -228,12 +225,6 @@ contract Case is MultiSig {
     //     require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR14");
     //     emit totalVotesE(_cases[_caseNumber]._uintCase["TotalVotes"]);
     // }
-
-    function getApprovalsAndLimit(uint256 _caseNumber) public {
-        require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR15");
-        require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR30");
-        emit approvalsE(_cases[_caseNumber]._uintCase["ApprovalsSigned"], _cases[_caseNumber]._uintCase["ApprovalsNeeded"]);
-    }
 
     // function getUser() public {
     //     emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
