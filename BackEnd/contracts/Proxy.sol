@@ -14,8 +14,10 @@ contract Proxy is MultiSig {
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
             _addressArrayStorage["SuperAdmin"].push(_superAdminArray[i]);
+            _users[_superAdminArray[i]]._boolUser["Init"] = true;
         }
         
+        _users[msg.sender]._boolUser["Init"] = true;
         _addressArrayStorage["SuperAdmin"].push(msg.sender);
         _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
 

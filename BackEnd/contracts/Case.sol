@@ -21,6 +21,10 @@ contract Case is MultiSig {
      *   used for userCreatedE(x x, string confirmation)
      */
 
+     function balance() public payable {
+         
+     }
+
 
     function createUser(string memory _region, string memory _userType) public {
         bytes32 _regionStorageKecc = keccak256(bytes(_users[msg.sender]._stringUser["Region"]));
@@ -38,12 +42,27 @@ contract Case is MultiSig {
             _users[msg.sender]._stringUser["UserType"] = _userType;
             
         }
+        _users[msg.sender]._uintUser["Moved"] = block.timestamp;
 
         if(!_users[msg.sender]._boolUser["Init"]){
             _users[msg.sender]._boolUser["Init"] = true;
-            _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].push(msg.sender); // adds msg.sender to addressArrayStorage[ _region+_userType ]
-            _addressArrayStorage[_userType].push(msg.sender); // adds msg.sender to addressArrayStorage[ _userType ]
+        } else {
+            for(uint256 i = 0; i < _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length; i++){
+                if(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ][i] == msg.sender){
+                    _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ][i] = _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ][ _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length - 1];
+                    _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].pop();
+                }
+            }
+            for(uint256 i = 0; i < _addressArrayStorage[_userType].length; i++){
+                if(_addressArrayStorage[_userType][i] == msg.sender){
+                    _addressArrayStorage[_userType][i] = _addressArrayStorage[_userType][ _addressArrayStorage[_userType].length - 1];
+                    _addressArrayStorage[_userType].pop();
+                }
+            }
         }
+        _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].push(msg.sender); // adds msg.sender to addressArrayStorage[ _region+_userType ]
+        _addressArrayStorage[_userType].push(msg.sender); // adds msg.sender to addressArrayStorage[ _userType ]
+    
 
         // uint256 length = _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;     // check length of the array
         assert(bytes32(keccak256(abi.encodePacked(
@@ -100,7 +119,11 @@ contract Case is MultiSig {
         string memory _region = _users[msg.sender]._stringUser["Region"];
         
         // Checks that there is an odd number of people that needs to approve the case to avoid a tie
-        require(_addressArrayStorage[ string(abi.encodePacked(_region, _userType )) ].length % 2 != 0, "ERR31");
+        if(keccak256(bytes(_userType)) == keccak256(bytes("Admin"))){
+            require(_addressArrayStorage[ string(abi.encodePacked(_region, _userType )) ].length % 2 != 0, "ERR31");
+        } else if(keccak256(bytes(_userType)) == keccak256(bytes("SuperAdmin"))){
+            require(_addressArrayStorage["SuperAdmin"].length % 2 != 0, "ERR34");
+        }
 
         _uintStorage["CaseNumber"] += 1; // "Global" Case Number Counter
         uint256 caseNumber = _uintStorage["CaseNumber"];
@@ -112,6 +135,7 @@ contract Case is MultiSig {
         // Calculate half of the votes needed +1
         _cases[caseNumber]._uintCase["ApprovalsNeeded"] = (((_addressArrayStorage[ string(abi.encodePacked(_region, _userType )) ].length * 10) /2) +5) /10;
         
+        _cases[caseNumber]._uintCase["CaseCreated"] = block.timestamp;
         // Counts total voters (TotalVotes = Standard + Regional + National).
         if(keccak256(bytes(_userType)) == keccak256(bytes("Admin"))){
             _cases[caseNumber]._stringCase["Region"] = _region; 
@@ -171,6 +195,7 @@ contract Case is MultiSig {
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alt"].length, "ERR8");   // Checks that the voting option exists
         require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp && _cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9" );
         require(keccak256(bytes(_users[msg.sender]._stringUser["Region"])) == keccak256(bytes(_cases[_caseNumber]._stringCase["Region"])) || _cases[_caseNumber]._boolCase["National"], "ERR32");
+        require(_users[msg.sender]._uintUser["Moved"] <= _cases[_caseNumber]._uintCase["CaseCreated"], "");
 
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] -= 1; // SUBTRACT
@@ -220,6 +245,10 @@ contract Case is MultiSig {
     // function getUserArrayLength(string memory _region, string memory _userType) public {
     //     emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
     // }
+
+    function usersOfType(string memory _userType) public view returns(uint usersOT){
+        return _addressArrayStorage[_userType].length;
+    }
     
     // function getTotalVotes(uint256 _caseNumber) public {
     //     require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR14");

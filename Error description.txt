@@ -31,6 +31,9 @@ Error codes
 28: Requires that no approvals has been signed yet -> Case.sol
 29: Fields cannot be empty. -> Case.sol
 30: Case has already been approved. -> Case.sol
-31: Your userType has to be an odd number to avoid a tie -> Case.sol
-32: This case does not apply to your region -> Case.sol
+31: Number of userType has to be an odd number to avoid a tie. -> Case.sol
+32: This case does not apply to your region. -> Case.sol
+33: You have moved after the case was created. -> Case.sol
+34: Number of SuperAdmin has to be an odd number to avoid a tie. -> Case.sol
+35: 
 

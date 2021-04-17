@@ -6,15 +6,35 @@ const truffleAssert = require('truffle-assertions');
   contract('Proxy', async function (accounts) {
     let instance;
 
-    beforeEach(async function () {
+    //
+    //  The deployment contract creates 3x SuperAdmin, two as input and one as msg.sender !!!
+    //
+
+    // beforeEach(async function () {
+    it('Should get the deployed case, and point caseOne to proxys address', async function () {
       let proxyCase = await Proxey.deployed();
       instance = await CaseOne.at(proxyCase.address);
     });
+
+    // it('Should return 3 users of superAdmin', async function () {
+    //   let value = await instance.usersOfType('SuperAdmin', { from: accounts[0] })
+    //   console.log("SuperAdmin: "+value);
+    //   assert(value == 3, "not 3 of the type SuperAdmin");
+      
+    // });
+
+    // it('Should return 0 users of Admin', async function () {
+    //   let value = await instance.usersOfType('Admin', { from: accounts[0] })
+    //   console.log("Admin: "+value);
+    //   assert(value == 0, "not 0 of the type Admin");
+      
+    // });
+   
     
     //////////////////Create User//////////////////////////
     it('Should create a user of any type', async function () {
       await truffleAssert.passes(
-        instance.createUser('Grimstad', 'SuperAdmin', { from: accounts[0] }),
+        instance.createUser('Grimstad', 'Admin', { from: accounts[0] }),
         truffleAssert.ErrorType.REVERT);
       await truffleAssert.passes(
         instance.createUser('Grimstad', 'Admin', { from: accounts[1] }),
@@ -28,7 +48,7 @@ const truffleAssert = require('truffle-assertions');
         truffleAssert.ErrorType.REVERT
       );
       await truffleAssert.passes(
-        instance.createUser('Grimstad', 'Admin', { from: accounts[4] }),
+        instance.createUser('Grimstad', 'Standard', { from: accounts[4] }),
         truffleAssert.ErrorType.REVERT
       );
       await truffleAssert.passes(
@@ -43,7 +63,7 @@ const truffleAssert = require('truffle-assertions');
         truffleAssert.ErrorType.REVERT
       );
       await truffleAssert.passes(
-        instance.createUser('Grimstad', 'Standard', { from: accounts[7] }),
+        instance.createUser('Grimstad', 'SuperAdmin', { from: accounts[7] }),
         truffleAssert.ErrorType.REVERT
       );
       await truffleAssert.passes(
@@ -56,8 +76,15 @@ const truffleAssert = require('truffle-assertions');
       );
     });
 
+    // it('Should return 7 users of superAdmin', async function () {
+    //   let value = await instance.usersOfType('Admin', { from: accounts[0] })
+    //   console.log(value);
+    //   assert(value == 7, "not 7 of the type Admin");
+      
+    // });
+
     it('Should not be able to change userType or Region on account to the same', async function () {
-      await truffleAssert.passes(
+      await truffleAssert.fails(
         instance.createUser('Grimstad', 'Admin', { from: accounts[1] }),
         truffleAssert.ErrorType.REVERT
       );
@@ -78,7 +105,10 @@ const truffleAssert = require('truffle-assertions');
       
       ///////////////// Create Case //////////////////////////
       
-      it('UserType Admin can create cases', async function () {
+    it('UserType Admin can create cases', async function () {
+      // let value = await instance.usersOfType('Admin', { from: accounts[0] })
+      // console.log("Admin: "+value);
+      // assert(value == 3, "not 4 of the type Admin");
         // Then test createCase
         await truffleAssert.passes(
           instance.createCase('First Case', 'Descripton',
@@ -89,49 +119,57 @@ const truffleAssert = require('truffle-assertions');
         });
         
         
-        it('UserType SuperAdmin can create a cases', async function () {
+    it('UserType SuperAdmin can create a cases', async function () {
+      // let value = await instance.usersOfType('SuperAdmin', { from: accounts[0] })
+      // console.log("SuperAdmin: "+value);
           await truffleAssert.passes(
             instance. createCase('First Case', 'Descripton',
             Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-            'yes', 'no', { from: accounts[0] }),
+            'yes', 'no', { from: accounts[9] }),
             truffleAssert.ErrorType.REVERT
             );
-          });
+    });
           
-          it('User type Standard can not create a case', async function () {
+    it('User type Standard can NOT create a case', async function () {
             await truffleAssert.fails(
               instance. createCase('First Case', 'Descripton',
               Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
               'yes', 'no', { from: accounts[2] }),
               truffleAssert.ErrorType.REVERT
               );
-            });
+    });
+
             
-        it('Odd number of Admin/SuperAdmin users can not create a case (2)', async function () {
-  
-         await instance.createUser('Grimstad', 'Standard', {from: accounts[4] });
+    it('Even number of Admin users can NOT create a case', async function () {
+      // let value = await instance.usersOfType('Admin', { from: accounts[5] })
+      // console.log("Admin: " + value);
+      instance.createUser('Grimstad', 'Admin', { from: accounts[5] })
          await truffleAssert.fails(
            instance. createCase('First Case', 'Descripton',
              Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-             'yes', 'no', { from: accounts[1] }),
+             'yes', 'no', { from: accounts[5] }),
            truffleAssert.ErrorType.REVERT
          );
-        });
-    
-            /*
+    });
     
 
-       it('Odd number of Admin/SuperAdmin users can not create a case', async function () {
-    
-         await instance.createUser('Grimstad', 'Admin', {from: accounts[1] });
-         await instance.createUser('Grimstad', 'Admin', {from: accounts[2] });
+    it('Even number of SuperAdmin users can NOT create a case', async function () {
+        let value = await instance.usersOfType('Admin', { from: accounts[5] })
+      console.log("Admin: " + value);
+         await instance.createUser('Grimstad', 'SuperAdmin', {from: accounts[5] });
+        //  await instance.createUser('Grimstad', 'Admin', {from: accounts[2] });
          await truffleAssert.fails(
            instance. createCase('First Case', 'Descripton',
              Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-             'yes', 'no', { from: accounts[1] }),
+             'yes', 'no', { from: accounts[9] }),
            truffleAssert.ErrorType.REVERT
          );
-       });
+      await instance.createUser('Grimstad', 'Standard', { from: accounts[5] }); // reverts back to a standard
+      value = await instance.usersOfType('SuperAdmin', { from: accounts[5] })
+      console.log("Admin: " + value);
+    });
+    
+
      
 
     //    it('Should get a existing case', async function () {
@@ -160,10 +198,10 @@ const truffleAssert = require('truffle-assertions');
          
 
         it('Should delete a case', async function () {
-        await instance.createUser('Grimstad', 'SuperAdmin', { from: accounts[1] });
+
         await instance.createCase('First Case', 'Descripton',
            Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-           'yes', 'no', {from: accounts[1],});
+           'yes', 'no', {from: accounts[9],});
         await truffleAssert.passes(instance.deleteCase(1),truffleAssert.ErrorType.REVERT
            );
        });
@@ -179,6 +217,7 @@ const truffleAssert = require('truffle-assertions');
            );
        });
         
+            /*
 
     /////////////////////////////////////////////////////////
     //////////////////////////// ApprovalZ /////////////////////////
