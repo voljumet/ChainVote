@@ -22,34 +22,31 @@ async function createCase(
   alt2
 ) {
   try {
-  window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
-  contractInstance.methods
-    .createCase(
-      _title,
-      _description,
-      _startDate / 1000,
-      _endDate / 1000,
-      alt1,
-      alt2
-    )
-    .send({ from: ethereum.selectedAddress })
-    .on('receipt', function (receipt) {
-      if (receipt.events.confirmationE.returnValues.confirmation){
-        showSuccessAlert("Case Created Successfully")
-        disaprearAlert(2000);
-      }
-      else{
-        showErrorAlert("Failed")
-        disaprearAlert(2000);
-      }
-    });
+    window.web3 = await Moralis.Web3.enable();
+    let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+    contractInstance.methods
+      .createCase(
+        _title,
+        _description,
+        _startDate / 1000,
+        _endDate / 1000,
+        alt1,
+        alt2
+      )
+      .send({ from: ethereum.selectedAddress })
+      .on('receipt', function (receipt) {
+        if (receipt.events.confirmationE.returnValues.confirmation) {
+          showSuccessAlert('Case Created Successfully');
+          disaprearAlert(2000);
+        } else {
+          showErrorAlert('Failed');
+          disaprearAlert(2000);
+        }
+      });
   } catch (error) {
-    showErrorAlert("Failed")
-        disaprearAlert(2000);
-    
+    showErrorAlert('Failed');
+    disaprearAlert(2000);
   }
-  
 }
 
 document.getElementById('create-button').onclick = function () {
@@ -90,49 +87,70 @@ $('#endDate').datetimepicker({
   },
 });
 
- async function checkUserType() {
+async function checkUserType() {
   user = await Moralis.User.current();
-  console.log("Sa:" + user)
-  if(!user){
-    alert("Please Log in")
-    location.href = 'login.html' + location.hash ;
+  console.log('Sa:' + user);
+  if (!user) {
+    alert('Please Log in');
+    location.href = 'login.html' + location.hash;
   }
   if (user.get('UserType') == 'Standard') {
     location.href = 'accessDenied.html';
-  } 
+  }
 }
-function disaprearAlert(after){
-  window.setTimeout(function() {
-    $("#alert").hide('fade')
+function disaprearAlert(after) {
+  window.setTimeout(function () {
+    $('#alert').hide('fade');
   }, after);
 }
 
 function showErrorAlert(message) {
-  $('#alert').html("<div class='alert alert-danger' role='alert'>"
-  +"<strong>Error! </strong>"
-  +message+
-  "</div>");
+  $('#alert').html(
+    "<div class='alert alert-danger' role='alert'>" +
+      '<strong>Error! </strong>' +
+      message +
+      '</div>'
+  );
   $('#alert').show();
 }
 function showSuccessAlert(message) {
-  $('#alert').html("<div class='alert alert-success' role='alert'>"
-  +"<strong>Success! </strong>"
-  +message+
-  "</div>");
+  $('#alert').html(
+    "<div class='alert alert-success' role='alert'>" +
+      '<strong>Success! </strong>' +
+      message +
+      '</div>'
+  );
   $('#alert').show();
 }
 
-Moralis.Web3.onAccountsChanged(function(accounts) {
+Moralis.Web3.onAccountsChanged(function (accounts) {
   // window.location.replace("http://www.w3schools.com");
-  location.hash = "runLogOut";
-  location.href = 'login.html' + location.hash ;
-
+  location.hash = 'runLogOut';
+  location.href = 'login.html' + location.hash;
 });
-window.addEventListener("load", function(){
-  const loader = document.querySelector(".loader");
-  loader.className += " hidden"
-})
-
+window.addEventListener('load', function () {
+  const loader = document.querySelector('.loader');
+  loader.className += ' hidden';
+});
 
 checkUserType();
 getNewCaseNumber();
+
+var counter = 1;
+var dynamicInput = [];
+
+function addInput() {
+  var newdiv = document.createElement('div');
+  newdiv.id = dynamicInput[counter];
+  newdiv.innerHTML =
+    "<div class='input-group mb-3'><input class='form-control' type='text' placeholder='Alternative Text' name='myInputs[]'> <div id= 'delete-alt-button' type='button' value='-' onClick='removeInput(" +
+    dynamicInput[counter] +
+    ");'>-</div> </div> " ;
+  document.getElementById('formulario').appendChild(newdiv);
+  counter++;
+}
+
+function removeInput(id) {
+  var elem = document.getElementById(id);
+  return elem.parentNode.removeChild(elem);
+}
