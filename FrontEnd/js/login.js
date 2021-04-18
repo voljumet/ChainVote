@@ -295,6 +295,10 @@ function showSuccessAlert(message) {
   "</div>");
   $('#alert').show();
 }
+window.addEventListener("load", function(){
+  const loader = document.querySelector(".loader");
+  loader.className += " hidden"
+})
 
 hideElment = (element) => element.style.display = "none";
 showElment = (element) => element.style.display = "block";

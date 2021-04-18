@@ -128,6 +128,10 @@ Moralis.Web3.onAccountsChanged(function(accounts) {
   location.href = 'login.html' + location.hash ;
 
 });
+window.addEventListener("load", function(){
+  const loader = document.querySelector(".loader");
+  loader.className += " hidden"
+})
 
 
 checkUserType();

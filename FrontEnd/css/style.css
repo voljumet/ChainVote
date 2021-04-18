@@ -287,7 +287,6 @@ a {
 
 /* Hide the browser's default radio button */
 
-
 /* Create a custom radio button */
 .checkmark {
   position: absolute;
@@ -303,7 +302,6 @@ a {
 
 /* When the radio button is checked, add a blue background */
 
-
 /* Create the indicator (the dot/circle - hidden when not checked) */
 .checkmark:after {
   content: '';
@@ -313,9 +311,7 @@ a {
 
 /* Show the indicator (dot/circle) when checked */
 
-
 /* Style the indicator (dot/circle) */
-
 
 .confirm-button {
   color: green;
@@ -333,11 +329,10 @@ a {
 
 /*                 */
 .container2 {
-  display:contents;
+  display: contents;
   margin-left: 0px;
   margin-top: 50px;
   margin-right: -670px;
-
 }
 .Container:after {
   content: '';
@@ -364,12 +359,11 @@ form {
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
-
 }
 
 /* Full-width inputs */
 input[type='text'],
-input{
+input {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -612,12 +606,11 @@ span.psw {
   width: auto;
   margin-left: 15px;
 }
-#change-myvote:hover{
+#change-myvote:hover {
   background: red;
   color: #eee;
 }
 #confirm-myVote {
-  
   background: white;
   border-radius: 10px;
   border-style: solid;
@@ -630,7 +623,7 @@ span.psw {
   width: auto;
   margin-bottom: 40px;
 }
-#confirm-myVote:hover{
+#confirm-myVote:hover {
   background: green;
   color: #eee;
 }
@@ -644,7 +637,7 @@ span.psw {
   padding: 20px;
 }
 
-.container6  h2 {
+.container6 h2 {
   color: black;
 }
 
@@ -655,7 +648,7 @@ span.psw {
   overflow: auto;
 }
 
-.container6  ul li {
+.container6 ul li {
   color: black;
   display: block;
   position: relative;
@@ -665,12 +658,12 @@ span.psw {
   border-bottom: 1px solid #333;
 }
 
-.container6  ul li input[type='radio'] {
+.container6 ul li input[type='radio'] {
   position: absolute;
   visibility: hidden;
 }
 
-.container6  ul li label {
+.container6 ul li label {
   display: block;
   position: relative;
   font-weight: 300;
@@ -683,11 +676,11 @@ span.psw {
   -webkit-transition: all 0.25s linear;
 }
 
-.container6  ul li:hover label {
+.container6 ul li:hover label {
   color: #3160c4;
 }
 
-.container6  ul li .check {
+.container6 ul li .check {
   display: block;
   position: absolute;
   border: 5px solid #aaaaaa;
@@ -705,7 +698,7 @@ span.psw {
   border: 5px solid #3160c4;
 }
 
-.container6  ul li .check::before {
+.container6 ul li .check::before {
   display: block;
   position: absolute;
   content: '';
@@ -743,7 +736,7 @@ textarea {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-#total-votes-vote{
+#total-votes-vote {
   padding: 10px;
   border-radius: 10px;
   width: fit-content;
@@ -752,7 +745,7 @@ textarea {
   margin-top: 20px;
   background-color: rgb(155, 161, 157);
 }
-#time-left-vote{
+#time-left-vote {
   padding: 10px;
   border-radius: 10px;
   width: fit-content;
@@ -760,41 +753,37 @@ textarea {
   margin-top: 20px;
   margin: auto;
   background-color: rgb(172, 57, 57);
-  
 }
-#search-addon{
+#search-addon {
   width: 35px;
   height: 35px;
   margin: auto;
 }
 
-#openForVoting{
+#openForVoting {
   margin-top: 10px;
 }
-#search-button{
+#search-button {
   font-size: 1.2em;
   position: relative;
   margin-left: -4px;
-
 }
-#search-button:hover{
-  color:#2196f3
+#search-button:hover {
+  color: #2196f3;
 }
-#usertype-input{
+#usertype-input {
   margin-top: 20px;
   margin-bottom: 20px;
   width: 190px;
   height: 40px;
-  font-size:large;
-  align-items:center;
-
+  font-size: large;
+  align-items: center;
 }
 #userinfo label {
-  display:flex;
+  display: flex;
   font: 1.3rem 'Fira Sans';
   margin-top: 10px;
   margin-bottom: -5px;
- 
 }
 #userinfo {
   border-radius: 5px;
@@ -802,11 +791,12 @@ textarea {
   padding: 20px;
 }
 
-#userinfo input, label {
+#userinfo input,
+label {
   margin: rem 0;
 }
 
-.deleteCase{
+.deleteCase {
   background-color: red;
 }
 .pause-btn {
@@ -821,7 +811,9 @@ textarea {
   transition: 0.1s;
 }
 
-.pause-btn:hover {opacity: 1}
+.pause-btn:hover {
+  opacity: 1;
+}
 .unpause-btn {
   background-color: #16ac1be7;
   border: none;
@@ -834,33 +826,31 @@ textarea {
   transition: 0.1s;
 }
 
-.unpause-btn:hover {opacity: 2}
+.unpause-btn:hover {
+  opacity: 2;
+}
 
-#usertype-input{
+#usertype-input {
   width: 100%;
 }
 
-
-
 #upgrade_input label {
-  display:flex;
+  display: flex;
   font: 1.3rem 'Fira Sans';
   margin-top: 10px;
   margin-bottom: -5px;
- 
 }
-.upgrade_input  {
- width: 90%;
- 
+.upgrade_input {
+  width: 90%;
 }
-#upgrade_input input  {
+#upgrade_input input {
   width: 100%;
- }
+}
 
- #check{
-   margin-left: -740px;
- }
- .upgrade-btn{
+#check {
+  margin-left: -740px;
+}
+.upgrade-btn {
   width: 20%;
   margin-left: 75%;
   padding: 15px 25px;
@@ -873,5 +863,32 @@ textarea {
   border: none;
   border-radius: 15px;
   box-shadow: 0 9px #999;
- }
- 
+}
+
+.loader {
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader.hidden {
+  animation: fadeOut 1s;
+  animation-fill-mode: forwards;
+}
+
+.loader > img {
+  width: 200px;
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}

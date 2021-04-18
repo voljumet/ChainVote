@@ -234,6 +234,10 @@ async function moreInfoy(_caseNumber) {
       location.href = 'accessDenied.html';
     } 
   }
+  window.addEventListener("load", function(){
+    const loader = document.querySelector(".loader");
+    loader.className += " hidden"
+  })
 checkUserType();
 AddCardsToPage()
 //moreInfo(1)
