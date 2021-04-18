@@ -98,8 +98,7 @@ $('#endDate').datetimepicker({
     location.href = 'login.html' + location.hash ;
   }
   if (user.get('UserType') == 'Standard') {
-    alert("Access Denied")
-    location.href = 'index.html';
+    location.href = 'accessDenied.html';
   } 
 }
 function disaprearAlert(after){

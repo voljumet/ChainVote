@@ -91,14 +91,22 @@
     </nav>
 
     <!-- HERO -->
+    <button id="pause-button" class="pause-btn">Pause The Contract</button>
+    <button id="unpause-button" class="unpause-btn">Unpause The Contract</button>
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-        <button id="pause-button" class="pause-btn">Pause The Contract</button>
-    <div>
-        <p id="demo"></p>
-    </div>
-
+    <form class="upgrade_input">
+            <label for="upgrade_input">Enter the new address: </label>
+            <input type="password" id="upgrade_input" name="upgrade_input" placeholder="Enter the address">
+            <label>Show address</label>
+            <input type="checkbox" id="check">
+            <button id="upgrade-button" class="upgrade-btn">Upgrade The Contract</button>
+            <div>
+                <p id="d"></p>
+            </div>
+        </from>
+    </section>
      
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>

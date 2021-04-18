@@ -231,8 +231,7 @@ async function moreInfoy(_caseNumber) {
   async function checkUserType() {
     user = await Moralis.User.current();
     if (user.get('UserType') == 'Standard') {
-      alert("Access Denied")
-      location.href = 'index.html';
+      location.href = 'accessDenied.html';
     } 
   }
 checkUserType();

@@ -2,6 +2,7 @@ Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application i
 Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
 var web3 = new Web3(Web3.givenProvider);
 
+
 const tabele = document.getElementsByClassName('container2')[0];
 
 function createCard(_number, _title, _stratDate, _endDate, _openForVoting, _uintAlt, _stingAlt) {
@@ -209,15 +210,27 @@ async function checkUserType() {
       }
     }
     
-  } else {
+  } else if (user.get('UserType') == 'Admin') {
     showElment(document.getElementById('createCaseHerf'));
     showElment(document.getElementById('approveHerf'));
+    hideElment(document.getElementById('contractHerf'));
     window.onload = function() {
       if(!window.location.hash) {
         window.location = window.location + '#loaded';
         window.location.reload();
       }
     }
+  } else if(user.get('UserType') == 'SuperAdmin'){
+    showElment(document.getElementById('createCaseHerf'));
+    showElment(document.getElementById('approveHerf'));
+    showElment(document.getElementById('contractHerf'));
+    window.onload = function() {
+      if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+      }
+    }
+
   }
 }
 

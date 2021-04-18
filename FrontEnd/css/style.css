@@ -361,7 +361,10 @@ a {
 
 /* Bordered form */
 form {
-  border: 3px solid #f1f1f1;
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+
 }
 
 /* Full-width inputs */
@@ -807,18 +810,31 @@ textarea {
   background-color: red;
 }
 .pause-btn {
-  background-color: #f4511e;
+  background-color: red;
   border: none;
   color: white;
   padding: 16px 32px;
   text-align: center;
   font-size: 16px;
   margin: 4px 2px;
-  opacity: 0.7;
+  opacity: 0.5;
   transition: 0.1s;
 }
 
 .pause-btn:hover {opacity: 1}
+.unpause-btn {
+  background-color: #16ac1be7;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.5;
+  transition: 0.1s;
+}
+
+.unpause-btn:hover {opacity: 2}
 
 #usertype-input{
   width: 100%;
@@ -826,4 +842,36 @@ textarea {
 
 
 
+#upgrade_input label {
+  display:flex;
+  font: 1.3rem 'Fira Sans';
+  margin-top: 10px;
+  margin-bottom: -5px;
+ 
+}
+.upgrade_input  {
+ width: 90%;
+ 
+}
+#upgrade_input input  {
+  width: 100%;
+ }
 
+ #check{
+   margin-left: -740px;
+ }
+ .upgrade-btn{
+  width: 20%;
+  margin-left: 75%;
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #1db712;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+ }
+ 
