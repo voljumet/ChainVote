@@ -51,6 +51,12 @@ function createCard(_number, _title, _stratDate, _endDate, _description){
     moreInfo.setAttribute("onclick","moreInfoy("+_number+")" );
     moreInfo.innerHTML= "More Info";
 
+    const deleteCase = document.createElement('button');
+    deleteCase.id=_number;
+    deleteCase.className="deleteCase"
+    deleteCase.setAttribute("onclick","delete_Case("+_number+")" );
+    deleteCase.innerHTML= "Delete";
+
     const showMoreInfo = document.createElement("h4");
     showMoreInfo.id = "h"+_number;
 
@@ -68,6 +74,7 @@ function createCard(_number, _title, _stratDate, _endDate, _description){
     card.appendChild(approveButton);
     card.appendChild(moreInfo)
     card.appendChild(showMoreInfo)
+    card.appendChild(deleteCase)
 
     console.log(card)
     return card;
@@ -196,6 +203,22 @@ async function moreInfoy(_caseNumber) {
        let limit = receipt.events.approvalsE.returnValues.limit;
        let numberOfApprovals = receipt.events.approvalsE.returnValues.numberOfApprovals
             result.innerText =  "Approvals: "+ numberOfApprovals+ " of " + limit; 
+      });
+  }
+
+  async function delete_Case(_caseNumber) {
+    let reuslt = await Moralis.Cloud.run('Cases', {});
+    window.web3 = await Moralis.Web3.enable();
+    let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+    contractInstance.methods
+      .endVoting(_caseNumber)
+      .send({ from: ethereum.selectedAddress })
+      .on('receipt', function (receipt) {
+        console.log(receipt);
+       //let result = document.getElementById("h"+_caseNumber)
+       //let limit = receipt.events.approvalsE.returnValues.limit;
+       //let numberOfApprovals = receipt.events.approvalsE.returnValues.numberOfApprovals
+         //   result.innerText =  "Approvals: "+ numberOfApprovals+ " of " + limit; 
       });
   }
   Moralis.Web3.onAccountsChanged(function(accounts) {
