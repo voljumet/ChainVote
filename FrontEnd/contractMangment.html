@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <title>Digital Voting System</title>
-
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="description" content="" />
@@ -25,6 +24,8 @@
     <link rel="stylesheet" href="css/owl.theme.default.min.css" />
     <link rel="stylesheet" href="css/style.css" />
 
+    <script type="text/javascript" src="./abi.js"></script>
+    <script type="text/javascript" src="./address.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script
       src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -32,7 +33,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
-
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="css/templatemo-digital-trend.css" />
   </head>
@@ -44,19 +44,10 @@
           <i class="fa fa-line-chart"></i>
           ChainVote
         </a>
-        <a class="navbar-brand" href="contractMangment.html">
-          <i class="fa fa-cog"></i>
-          Contract
+        <a class="navbar-brand" href="index.html">
+          <i class="fa fa-arrow-left"></i>
+          Back To Home Page
         </a>
-        <a class="navbar-brand" id="createCaseHerf" href="createCase.html">
-          <i class="fa fa-plus"></i>
-          Create Case
-        </a>
-          <a class="navbar-brand" id="approveHerf" href="caseToBeApproved.html">
-            <i class="fa fa-archive"></i>
-            Approve
-          </a>
-        
 
         <button
           class="navbar-toggler"
@@ -72,9 +63,8 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
-            <!-- Language Menu -->
             <nav>
-              <div class="lang-menu1">
+              <div class="lang-menu">
                 <div class="selected-lang">English</div>
                 <ul>
                   <li>
@@ -104,28 +94,12 @@
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-      <div class="row">
-        <div class="input-group rounded">
-          <!-- Search  -->
-          <input
-            id="search-input"
-            type="search"
-            class="form-control rounded"
-            placeholder="Search"
-            aria-label="Search"
-            aria-describedby="search-addon"
-          />
-          <span class="input-group-text border-0" id="search-addon">
-            <i id="search-button" class="fa fa-search"></i>
-          </span>
-        </div>
+        <button id="pause-button" class="pause-btn">Pause The Contract</button>
+    <div>
+        <p id="demo"></p>
+    </div>
 
-        <!-- Display Cases -->
-        <div class="container2" id="here" data-aos="fade-up"></div>
-        <p id="noMatch"></p>
-      </div>
-    </section>
-
+     
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
 
@@ -135,7 +109,7 @@
     <script src="js/smoothscroll.js"></script>
     <script src="js/custom.js"></script>
     <script scr="js/timeBar.js"></script>
-    <script type="text/javascript" src="js/mainy.js"></script>
+    <script type="text/javascript" src="js/contractMangment.js"></script>
     <script type="text/javascript" src="js/username.js"></script>
   </body>
 </html>

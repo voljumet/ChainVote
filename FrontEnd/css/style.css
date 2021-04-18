@@ -366,7 +366,7 @@ form {
 
 /* Full-width inputs */
 input[type='text'],
-input[type='password'] {
+input{
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -786,18 +786,44 @@ textarea {
   align-items:center;
 
 }
-label {
+#userinfo label {
   display:flex;
-  margin-left: 10px;
-  font: 1.6rem 'Fira Sans';
+  font: 1.3rem 'Fira Sans';
+  margin-top: 10px;
+  margin-bottom: -5px;
  
 }
+#userinfo {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
 
-input,
-label {
+#userinfo input, label {
   margin: rem 0;
 }
 
 .deleteCase{
   background-color: red;
 }
+.pause-btn {
+  background-color: #f4511e;
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.7;
+  transition: 0.1s;
+}
+
+.pause-btn:hover {opacity: 1}
+
+#usertype-input{
+  width: 100%;
+}
+
+
+
+
