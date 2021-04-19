@@ -242,9 +242,10 @@ contract Case is MultiSig {
     //                 _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"]);
     // }
 
-    // function getUserArrayLength(string memory _region, string memory _userType) public {
-    //     emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
-    // }
+    function getUserArrayLength(string memory _region, string memory _userType) public view returns(uint retur){
+        // emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
+        return _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
+    }
 
     function usersOfType(string memory _userType) public view returns(uint usersOT){
         return _addressArrayStorage[_userType].length;
@@ -255,9 +256,10 @@ contract Case is MultiSig {
     //     emit totalVotesE(_cases[_caseNumber]._uintCase["TotalVotes"]);
     // }
 
-    // function getUser() public {
-    //     emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
-    // }
+    function getUser() public view returns(string memory region, string memory utype){
+        // emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
+        return (_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
+    }
 
     // function getCasesWaitingForApproval() public {
     //     emit casesWaitingForApprovalE(_uintArrayStorage["WaitingForApproval"]);
