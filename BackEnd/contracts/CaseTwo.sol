@@ -4,7 +4,8 @@ pragma abicoder v2;
 
 
 contract CaseTwo {
-    function verifyNewCase()public pure returns(string memory){
-            return "cool";
+    event casetwoemit(string cool);
+    function verifyNewCase()public {
+            emit casetwoemit("Cool");
     }
 }
