@@ -1,14 +1,10 @@
 Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application id from moralis.io
 Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
 
-async function getNewCaseNumber() {
+async function getNewCaseNumber(_caseNum) {
   hideElment(document.getElementById("n1"));
-  let reuslt = await Moralis.Cloud.run('Cases', {});
-  let array = [];
-  reuslt.forEach((element) => {
-    array.push(element.attributes.caseNumber);
-  });
-  var num = Math.max(...array);
+  var num = _caseNum;
+  console.log(_caseNum)
   var myObject = { proposal_number: num };
   w3.displayObject('id03', myObject);
   showElment(document.getElementById("n2"));
@@ -39,9 +35,8 @@ async function createCase(
       .on('receipt', function (receipt) {
         if (receipt.events.confirmationE.returnValues.confirmation) {
           showSuccessAlert('Case Created Successfully');
-          showElment(document.getElementById("add-alt-button"))
           disaprearAlert(2000);
-          getNewCaseNumber()
+          getNewCaseNumber(receipt.events.getCaseE.returnValues.caseNumber)
           document.getElementById('title').value = receipt.events.getCaseE.returnValues.title;
           document.getElementById('title').disabled = true;
 
@@ -53,6 +48,10 @@ async function createCase(
 
           document.getElementById('alternatives2').value = receipt.events.getCaseE.returnValues.stringAlt[2];
           document.getElementById('alternatives2').disabled = true;
+          showElment(addNewOption);
+          showElment(addAltButton);
+          hideElment(document.getElementById("create-button"));
+          redirect(receipt.events.getCaseE.returnValues.caseNumber);
 
 
         } else {
@@ -105,7 +104,7 @@ $('#endDate').datetimepicker({
 });
 
 async function checkUserType() {
-  //hideElment(document.getElementById("add-alt-button"));
+  hideElment(addNewOption);
   hideElment(addAltButton);
   user = await Moralis.User.current();
   console.log('Sa:' + user);
@@ -165,13 +164,13 @@ function addInput() {
   document.getElementById('formulario').appendChild(newdiv);
   console.log(counter)
   counter++;
-  //hideElment(document.getElementById("add-alt-button"))
+  hideElment(addNewOption)
 }
 
  function removeInput(id) {
    console.log(id);
   var elem = document.getElementById(id);
-  showElment(document.getElementById("add-alt-button"))
+  showElment(addNewOption)
   return elem.parentNode.removeChild(elem);
 }
 
@@ -184,23 +183,27 @@ async function addAlternative(_caseNumber, _altValue){
       .send({from: ethereum.selectedAddress })
       .on("receipt", async function (receipt) {
         if (receipt.events.addApprovalsE.returnValues.stringAlt){
-          showSuccessAlert("user created successfully");
+          showSuccessAlert("Option added successfully");
           showElment(document.getElementById("add-alt-button"));
           showElment(addAltButton);
           hideElment(document.getElementById("create-button"))
           disaprearAlert(2000)
         } 
+        else{
+          showErrorAlert("Failed")
+        }
+        
       });
 }
 
-function dothis(){
-  console.log(document.getElementById("alt1").value)
+function redirect(_caseNum){
+  location.href = 'addAlternatives.html?id' + _caseNum ;
 }
 
 document.getElementById("add-alt-button").onclick= addInput
 const addAltButton = document.getElementById("addNewAlt-button");
+const addNewOption = document.getElementById("add-alt-button")
 
-document.getElementById("cancel-buttony").onclick = dothis
 
 addAltButton.onclick = addAlternative();
 

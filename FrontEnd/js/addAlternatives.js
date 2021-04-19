@@ -177,7 +177,8 @@ function addInput() {
 
 
 async function addAlternative(id){
-  var altValue = document.getElementById("alt"+id).value;
+  try {
+    var altValue = document.getElementById("alt"+id).value;
     window.web3 = await Moralis.Web3.enable();
     let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
    
@@ -189,8 +190,17 @@ async function addAlternative(id){
           showSuccessAlert("user created successfully");
           disaprearAlert(2000)
          await updateMoralis(globalCaseNumber,receipt.events.addApprovalsE.returnValues.uintAlt,receipt.events.addApprovalsE.returnValues.stringAlt);
-        } 
+        }  else{
+          showErrorAlert("Failed")
+          disaprearAlert(2000)
+        }
       });
+    
+  } catch (error) {
+    showErrorAlert("Failed")
+     disaprearAlert(2000)
+  }
+ 
 }
 
 

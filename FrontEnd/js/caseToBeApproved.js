@@ -82,6 +82,10 @@ function createCard(_number, _title, _stratDate, _endDate, _description){
     return card;
 }
 
+function timedRefresh(timeoutPeriod) {
+	setTimeout("location.reload(true);",timeoutPeriod);
+}
+
 function getMyDate(t) {
     var month = new Array();
     month[0] = "January";
@@ -166,6 +170,7 @@ async function updateMoralis(_caseNum, _result) {
       gameScore.set('openForVoting', _result);
       return gameScore.save();
     });
+    timedRefresh(1000)
   }
 
 async function approve(_caseNumber) {
