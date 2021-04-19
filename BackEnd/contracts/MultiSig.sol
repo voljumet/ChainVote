@@ -3,11 +3,8 @@ pragma solidity 0.7.5;
 pragma abicoder v2;
 
 import "./Storage.sol";
-import "../../node_modules/@openzeppelin/contracts/math/SafeMath.sol";
 
 contract MultiSig is Storage{
-    
-    using SafeMath for uint256;
 
     event caseApprovedE(uint256 caseNumber, string title);
     event confirmationE(bool confirmation);
@@ -37,7 +34,7 @@ contract MultiSig is Storage{
         require(!_cases[_caseNumber]._boolCase["OpenForVoting"], "ERR19");
 
         _cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))] = true; // user has approved
-        _cases[_caseNumber]._uintCase["ApprovalsSigned"] = _cases[_caseNumber]._uintCase["ApprovalsSigned"].add(1); // increase by 1
+        _cases[_caseNumber]._uintCase["ApprovalsSigned"] += 1; // increase by 1
         
         // Over half approvals opens case for voting
         if(_cases[_caseNumber]._uintCase["ApprovalsSigned"] >= _cases[_caseNumber]._uintCase["ApprovalsNeeded"]){
@@ -49,11 +46,11 @@ contract MultiSig is Storage{
         emit confirmationE(true);
     }
 
-    function createMultisigInstance() public {
+    function createMultisigInstance() internal {
         require(onlyOwners());
-        _uintStorage["MultisigInstance"] = _uintStorage["MultisigInstance"].add(1); 
+        _uintStorage["MultisigInstance"]++;
         
-        _uintStorage["ApprovalsNeeded"] = _addressArrayStorage["SuperAdmin"].length.sub(1).div(2);
+        _uintStorage["ApprovalsNeeded"] = (_addressArrayStorage["SuperAdmin"].length + 1) /2;
         _uintStorage[string(abi.encodePacked(_uintStorage["MultisigInstance"]))] = _uintStorage["ApprovalsNeeded"];
         _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))] = true;
         _boolStorage["InstanceInProgress"] = true;
@@ -65,7 +62,7 @@ contract MultiSig is Storage{
         require(onlyOwners());
         require(!_boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))]);
         _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))] = true;
-        _uintStorage["ApprovalsNeeded"] = _uintStorage["ApprovalsNeeded"].sub(1);
+        _uintStorage["ApprovalsNeeded"] - 1;
 
         emit caseApprovedE(_uintStorage["ApprovalsNeeded"], "Signed request");
     }
@@ -74,7 +71,7 @@ contract MultiSig is Storage{
     function clearFromWaiting(uint256 _caseNumber) internal {
         for(uint256 i = 0; i < _uintArrayStorage["WaitingForApproval"].length; i++){
             if(_uintArrayStorage["WaitingForApproval"][i] == _caseNumber){
-                _uintArrayStorage["WaitingForApproval"][i] = _uintArrayStorage["WaitingForApproval"][ _uintArrayStorage["WaitingForApproval"].length.sub(1) ];
+                _uintArrayStorage["WaitingForApproval"][i] = _uintArrayStorage["WaitingForApproval"][ _uintArrayStorage["WaitingForApproval"].length - 1];
                 _uintArrayStorage["WaitingForApproval"].pop();
             }
         }

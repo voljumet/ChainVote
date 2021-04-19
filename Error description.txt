@@ -2,7 +2,7 @@ Error codes
 -- ERR#, explanation, file --
 
 1: Already initialized. -> Case.sol
-2: The "Region" or "Usertype" already exists. -> Case.sol
+2: The "Region" and "Usertype" has no changes. -> Case.sol
 3: Voting for case not ended, case cannot be closed yet. -> Case.sol
 4: "UserType" has to be "Admin" or "SuperAdmin". -> Case.sol
 5: Number of decitionmakers that needs to aprove cases is not an add number. -> Case.sol
@@ -31,6 +31,11 @@ Error codes
 28: Requires that no approvals has been signed yet -> Case.sol
 29: Fields cannot be empty. -> Case.sol
 30: Case has already been approved. -> Case.sol
-31: Your userType has to be an odd number to avoid a tie -> Case.sol
-32: This case does not apply to your region -> Case.sol
+31: Number of userType has to be an odd number to avoid a tie. -> Case.sol
+32: This case does not apply to your region. -> Case.sol
+33: You have moved after the case was created. -> Case.sol
+34: Number of SuperAdmin has to be an odd number to avoid a tie. -> Case.sol
+35: Nunber of SuperAdmin has to be an odd number. -> Proxy.sol
+36: 
+
 
