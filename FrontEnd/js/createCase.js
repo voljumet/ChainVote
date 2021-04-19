@@ -2,14 +2,16 @@ Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application i
 Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
 
 async function getNewCaseNumber() {
+  hideElment(document.getElementById("n1"));
   let reuslt = await Moralis.Cloud.run('Cases', {});
   let array = [];
   reuslt.forEach((element) => {
     array.push(element.attributes.caseNumber);
   });
-  var num = Math.max(...array) + 1;
+  var num = Math.max(...array);
   var myObject = { proposal_number: num };
   w3.displayObject('id03', myObject);
+  showElment(document.getElementById("n2"));
 }
 
 // createCase
@@ -37,7 +39,22 @@ async function createCase(
       .on('receipt', function (receipt) {
         if (receipt.events.confirmationE.returnValues.confirmation) {
           showSuccessAlert('Case Created Successfully');
+          showElment(document.getElementById("add-alt-button"))
           disaprearAlert(2000);
+          getNewCaseNumber()
+          document.getElementById('title').value = receipt.events.getCaseE.returnValues.title;
+          document.getElementById('title').disabled = true;
+
+          document.getElementById('description').value = receipt.events.getCaseE.returnValues.description;
+          document.getElementById('description').disabled = true;
+
+          document.getElementById('alternatives1').value = receipt.events.getCaseE.returnValues.stringAlt[1];
+          document.getElementById('alternatives1').disabled = true;
+
+          document.getElementById('alternatives2').value = receipt.events.getCaseE.returnValues.stringAlt[2];
+          document.getElementById('alternatives2').disabled = true;
+
+
         } else {
           showErrorAlert('Failed');
           disaprearAlert(2000);
@@ -88,6 +105,8 @@ $('#endDate').datetimepicker({
 });
 
 async function checkUserType() {
+  //hideElment(document.getElementById("add-alt-button"));
+  hideElment(addAltButton);
   user = await Moralis.User.current();
   console.log('Sa:' + user);
   if (!user) {
@@ -133,24 +152,61 @@ window.addEventListener('load', function () {
   loader.className += ' hidden';
 });
 
-checkUserType();
-getNewCaseNumber();
+
 
 var counter = 1;
-var dynamicInput = [];
-
 function addInput() {
   var newdiv = document.createElement('div');
-  newdiv.id = dynamicInput[counter];
+  newdiv.id = counter
   newdiv.innerHTML =
-    "<div class='input-group mb-3'><input class='form-control' type='text' placeholder='Alternative Text' name='myInputs[]'> <div id= 'delete-alt-button' type='button' value='-' onClick='removeInput(" +
-    dynamicInput[counter] +
-    ");'>-</div> </div> " ;
+  "<div class='input-group mb-3'><input id= alt"+counter+"  class='form-control' type='text' placeholder='Alternative Text' name='myInputs[]'> <div id= 'delete-alt-button' type='button' value='-' onClick='removeInput(" +
+  counter +
+  ");'>-</div> </div> " ;
   document.getElementById('formulario').appendChild(newdiv);
+  console.log(counter)
   counter++;
+  //hideElment(document.getElementById("add-alt-button"))
 }
 
-function removeInput(id) {
+ function removeInput(id) {
+   console.log(id);
   var elem = document.getElementById(id);
+  showElment(document.getElementById("add-alt-button"))
   return elem.parentNode.removeChild(elem);
 }
+
+async function addAlternative(_caseNumber, _altValue){
+    window.web3 = await Moralis.Web3.enable();
+    let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+   
+    contractInstance.methods
+      .addAlternatives(_caseNumber, _altValue)
+      .send({from: ethereum.selectedAddress })
+      .on("receipt", async function (receipt) {
+        if (receipt.events.addApprovalsE.returnValues.stringAlt){
+          showSuccessAlert("user created successfully");
+          showElment(document.getElementById("add-alt-button"));
+          showElment(addAltButton);
+          hideElment(document.getElementById("create-button"))
+          disaprearAlert(2000)
+        } 
+      });
+}
+
+function dothis(){
+  console.log(document.getElementById("alt1").value)
+}
+
+document.getElementById("add-alt-button").onclick= addInput
+const addAltButton = document.getElementById("addNewAlt-button");
+
+document.getElementById("cancel-buttony").onclick = dothis
+
+addAltButton.onclick = addAlternative();
+
+hideElment = (element) => element.style.display = "none";
+showElment = (element) => element.style.display = "block";
+
+hideElment(document.getElementById("n2"));
+
+checkUserType();

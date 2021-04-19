@@ -234,10 +234,45 @@ Moralis.Web3.onAccountsChanged(function(accounts) {
   location.href = 'login.html' + location.hash ;
 
 });
+window.addEventListener("load", function(){
+  const loader = document.querySelector(".loader");
+  loader.className += " hidden"
+})
 
 
+async function data(){
+  let stringData;
+  let intData; 
+  let reuslt = await Moralis.Cloud.run('Cases', {});
+  reuslt.forEach((element) => {
+    if (element.attributes.caseNumber == globalCaseNumber) {
+      stringData = element.attributes.stringAlt
+      intData = element.attributes.uintAlt
+      console.log(intData)
+    }
+  });
 
-getMyVote(globalCaseNumber)
+  var data = [
+  
+    {
+      x: stringData,
+      y: intData,
+      type: 'bar'
+    }
+  ];
+  var layout = {
+    title: 'Graph over result',
+    showlegend: false
+};
+  
+  Plotly.newPlot('myDiv', data,layout , {staticPlot: true});
+ 
+}
+
+console.log( "here" + data())
+// Chart 
+
+//getMyVote(globalCaseNumber)
 AddCaseToPage(globalCaseNumber)
 
 

@@ -106,6 +106,9 @@
         class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
       >
         <div id="formContent-createCase">
+          <div class="loader">
+            <img src="images/Ajux_loader.gif" alt="Loading..." width="250"/>
+          </div>
           <div id="case-num-vote" class="proposal_number">
             <h2>Propoasal {{proposal_number}}</h2>
           </div>
@@ -141,7 +144,7 @@
 
           <button id="button">show my vote</button>
           <h1 id="h1">you have voted:</h1>
-        </div>
+          <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
       </div>
     </section>
 
@@ -154,6 +157,7 @@
     <script src="js/custom.js"></script>
     <script scr="js/timeBar.js"></script>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

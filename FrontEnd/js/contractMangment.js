@@ -11,14 +11,6 @@ function pauseContract() {
   }
   document.getElementById('d').innerHTML = txt;
 }
-function myFunction() {
-  var x = document.getElementById('upgrade_input');
-  if (x.type === 'password') {
-    x.type = 'text';
-  } else {
-    x.type = 'password';
-  }
-}
 
 async function checkUserType() {
   user = await Moralis.User.current();
@@ -32,6 +24,5 @@ async function checkUserType() {
 }
 checkUserType();
 document.getElementById('pause-button').onclick = pauseContract;
-document.getElementById('check').onclick = myFunction;
 
 

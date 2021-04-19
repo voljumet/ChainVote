@@ -30,7 +30,6 @@
     />
     <link rel="stylesheet" />
 
-    <!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/aos.css" />
     <link rel="stylesheet" href="css/owl.carousel.min.css" />
@@ -40,7 +39,11 @@
     <script type="text/javascript" src="./abi.js"></script>
     <script type="text/javascript" src="./address.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 
     <!-- MAIN CSS -->
@@ -89,10 +92,10 @@
             </nav>
 
             <!-- Display User Name-->
-            <h5 class="user-text">Rune Alexander Laursen</h5>
+            <h5 class="user-text" id="userNameFront"></h5>
 
             <li class="nav-item">
-              <a href="contact.html" class="nav-link contact">
+              <a href="login.html" class="nav-link contact">
                 <img src="images/avatar.png" alt="Avatar" class="avatar" />
               </a>
             </li>
@@ -105,147 +108,92 @@
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-      <div class="container">
-        <div class="row">
-          <div class="input-group rounded">
-            <div
-              class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
-            >
-
-                <div id="id03" class="proposal_number">
-                  <h2>Propoasal {{proposal_number}}</h2>
-                </div>
-
-                <div>
-                  <input
-                    readonly
-                    id="title"
-                    type="text"
-                    class="form-control"
-                    name="name"
-                    autocomplete="off"
-                  />
-                </div>
-
-                <div class="row">
-                  <div class="col-lg-12 col-12">
-                    <textarea
-                      required
-                      id="description"
-                      class="form-control"
-                      rows="6"
-                      name="message"
-                      placeholder="Proposal Discription"
-                      autocomplete="off"
-                    ></textarea>
-                  </div>
-
-                  <div>
-                    <input
-                      required
-                      id="alternatives1"
-                      type="text"
-                      class="form-control"
-                      name="name"
-                      placeholder="Alternative Text"
-                      autocomplete="off"
-                    />
-                  </div>
-
-                  <div>
-                    <input
-                      required
-                      id="alternatives2"
-                      type="text"
-                      class="form-control"
-                      name="name"
-                      placeholder="Alternative Text"
-                      autocomplete="off"
-                    />
-                  </div>
-
-                  <div>
-                    <input
-                      required
-                      id="alternatives3"
-                      type="text"
-                      class="form-control"
-                      name="name"
-                      placeholder="Alternative Text"
-                      autocomplete="off"
-                    />
-                  </div>
-
-                  <div>
-                    <input
-                      required
-                      id="alternatives4"
-                      type="text"
-                      class="form-control"
-                      name="name"
-                      placeholder="Alternative Text"
-                      autocomplete="off"
-                    />
-                  </div>
-
-                  <div>
-                    <input
-                      required
-                      id="alternatives5"
-                      type="text"
-                      class="form-control"
-                      name="name"
-                      placeholder="Alternative Text"
-                      autocomplete="off"
-                    />
-                  </div>
-
-                  <div class="container mt-5 mb-5" style="width: 400px">
-                    <h3>Start Date</h3>
-                    <input
-                      required
-                      readonly
-                      id="startDate"
-                      class="form-control"
-                      autocomplete="off"
-                    />
-                    <h3>End Date</h3>
-                    <input
-                      required
-                      readonly
-                      id="endDate"
-                      class="form-control"
-                      autocomplete="off"
-                    />
-                  </div>
-
-                  <button id="create-button">Create Case</button>
-                </div>
-
-                <div>
-                  <button
-                    type="submit"
-                    class="form-control"
-                    id="cancel-button"
-                    name="cancel"
-                  >
-                    Cancel
-                  </button>
-                </div>
-
-                <div class="col-md-12">
-                  <div class="info">
-                    <i class="icon-info-sign"></i>
-                    <span class="extra-info"> Extra Info about Proposal </span>
-                  </div>
-                </div>
-            </div>
+      <div
+        class="col-lg-6 col-md-10 col-12 d-flex flex-column justify-content-center align-items-center"
+      >
+      <div id="alert" class="hide" > </div>
+        <div id="formContent-createCase">
+          <div class="loader">
+            <img src="images/Ajux_loader.gif" alt="Loading..." width="250"/>
           </div>
+          <div id="id03" class="proposal_number">
+            <h2 id="n1">New Propoasal</h2>
+            <h2 id="n2">Propoasal {{proposal_number}}</h2>
+          </div>
+         
+
+            <div>
+              <label >Title</label>
+              <input
+              
+              id="title"
+              type="text"
+              class="form-control"
+              name="name"
+              placeholder="Title"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="rowy">
+            <label >Description</label>
+            <div class="col-lg-12 col-12">
+              
+              <textarea
+              id="description"
+              class="form-control"
+              rows="6"
+                name="message"
+                placeholder="Proposal Discription"
+                autocomplete="off"
+                required
+              ></textarea>
+            </div>
+
+         
+            <label >Alternatives</label>
+              <div id="caseDetails" class="case-details"></div>
+
+
+
+
+            <div id="formulario" >
+              <div id="dynamicInput[0]" >
+                 <div  class="pull-none" id="add-alt-button" value="+"  >Add New Option</div>
+             </div>
+            </div>
+            <div class="container mt-5 mb-5" style="width: 400px">
+              <h3>Start Date</h3>
+              <input
+              
+              required
+              
+              id="startDate"
+              class="form-control"
+              autocomplete="off"
+              />
+              <h3>End Date</h3>
+              <input
+              required
+              
+              id="endDate"
+              class="form-control"
+              autocomplete="off"
+              />
+            </div>
+         
+            
+
+            <button  class="form-control" id="addNewAlt-button">Add Alternative</button>
+          </div>
+
+          <button class="form-control" id="cancel-buttony" name="cancel">
+            Cancel
+          </button>
         </div>
       </div>
     </section>
-    <button onclick="myFunction()">Click me</button>
-    <p id="demo"></p>
 
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
@@ -261,45 +209,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="jquery.datetimepicker.full.min.js"></script>
     <script src="https://www.w3schools.com/lib/w3.js"></script>
-    <script type="text/javascript" src="./js/createCase.js"></script>
-    <!-- Time Picker -->
-    <script>
-      $("#startDate").datetimepicker({
-        timepicker: true,
-        datepicker: true,
-        minDate: new Date(),
-        format: "Y-m-d H:i",
-        onShow: function (ct) {
-          this.setOptions({
-            maxDate: $("#endDate").val() ? $("#endDate").val() : false,
-          }),
-            console.log($("#startDate").val());
-        },
-      });
-      $("#endDate").datetimepicker({
-        timepicker: true,
-        datepicker: true,
-        format: "Y-m-d H:i",
-        onShow: function (ct) {
-          this.setOptions({
-            minDate: $("#startDate").val() ? $("#startDate").val() : false,
-          });
-        },
-      });
-    </script>
-    <!-- Convert time to long -->
-    <!-- <script>
-      function getTimeAnd() {
-        document.getElementById("demo").innerHTML = new Date(
-          $("#picker2").val()
-        ).getTime();
-      }
-    </script> -->
-
-    <script>
-      var num = 8;
-      var myObject = { proposal_number: num };
-      w3.displayObject("id03", myObject);
-    </script>
+    <script type="text/javascript" src="./js/addAlternatives.js"></script>
+    <script type="text/javascript" src="js/username.js"></script>
   </body>
 </html>

@@ -117,7 +117,8 @@
             <img src="images/Ajux_loader.gif" alt="Loading..." width="250"/>
           </div>
           <div id="id03" class="proposal_number">
-            <h2>Propoasal {{proposal_number}}</h2>
+            <h2 id="n1">New Propoasal</h2>
+            <h2 id="n2">Propoasal {{proposal_number}}</h2>
           </div>
          
 
@@ -134,7 +135,7 @@
             />
           </div>
 
-          <div class="row">
+          <div class="rowy">
             <div class="col-lg-12 col-12">
               <textarea
               id="description"
@@ -176,7 +177,7 @@
 
             <div id="formulario" >
               <div id="dynamicInput[0]" >
-                 <div  class="pull-none" id="add-alt-button" value="+" onClick="addInput();" >+</div>
+                 <div  class="pull-none" id="add-alt-button" value="+"  >+</div>
              </div>
             </div>
             <div class="container mt-5 mb-5" style="width: 400px">
@@ -201,6 +202,7 @@
          
             
             <button  id="create-button">Create Case</button>
+            <button  id="addNewAlt-button">Add Alternative</button>
           </div>
 
           <button class="form-control" id="cancel-buttony" name="cancel">

@@ -205,6 +205,9 @@ a {
 
 /* Remove extra left and right margins, due to padding */
 .row {
+  margin: 0 300px;
+}
+.rowy {
   margin: 0 -5px;
 }
 
@@ -329,11 +332,21 @@ a {
 
 /*                 */
 .container2 {
-  display: contents;
+  display:contents;
+  margin-left: 0px;
+  margin-top: 50px;
+  overflow: auto;
+}
+.container3 {
+  display:contents;
+  width: 100%;
+  overflow: auto;
   margin-left: 0px;
   margin-top: 50px;
   margin-right: -670px;
 }
+
+
 .Container:after {
   content: '';
   display: table;
@@ -570,6 +583,15 @@ span.psw {
 }
 #create-button {
   background: rgb(13, 185, 13);
+  border-radius: var(--border-radius-large);
+  color: var(--white-color);
+  cursor: pointer;
+  font-size: var(--p-font-size);
+  line-height: 0px;
+  padding: 1.5em 1.3em;
+}
+#addNewAlt-button{
+  background: rgb(13, 13, 185);
   border-radius: var(--border-radius-large);
   color: var(--white-color);
   cursor: pointer;
@@ -895,20 +917,18 @@ label {
 
 #add-alt-button{
   margin: auto;
-  height: 30px;
-  width: 30px;
-  line-height: 23px;
-  font-size: 2em;
-  border-radius: 50%;
-  background-color: rgb(0, 51, 255);
-  color: white;
+  margin-top: 30px;
+  width: 40%;
+  padding: 15px 25px;
+  font-size: 20px;
   text-align: center;
-  border: none;
   cursor: pointer;
-  z-index: 1;
-  bottom: 10%;
-  right: 4%;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
+  outline: none;
+  color: #fff;
+  background-color: rgb(13, 13, 185);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
 }
 #delete-alt-button{
   margin-top: 1.5%;
@@ -930,3 +950,9 @@ label {
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 }
 
+#formContent-createCase label {
+  display: flex;
+  font: 1.5rem 'Fira Sans';
+  margin-top: 10px;
+  margin-bottom: -5px;
+}

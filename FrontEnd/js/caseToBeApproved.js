@@ -2,15 +2,17 @@ Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application i
 Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
 var web3 = new Web3(Web3.givenProvider);
 
-const tabele = document.getElementsByClassName('container2')[0];
+const tabele = document.getElementsByClassName('container3')[0];
 
 
 function createCard(_number, _title, _stratDate, _endDate, _description){
+
 
     const monthDiv = document.createElement('div');
 
     const month = document.createElement('u');
     month.innerHTML = getMyDate(_stratDate);
+
 
     const card = document.createElement('div');
     card.className ="card"; 
@@ -26,7 +28,7 @@ function createCard(_number, _title, _stratDate, _endDate, _description){
     
     const ref = document.createElement('a');
 
-    ref.setAttribute('href', "Vote.html?id"+_number);
+    ref.setAttribute('href', "addAlternatives.html?id"+_number);
 
     const title= document.createElement('p');
     let txt = _title;
