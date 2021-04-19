@@ -29,41 +29,47 @@ contract Case is MultiSig {
     function createUser(string memory _region, string memory _userType) public {
         bytes32 _regionStorageKecc = keccak256(bytes(_users[msg.sender]._stringUser["Region"]));
         bytes32 _userTypeStorageKecc = keccak256(bytes(_users[msg.sender]._stringUser["UserType"]));
-
+        string memory oldRegion = _users[msg.sender]._stringUser["Region"];
+        string memory oldUserType = _users[msg.sender]._stringUser["UserType"];
         //checks if there are changes
         require(_regionStorageKecc != keccak256(bytes(_region)) || _userTypeStorageKecc != keccak256(bytes(_userType)), "ERR2");
 
-        // checks where there are changes, then applies to storage
-        if(keccak256((bytes(_region))) != _regionStorageKecc){
-            _users[msg.sender]._stringUser["Region"] = _region;
+        if(_regionStorageKecc.length == 0){
+            _users[msg.sender]._boolUser["Init"] = false;
+        }
 
-        }
-        if(keccak256((bytes(_userType))) != _userTypeStorageKecc){
-            _users[msg.sender]._stringUser["UserType"] = _userType;
-            
-        }
         _users[msg.sender]._uintUser["Moved"] = block.timestamp;
 
         if(!_users[msg.sender]._boolUser["Init"]){
             _users[msg.sender]._boolUser["Init"] = true;
         } else {
-            for(uint256 i = 0; i < _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length; i++){
-                if(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ][i] == msg.sender){
-                    _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ][i] = _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ][ _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length - 1];
-                    _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].pop();
+            for(uint256 i = 0; i < _addressArrayStorage[ string(abi.encodePacked(oldRegion,oldUserType)) ].length; i++){
+                if(_addressArrayStorage[ string(abi.encodePacked(oldRegion,oldUserType)) ][i] == msg.sender){
+                    _addressArrayStorage[ string(abi.encodePacked(oldRegion,oldUserType)) ][i] = 
+                    _addressArrayStorage[ string(abi.encodePacked(oldRegion,oldUserType)) ][ _addressArrayStorage[ string(abi.encodePacked(oldRegion,oldUserType)) ].length - 1];
+                    _addressArrayStorage[ string(abi.encodePacked(oldRegion,oldUserType)) ].pop();
                 }
             }
-            for(uint256 i = 0; i < _addressArrayStorage[_userType].length; i++){
-                if(_addressArrayStorage[_userType][i] == msg.sender){
-                    _addressArrayStorage[_userType][i] = _addressArrayStorage[_userType][ _addressArrayStorage[_userType].length - 1];
-                    _addressArrayStorage[_userType].pop();
+            if(keccak256((bytes(_userType))) != _userTypeStorageKecc){
+                for(uint256 i = 0; i < _addressArrayStorage[oldUserType].length; i++){
+                    if(_addressArrayStorage[oldUserType][i] == msg.sender){
+                        _addressArrayStorage[oldUserType][i] = _addressArrayStorage[oldUserType][ _addressArrayStorage[oldUserType].length - 1];
+                        _addressArrayStorage[oldUserType].pop();
+                    }
                 }
             }
         }
-        _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].push(msg.sender); // adds msg.sender to addressArrayStorage[ _region+_userType ]
-        _addressArrayStorage[_userType].push(msg.sender); // adds msg.sender to addressArrayStorage[ _userType ]
-    
 
+        // checks where there are changes, then applies to storage
+        if(keccak256((bytes(_region))) != _regionStorageKecc){
+            _users[msg.sender]._stringUser["Region"] = _region;
+        }
+        if(keccak256((bytes(_userType))) != _userTypeStorageKecc){
+            _users[msg.sender]._stringUser["UserType"] = _userType;
+            _addressArrayStorage[_userType].push(msg.sender); // adds msg.sender to addressArrayStorage[ _userType ]
+        }
+        _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].push(msg.sender); // adds msg.sender to addressArrayStorage[ _region+_userType ]
+        
         // uint256 length = _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;     // check length of the array
         assert(bytes32(keccak256(abi.encodePacked(
                     _users[msg.sender]._stringUser["Region"],
@@ -92,6 +98,7 @@ contract Case is MultiSig {
             require(_cases[_caseNumber]._uintCase["ApprovalsSigned"] == 0, "ERR6");
             clearFromWaiting(_caseNumber);
             _cases[_caseNumber]._boolCase["CaseDeactivated"] = true;
+            emit myVoteE("Case Deactivated");
         }
         assert(!_cases[_caseNumber]._boolCase["OpenForVoting"]);
         emit confirmationE(true);
@@ -195,7 +202,7 @@ contract Case is MultiSig {
         require(_optionVoted <= _cases[_caseNumber]._uintArrayCase["Alt"].length, "ERR8");   // Checks that the voting option exists
         require(_cases[_caseNumber]._uintCase["EndDate"] > block.timestamp && _cases[_caseNumber]._uintCase["StartDate"] < block.timestamp, "ERR9" );
         require(keccak256(bytes(_users[msg.sender]._stringUser["Region"])) == keccak256(bytes(_cases[_caseNumber]._stringCase["Region"])) || _cases[_caseNumber]._boolCase["National"], "ERR32");
-        require(_users[msg.sender]._uintUser["Moved"] <= _cases[_caseNumber]._uintCase["CaseCreated"], "");
+        require(_users[msg.sender]._uintUser["Moved"] <= _cases[_caseNumber]._uintCase["CaseCreated"], "ERR33");
 
         if(_cases[_caseNumber]._boolCase[string(abi.encodePacked(msg.sender))]) { // Has voted
             _cases[_caseNumber]._uintArrayCase["Alt"][_cases[_caseNumber]._uintCase[string(abi.encodePacked(msg.sender))]] -= 1; // SUBTRACT
@@ -242,24 +249,25 @@ contract Case is MultiSig {
     //                 _cases[_caseNumber]._uintCase["TotalVotes"],    _users[msg.sender]._stringUser["Region"]);
     // }
 
-    function getUserArrayLength(string memory _region, string memory _userType) public view returns(uint retur){
-        // emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
-        return _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
-    }
+    // function getUserArrayLength(string memory _region, string memory _userType) public view returns(uint retur){
+    //     // emit getUsersE(_addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length);
+    //     return _addressArrayStorage[ string(abi.encodePacked(_region,_userType)) ].length;
+    // }
 
-    function usersOfType(string memory _userType) public view returns(uint usersOT){
-        return _addressArrayStorage[_userType].length;
-    }
+    // function usersOfType(string memory _userType) public view returns(uint usersOT){
+    //     return _addressArrayStorage[_userType].length;
+    // }
     
     // function getTotalVotes(uint256 _caseNumber) public {
     //     require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR14");
     //     emit totalVotesE(_cases[_caseNumber]._uintCase["TotalVotes"]);
     // }
 
-    function getUser() public view returns(string memory region, string memory utype){
-        // emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
-        return (_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
-    }
+    // function getUser() public view returns(bool boo){
+    //     // emit getUserE(_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
+    //     // return (_users[msg.sender]._stringUser["Region"], _users[msg.sender]._stringUser["UserType"]);
+    //     return _users[msg.sender]._boolUser["Init"];
+    // }
 
     // function getCasesWaitingForApproval() public {
     //     emit casesWaitingForApprovalE(_uintArrayStorage["WaitingForApproval"]);

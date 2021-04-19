@@ -35,5 +35,7 @@ Error codes
 32: This case does not apply to your region. -> Case.sol
 33: You have moved after the case was created. -> Case.sol
 34: Number of SuperAdmin has to be an odd number to avoid a tie. -> Case.sol
-35: 
+35: Nunber of SuperAdmin has to be an odd number. -> Proxy.sol
+36: 
+
 

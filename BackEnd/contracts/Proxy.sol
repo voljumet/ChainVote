@@ -5,21 +5,21 @@ import "./MultiSig.sol";
 
 contract Proxy is MultiSig {
 
-    constructor(address[] memory _superAdminArray) {
+    constructor(address[] memory _superAdminArray, string memory _region) {
         require(!_boolStorage["initialized"], "ERR1");
+        require(_superAdminArray.length % 2 != 0, "ERR34");
 
         _uintStorage["ApprovalsNeeded"] = 0;
         _boolStorage["InstanceInProgress"] = true;
         _boolStorage["paused"] = true;
         for(uint i = 0; i < _superAdminArray.length; i++){
             _users[_superAdminArray[i]]._stringUser["UserType"] = "SuperAdmin";
-            _addressArrayStorage["SuperAdmin"].push(_superAdminArray[i]);
             _users[_superAdminArray[i]]._boolUser["Init"] = true;
+            _users[_superAdminArray[i]]._stringUser["Region"] = _region;
+            _addressArrayStorage["SuperAdmin"].push(_superAdminArray[i]);
+            _addressArrayStorage[ string(abi.encodePacked(_region,"SuperAdmin")) ].push(_superAdminArray[i]);
         }
         
-        _users[msg.sender]._boolUser["Init"] = true;
-        _addressArrayStorage["SuperAdmin"].push(msg.sender);
-        _users[msg.sender]._stringUser["UserType"] = "SuperAdmin";
 
         assert( bytes32(keccak256(abi.encodePacked(
                      _users[msg.sender]._stringUser["UserType"],
@@ -60,7 +60,7 @@ contract Proxy is MultiSig {
         if(_uintStorage["ApprovalsNeeded"] == 0){
             _boolStorage["paused"] = true;
             _boolStorage["InstanceInProgress"] = false;
-            _uintStorage["pauseTimer"] = (block.timestamp)+604800;
+            _uintStorage["pauseTimer"] = (block.timestamp) + 604800;
          }
     }
     
