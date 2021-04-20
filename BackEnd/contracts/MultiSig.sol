@@ -6,8 +6,8 @@ import "./Storage.sol";
 
 contract MultiSig is Storage{
 
-    event caseApprovedE(uint256 caseNumber, string title);
-    event confirmationE(bool confirmation);
+    event confirmationE(bool paused, uint256 pauseTimer, address functionContractAddress);
+    event caseApprovedE(bool instanceInProgress, bool pauseStarted,bool upgradeStarted, uint256 approvalsNeeded);
 
     //SuperAdmin modifier ensures that a function is run only if it is called by a user in the superadmin array. Meaning a user has to be a superAdmin in order to run a functin with this modifier. 
     function onlyOwners() internal view returns(bool o){
@@ -16,14 +16,11 @@ contract MultiSig is Storage{
     }
 
     function createMultisigInstance() internal {
-        require(onlyOwners());
-        _boolStorage["InstanceInProgress"] = true;
         _uintStorage["MultisigInstance"]++;
         _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))] = true;
         _uintStorage["ApprovalsNeeded"] = ((_addressArrayStorage["SuperAdmin"].length + 1) /2) -1;
-        _uintStorage[string(abi.encodePacked(_uintStorage["MultisigInstance"]))] = _uintStorage["ApprovalsNeeded"];
 
-        emit caseApprovedE(_uintStorage["MultisigInstance"], "New pause or Upgrade request");
+    emit caseApprovedE(_boolStorage["InstanceInProgress"], _boolStorage["PauseStarted"], _boolStorage["UpgradeStarted"], _uintStorage["ApprovalsNeeded"]);
     }
 
     function signMultisigInstance() public {
@@ -42,8 +39,8 @@ contract MultiSig is Storage{
                 _boolStorage["PauseStarted"] = false;
             }
             _boolStorage["InstanceInProgress"] = false;
-            emit confirmationE(true);
+            emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );
         }
-        emit caseApprovedE(_uintStorage["ApprovalsNeeded"], "Signed request");
+    emit caseApprovedE(_boolStorage["InstanceInProgress"], _boolStorage["PauseStarted"], _boolStorage["UpgradeStarted"], _uintStorage["ApprovalsNeeded"]);
     }
 }

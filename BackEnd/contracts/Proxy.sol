@@ -34,11 +34,15 @@ contract Proxy is MultiSig {
     function upgrade(address _newAddress) public whenPaused {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
+            _boolStorage["InstanceInProgress"] = true;
             _boolStorage["UpgradeStarted"] = true;
             createMultisigInstance();
             _addressStorage["functionContractAddressUpgrade"] = _newAddress;
+        }else if(!_boolStorage["initialized"]){
+            _addressStorage["functionContractAddress"] = _newAddress;
         }
     }
+
 
     modifier whenNotPaused() {
         require(!_boolStorage["paused"], "ERR24");
@@ -53,6 +57,7 @@ contract Proxy is MultiSig {
     function pause() public whenNotPaused {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
+            _boolStorage["InstanceInProgress"] = true;
             _boolStorage["PauseStarted"] = true;
             createMultisigInstance();
         }
@@ -62,7 +67,6 @@ contract Proxy is MultiSig {
         require(onlyOwners());
         if(_boolStorage["initialized"] && _uintStorage["pauseTimer"] < block.timestamp){
             _boolStorage["paused"] = false;
-            emit confirmationE(true);
         } else {
             // will be unpaused if contract is not initialized yet
             _boolStorage["paused"] = false;
