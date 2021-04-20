@@ -17,13 +17,11 @@ contract MultiSig is Storage{
 
     function createMultisigInstance() internal {
         require(onlyOwners());
-        _uintStorage["MultisigInstance"]++;
-        
-        _uintStorage["ApprovalsNeeded"] = (_addressArrayStorage["SuperAdmin"].length + 1) /2;
-        _uintStorage[string(abi.encodePacked(_uintStorage["MultisigInstance"]))] = _uintStorage["ApprovalsNeeded"];
-        _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))] = true;
         _boolStorage["InstanceInProgress"] = true;
-        _uintStorage["ApprovalsNeeded"] -= 1;
+        _uintStorage["MultisigInstance"]++;
+        _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))] = true;
+        _uintStorage["ApprovalsNeeded"] = ((_addressArrayStorage["SuperAdmin"].length + 1) /2) -1;
+        _uintStorage[string(abi.encodePacked(_uintStorage["MultisigInstance"]))] = _uintStorage["ApprovalsNeeded"];
 
         emit caseApprovedE(_uintStorage["MultisigInstance"], "New pause or Upgrade request");
     }
