@@ -2,7 +2,6 @@
 // 'Case' is contract name, NOT FILENAME!
 const CaseOne = artifacts.require("Case");
 const Proxey = artifacts.require("Proxy");
-const CaseTwo = artifacts.require("CaseTwo");
 
 // import fs module in which writeFile function is defined.
 const fsLibrary = require("fs");
@@ -14,7 +13,7 @@ module.exports = async function (deployer, network, accounts) {
     accounts[7]
   ];
   await deployer.deploy(CaseOne, {from: accounts[9]});
-  await deployer.deploy(CaseTwo, {from: accounts[9]});
+  
 
 
   let proxyinstance = await deployer.deploy(Proxey, adminarray,"Grimstad", {from: accounts[9]});
@@ -22,8 +21,6 @@ module.exports = async function (deployer, network, accounts) {
   let instanceCase = await CaseOne.deployed();
   await proxyinstance.upgrade(instanceCase.address, {from: accounts[9]});
   await proxyinstance.unPause({from: accounts[9]});
-  // await deployer.deploy(CaseTwo);
-  // await CaseTwo.deployed();
 
   let proxyCase = await Proxey.deployed();
 

@@ -203,81 +203,94 @@ const truffleAssert = require('truffle-assertions');
       });      
     });
     
-            /*
-
-
     /////////////////////////////////////////////////////////////////////////
-   
+    
     ///////////////////// Vote ///////////////////////////////////////
-      it('All user type should be able to vote on a availabe case', async function () {
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[1] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[2] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[3] });
-
-      await instance.createUser('Grimstad', 'Standard', { from: accounts[6] });
-      await instance.createUser('Grimstad', 'SuperAdmin', { from: accounts[7] });
-        
-      await instance.createCase('First Case', Date.now()+30000, ['yes', 'no'], {
-        from: accounts[1],
-      }),
-        truffleAssert.ErrorType.REVERT;
-
-      await instance.approve(1, { from: accounts[1] });
-      await instance.approve(1, { from: accounts[2] });
-      await instance.approve(1, { from: accounts[3] });
-
-        await truffleAssert.passes(
-          instance.vote(1, 1, {from: accounts[1]} ),
+    it('Standard user type should be able to vote on a availabe case', async function () {
+      await truffleAssert.passes(
+          instance.vote(1, 2, {from: accounts[6]}),
           truffleAssert.ErrorType.REVERT
-        );
-        await truffleAssert.passes(
-          instance.vote(1, 1, { from: accounts[6] }),
-          truffleAssert.ErrorType.REVERT
-        );
-        await truffleAssert.passes(
-          instance.vote(1, 1, { from: accounts[7] }),
-          truffleAssert.ErrorType.REVERT
-        );
-      });
-    
-    
-    
-     it('Should not vote on non-exsited option', async function () {
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[1] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[2] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[3] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[4] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[5] });
-      await instance.createCase('First Case', Date.now()+30000, ['yes', 'no'], {
-        from: accounts[1],
-      }),
-        truffleAssert.ErrorType.REVERT;
-
-      await instance.approve(1, { from: accounts[1] });
-      await instance.approve(1, { from: accounts[2] });
-      await instance.approve(1, { from: accounts[3] });
-
-        await truffleAssert.fails(
-          instance.vote(1, 4, { from: accounts[1] }),
-          truffleAssert.ErrorType.REVERT
-        );
+      )
     });
-     it('Should not vote on a case that it not open yet for voting', async function () {
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[1] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[2] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[3] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[4] });
-      await instance.createUser('Grimstad', 'Admin', { from: accounts[5] });
-      await instance.createCase('First Case', Date.now()+30000, ['yes', 'no'], {
-        from: accounts[1],
-      }),
-        truffleAssert.ErrorType.REVERT;
-
-        await truffleAssert.fails(
-          instance.vote(1, 1, { from: accounts[1] }),
+    it('Admin user type should be able to vote on a availabe case', async function () {
+      await truffleAssert.passes(
+          instance.vote(1, 1, {from: accounts[1]}),
           truffleAssert.ErrorType.REVERT
-        );
+      )
     });
+
+    it('SuperAdmin user type should be able to vote on a availabe case', async function () {
+      await truffleAssert.passes(
+          instance.vote(1, 1, {from: accounts[9]}),
+          truffleAssert.ErrorType.REVERT
+      )
+    });
+
+    it('Should not allow vote on non-existing alternative (Admin)', async ()=> {
+      await truffleAssert.fails(
+          instance.vote(1, 4, {from: accounts[1]}),
+          truffleAssert.ErrorType.REVERT
+      )
+    });
+
+    it('Should not allow vote on non-existing alternative (Standard)', async ()=> {
+      await truffleAssert.fails(
+
+           instance.vote(1, 4, {from: accounts[6]}),
+          truffleAssert.ErrorType.REVERT
+      )
+    });
+
+    it('Should not allow vote on non-existing alternative (SuperAdmin)', async ()=> {
+      await truffleAssert.fails(
+          instance.vote(1, 4, {from: accounts[9]}),
+          truffleAssert.ErrorType.REVERT
+      )
+    });
+
+    it("Should not allow for standard users to vote on case that is not open for voting", async ()=>{
+      await truffleAssert.fails(
+        instance.vote(4, 1, {from: accounts[6]}),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
+
+    it("Should not allow for admin users to vote on case that is not open for voting", async ()=>{
+      await truffleAssert.fails(
+        instance.vote(4, 1, {from: accounts[1]}),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
+
+    it("Should not allow for superAdmin users to vote on case that is not open for voting", async ()=>{
+      await truffleAssert.fails(
+        instance.vote(4, 1, {from: accounts[9]}),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
+
+    it("Should not allow standard users to vote on a deactivated case", async()=>{
+      await truffleAssert.fails(
+          instance.vote(3, 1, {from: accounts[6]}),
+          truffleAssert.ErrorType.REVERT
+      )
+    })
+
+    it("Should not allow admin users to vote on a deactivated case", async()=>{
+      await truffleAssert.fails(
+          instance.vote(3, 1, {from: accounts[1]}),
+          truffleAssert.ErrorType.REVERT
+      )
+    })
+
+    it("Should not allow superAdmin users to vote on a deactivated case", async()=>{
+      await truffleAssert.fails(
+          instance.vote(3, 1, {from: accounts[9]}),
+          truffleAssert.ErrorType.REVERT
+      )
+    })
+          
+          /*
 
     it('Should not vote on a closed case', async function () {
       await instance.createUser('Grimstad', 'Admin', { from: accounts[1] });
