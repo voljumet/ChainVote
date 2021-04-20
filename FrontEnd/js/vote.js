@@ -3,9 +3,12 @@ Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url 
 
 const tabele = document.getElementsByClassName('case-details')[0];
 
-var url = new URL(window.location.href).href;
-console.log(url);
-var globalCaseNumber = url.substring(url.lastIndexOf('d') + 1);
+function globaNumber() {
+  var url = new URL(window.location.href).href;
+  return url.substring(url.lastIndexOf('d') + 1);
+}
+
+var globalCaseNumber = globaNumber();
 
 function showCase(
   _number,
@@ -13,7 +16,9 @@ function showCase(
   _stringAlternatives,
   _description,
   _endDate,
-  _totalVotes
+  _totalVotes,
+  _UintAlt,
+  _stratDate
 ) {
   var totalVotes = { totalVotes: _totalVotes };
   w3.displayObject('total-votes-vote', totalVotes);
@@ -21,7 +26,7 @@ function showCase(
   var caseNum = { proposal_number: _number };
   w3.displayObject('case-num-vote', caseNum);
 
-  var timeLeft = { timeLeft: timeIt(_endDate) };
+  var timeLeft = { timeLeft: timeIt(_stratDate) };
   w3.displayObject('time-left-vote', timeLeft);
 
   const cardy = document.createElement('ul');
@@ -42,6 +47,11 @@ function showCase(
     labelInput.id = 'option' + i;
     labelInput.name = 'selector';
     labelInput.value = i;
+    var now = new Date().getTime();
+    if (_endDate * 1000 < now) {
+      labelInput.disabled = true;
+      disapleButtons();
+    }
     if (i == 0) {
       labelInput.checked = 'checked';
     }
@@ -58,11 +68,12 @@ function showCase(
     card.append(div2);
     cardy.appendChild(card);
   }
+
   console.log(cardy);
   return cardy;
 }
 function timeIt(date) {
-  var countDownDate = date;
+  var countDownDate = date * 1000;
   // Get today's date and time
   var now = new Date().getTime();
   // Find the distance between now and the count down date
@@ -74,7 +85,10 @@ function timeIt(date) {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
   console.log(days, hours, minutes, seconds);
   //Change the color of Time Bar based on date
-
+  if (days < 0 || hours < 0 || minutes < 0) {
+    data();
+    return 'Case Closed';
+  }
   if (days == 0) {
     return [hours + ' H ' + minutes + ' M '];
   } else if (hours == 0) {
@@ -95,7 +109,9 @@ async function AddCaseToPage(_caseNumber) {
           element.attributes.stringAlt,
           element.attributes.description,
           element.attributes.endDate,
-          element.attributes.totalVotes
+          element.attributes.totalVotes,
+          element.attributes.UintAlt,
+          element.attributes.startDate
         )
       );
     }
@@ -140,12 +156,10 @@ async function getCaseInfo(_caseNumber) {
 
 function showResult() {
   let selected = document.querySelector('input[type="radio"]:checked');
-  console.log(selected.value);
   vote(globalCaseNumber, selected.value);
 }
 
 document.getElementById('confirm-myVote').onclick = showResult;
-document.getElementById('button').onclick = showVote;
 
 const caseTilteFiled = document.getElementById('case-title');
 const alternative_1_Field = document.getElementById('alt1');
@@ -158,16 +172,6 @@ const caseNumber = document.getElementById('proposal-number');
 
 const result = document.getElementById('h1');
 
-AddCaseToPage(globalCaseNumber);
-showVote()
-
-document.getElementById('vote_').onclick = function () {
-  vote(
-    document.getElementById('caseNumber4').value,
-    document.getElementById('alternative').value
-  );
-};
-
 async function updateMoralis(_caseNum, _resultArray) {
   let reuslt = await Moralis.Cloud.run('Cases', {});
   let ID;
@@ -179,8 +183,6 @@ async function updateMoralis(_caseNum, _resultArray) {
 
   TheCase.set('objectId', ID);
   TheCase.save().then((gameScore) => {
-    // Now let's update it with some new data. In this case, only cheatMode and score
-    // will get sent to the cloud. playerName hasn't changed.
     gameScore.set('uintAlt', _resultArray);
     return gameScore.save();
   });
@@ -218,6 +220,49 @@ async function getMyVote(_caseNumber) {
     });
 }
 
-async function showVote() {
-  getMyVote(1);
+function disapleButtons() {
+  document.getElementById('confirm-myVote').disabled = true;
+  document.getElementById('change-myvote').disabled = true;
 }
+
+Moralis.Web3.onAccountsChanged(function (accounts) {
+  location.hash = 'runLogOut';
+  location.href = 'login.html' + location.hash;
+});
+window.addEventListener('load', function () {
+  const loader = document.querySelector('.loader');
+  loader.className += ' hidden';
+});
+
+
+// Chart
+async function data() {
+  let stringData;
+  let intData;
+  let reuslt = await Moralis.Cloud.run('Cases', {});
+  reuslt.forEach((element) => {
+    if (element.attributes.caseNumber == globalCaseNumber) {
+      stringData = element.attributes.stringAlt;
+      intData = element.attributes.uintAlt;
+      console.log(intData);
+    }
+  });
+
+  var data = [
+    {
+      x: stringData,
+      y: intData,
+      type: 'bar',
+    },
+  ];
+  var layout = {
+    title: 'Graph over result',
+    showlegend: false,
+  };
+
+  Plotly.newPlot('myDiv', data, layout, { staticPlot: true });
+}
+
+
+getMyVote(globalCaseNumber)
+AddCaseToPage(globalCaseNumber);

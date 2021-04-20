@@ -43,18 +43,7 @@ https://templatemo.com/tm-538-digital-trend
         <a class="navbar-brand" href="index.html">
           <i class="fa fa-book"></i>
           History
-        </a>
-        <a class="navbar-brand" id="createCaseHerf"  href="createCase.html">
-          <i class="fa fa-plus"></i>
-          Create Case
-        </a>
-        <div class="content contentEnglish">
-          <a class="navbar-brand" href="Vote.html">
-            <i class="fa fa-archive"></i>
-            Vote
-          </a>
-        </div>
-       
+        </a> 
        
 
         <button
@@ -90,7 +79,7 @@ https://templatemo.com/tm-538-digital-trend
             <h5 class="user-text" id="userNameFront"></h5>
 
             <li class="nav-item">
-              <a href="contact.html" class="nav-link contact">
+              <a class="nav-link contact">
                 <img src="images/avatar.png" alt="Avatar" class="avatar" />
               </a>
             </li>
@@ -104,7 +93,8 @@ https://templatemo.com/tm-538-digital-trend
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-      <div class="container">
+    <div class="container">
+        <div id="alert" class="hide" > </div>
         <div class="wrapper fadeInDown">
             <div id="formContent">
               <!-- Tabs Titles -->
@@ -115,12 +105,27 @@ https://templatemo.com/tm-538-digital-trend
               </div>
           
               <!-- Login Form -->
+
             <div id="userinfo" >
+              <div class="loader">
+                <img src="images/Ajux_loader.gif" alt="Loading..." width="250"/>
+              </div>
               <form>
-                <input type="text" id="email-input" class="fadeIn second"  placeholder="E-mail">
-                <input type="text" id="username-input" class="fadeIn second"  placeholder="Name">
-                <input type="text" id="region-input" class="fadeIn second"  placeholder="Rigion">
-                <input type="text" id="usertype-input" class="fadeIn second"  placeholder="Rigiontype">
+                <label for="email-input">Email: </label>
+                <input type="text" id="email-input" class="fadeIn second"  placeholder="E-mail" pattern=".+@globex.com" required>
+                <label for="username-input" >Name: </label>
+                <input type="text" id="username-input" class="fadeIn second"  placeholder="Name" required>
+                <label  for="region-input">Region: </label>
+                <input type="text" id="region-input" class="fadeIn second"  placeholder="Rigion" required>
+                
+                  <label for="usertype-input" >Choose UserType: </label>
+                  <select id="usertype-input" name="usertype-input">
+                    <option value="SuperAdmin">SuperAdmin</option>
+                    <option value="Admin">Admin</option>
+                    <option value="Standard">Standard</option>
+                  </select>
+    
+              
                 <!--   <input type="text" id="password" class="fadeIn third" name="login" placeholder="password">-->
                 <button type="button" id="closeInfo" >close</button>
                 <button type="button" id="save" >save</button>
@@ -132,9 +137,7 @@ https://templatemo.com/tm-538-digital-trend
             <button type="button" id="logout" class="fadeIn second"  >Logout</button>
           
               <!-- Remind Passowrd -->
-              <div id="formFooter">
-                <a class="underlineHover" href="#">Forgot Password?</a>
-              </div>
+              
           
             </div>
           </div>
@@ -153,7 +156,7 @@ https://templatemo.com/tm-538-digital-trend
 
 
 
-
+   
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
     
@@ -172,31 +175,6 @@ https://templatemo.com/tm-538-digital-trend
     
 
     <!--Deadline function -->
-    <script>
-      var i = 0;
-      function move(time) {
-        if (i == 0) {
-          i = 1;
-          var elem = document.getElementById('myBar');
-          elem.style.backgroundColor = '#4CAF50';
-          var width = 10;
-          var id = setInterval(frame, time);
-          function frame() {
-            if (width >= time) {
-              clearInterval(id);
-              i = 0;
-            } else {
-              width++;
-              elem.style.width = width + '%';
-              if (width == time) {
-                elem.style.backgroundColor = 'red';
-              }
-            }
-          }
-        }
-      }
-    </script>
-
     </script>
     
   </body>

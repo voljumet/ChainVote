@@ -15,6 +15,7 @@
     "ganache-cli": "^6.12.2",
     "mocha": "^8.3.2",
     "truffle-assertions": "^0.9.2",
+    "truffle-contract-size": "^2.0.1",
     "web3": "^1.0.0-beta.28"
   }
 }

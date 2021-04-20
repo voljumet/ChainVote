@@ -2,13 +2,7 @@
 <html lang="en">
   <head>
     <title>Digital Voting System</title>
-    <!--
 
-DIGITAL TREND
-
-https://templatemo.com/tm-538-digital-trend
-
--->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta name="description" content="" />
@@ -25,15 +19,18 @@ https://templatemo.com/tm-538-digital-trend
       integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
       crossorigin="anonymous"
     />
-    <!-- <link rel="stylesheet" href="css/bootstrap.min.css" /> -->
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/aos.css" />
     <link rel="stylesheet" href="css/owl.carousel.min.css" />
     <link rel="stylesheet" href="css/owl.theme.default.min.css" />
     <link rel="stylesheet" href="css/style.css" />
-    
+
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
     <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
 
     <!-- MAIN CSS -->
@@ -43,26 +40,24 @@ https://templatemo.com/tm-538-digital-trend
     <!-- MENU BAR -->
     <nav class="navbar navbar-expand-lg">
       <div class="container">
+        <a class="navbar-brand" href="index.html">
+          <i class="fa fa-line-chart"></i>
+          ChainVote
+        </a>
+        <a class="navbar-brand" id="contractHerf" href="contractMangment.html">
+          <i class="fa fa-cog"></i>
+          Contract
+        </a>
+        <a class="navbar-brand" id="createCaseHerf" href="createCase.html">
+          <i class="fa fa-plus"></i>
+          Create Case
+        </a>
+          <a class="navbar-brand" id="approveHerf" href="caseToBeApproved.html">
+            <i class="fa fa-archive"></i>
+            Approve
+          </a>
+        
 
-          <a class="navbar-brand" href="index.html">
-            <i class="fa fa-line-chart"></i>
-            ChainVote
-          </a>
-          <a class="navbar-brand" href="index.html">
-            <i class="fa fa-book"></i>
-            History
-          </a>
-          <a class="navbar-brand" id="createCaseHerf" href="createCase.html">
-            <i class="fa fa-plus"></i>
-            Create Case
-          </a>
-          <div class="content contentEnglish">
-            <a class="navbar-brand" href="Vote.html">
-              <i class="fa fa-archive"></i>
-              Vote
-            </a>
-          </div>
-         
         <button
           class="navbar-toggler"
           type="submit"
@@ -77,17 +72,9 @@ https://templatemo.com/tm-538-digital-trend
 
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ml-auto">
-            <!-- 
-            <li class="nav-item">
-              <a href="#project" class="nav-link smoothScroll contact ">Our Works</a>
-            </li>
-            <li class="nav-item">
-              <a href="blog.html" class="nav-link contact">Blog</a>
-            </li>
-            -->
             <!-- Language Menu -->
             <nav>
-              <div class="lang-menu">
+              <div class="lang-menu1">
                 <div class="selected-lang">English</div>
                 <ul>
                   <li>
@@ -113,41 +100,39 @@ https://templatemo.com/tm-538-digital-trend
       </div>
     </nav>
 
-
     <!-- HERO -->
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
-      
-        <div class="row">
-          <div class="input-group rounded">
-            <input
-              type="search"
-              class="form-control rounded"
-              placeholder="Search"
-              aria-label="Search"
-              aria-describedby="search-addon"
-            />
-            <span class="input-group-text border-0" id="search-addon">
-              <i class="fa fa-search"></i>
-            </span>
-          </div>
+      <div class="row">
+        <div class="input-group rounded">
+          <!-- Search  -->
+          <input
+            id="search-input"
+            type="search"
+            class="form-control rounded"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="search-addon"
+          />
+          <span class="input-group-text border-0" id="search-addon">
+            <i id="search-button" class="fa fa-search"></i>
+          </span>
+        </div>
 
-
-          <div class="container2" id="here" data-aos="fade-up" >
-          </div>
-
-          </div>
-        
-     
-      
+        <!-- Display Cases -->
+        <div class="container2" id="here" data-aos="fade-up">
+        <div class="loader">
+          <img src="images/Ajux_loader.gif" alt="Loading..." width="250"/>
+        </div>
+        </div>
+        <p id="noMatch"></p>
+      </div>
     </section>
-
-  
 
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
-    
+
     <script src="js/bootstrap.min.js"></script>
     <script src="js/aos.js"></script>
     <script src="js/owl.carousel.min.js"></script>
@@ -156,78 +141,5 @@ https://templatemo.com/tm-538-digital-trend
     <script scr="js/timeBar.js"></script>
     <script type="text/javascript" src="js/mainy.js"></script>
     <script type="text/javascript" src="js/username.js"></script>
-    
-
-    </script>
-   <!--   
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-
-    <title>Title</title>
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://unpkg.com/moralis/dist/moralis.js"></script>
-    <script type="text/javascript" src="./abi.js"></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class="display-4">Welcome</h1>
-      </div>
-    </div>
-    <div class="container">
-      <button id="login_button">Register with MetaMask</button>
-
-      <div id="voting" style="display: none">
-        <input type="text" id="Region" placeholder="Wat Region?" />
-        <input type="text" id="UserType" placeholder="Wat UserType?" />
-        <button id="create_user">Create User</button>
-      </div>
-
-      <div id="getCase" style="display: none">
-        <input type="text" id="caseNumber" placeholder="Case Number" />
-        <button id="get_case">Get Case</button>
-      </div>
-
-      <div id="getUserArrLen" style="display: none">
-        <button id="get_users">Get number of users</button>
-      </div>
-
-      <div id="newCase" style="display: none">
-        <input type="text" id="title" placeholder="title" />
-        <input type="text" id="description" placeholder="description" />
-        <input type="date" id="startDate" />
-        <input type="date" id="endDate" />
-        <input type="text" id="alternatives1" placeholder="alternatives" />
-        <input type="text" id="alternatives2" placeholder="alternatives" />
-        <input type="text" id="alternatives3" placeholder="alternatives" />
-        <input type="text" id="alternatives4" placeholder="alternatives" />
-        <input type="text" id="alternatives5" placeholder="alternatives" />
-        <button id="create_case">Create Case</button>
-      </div>
-    </div>
-
-    <script type="text/javascript" src="./main.js"></script>
   </body>
 </html>
