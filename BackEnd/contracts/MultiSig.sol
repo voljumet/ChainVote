@@ -54,13 +54,13 @@ contract MultiSig is Storage{
         _uintStorage[string(abi.encodePacked(_uintStorage["MultisigInstance"]))] = _uintStorage["ApprovalsNeeded"];
         _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))] = true;
         _boolStorage["InstanceInProgress"] = true;
-
+        _uintStorage["ApprovalsNeeded"] -= 1;
         emit caseApprovedE(_uintStorage["MultisigInstance"], "New pause or Upgrade request");
     }
 
     function signMultisigInstance() public {
         require(onlyOwners());
-        require(!_boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))]);
+        require(!_boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))], "ERR37");
         _boolStorage[string(abi.encodePacked(msg.sender, _uintStorage["MultisigInstance"]))] = true;
         _uintStorage["ApprovalsNeeded"] -= 1;
 
