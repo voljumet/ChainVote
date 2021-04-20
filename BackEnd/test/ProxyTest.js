@@ -10,8 +10,8 @@ const truffleAssert = require('truffle-assertions');
 
     beforeEach(async function () {
       let proxey = await Proxey.deployed();
-      let caseOne = await CaseOne.deployed();
-      let caseTwo = await CaseTwo.deployed();
+      await CaseOne.deployed();
+      await CaseTwo.deployed();
       //create proxy Case to fool truffle
       
       instance = await CaseOne.at(proxey.address);
@@ -22,25 +22,63 @@ const truffleAssert = require('truffle-assertions');
     function timeout(ms) {
       return new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    /////////////////////////Create users//////////////////////////////////////////
   
     it("Should be possible to access case functionality as standard user", async()=>{
-      truffleAssert.passes(
-        await instance.createUser("Grimstad", "Standard", {from: accounts[5]}),
+      await truffleAssert.passes(
+        instance.createUser("Grimstad", "Standard", {from: accounts[5]}),
         truffleAssert.ErrorType.REVERT
       )})
     
       it("Should be possible to create admin user", async()=>{
-        truffleAssert.passes(
-          await instance.createUser("Grimstad", "Admin", {from: accounts[6]}),
+        await truffleAssert.passes(
+          instance.createUser("Grimstad", "Admin", {from: accounts[6]}),
           truffleAssert.ErrorType.REVERT
-        )})
+      )})
+
+      /////////////////////////Pause functionality//////////////////////////////////////////
+
+      it("Should not allow standard users to pause contract", async ()=>{
+        await truffleAssert.fails(
+          instance3.pause({from: accounts[5]}),
+          truffleAssert.ErrorType.REVERT
+        )
+      })
+
+      it("Should not allow admins to pause contract", async ()=>{
+          await truffleAssert.fails(
+            instance3.pause({from: accounts[6]}),
+            truffleAssert.ErrorType.REVERT
+          )
+        })
+      
+      it("Should not run upgrade function when not paused", async()=>{
+        await truffleAssert.fails(
+          instance3.upgrade(instance2.address,{from: accounts[9]}),
+          truffleAssert.ErrorType.REVERT
+        )
+      })
     
-    it("Should allow superadmins to pause contract", async ()=>{
-     
-      let pause = await instance3.pause({from: accounts[7]})
-      await truffleAssert.eventEmitted(pause, 'caseApprovedE', (ev) => {
-        return ev.title === "New pause, Unpause or Upgrade request";
+      it("Should allow superadmins to pause contract", async ()=>{
+          let pause = await instance3.pause({from: accounts[7]})
+          await truffleAssert.eventEmitted(pause, 'caseApprovedE', (ev) => {
+          return ev.title === "New pause or Upgrade request";
       })})
+
+      it("Should not allow standard users to sing multisig instance", async ()=>{
+        await truffleAssert.fails(
+          instance3.signMultisigInstance({from: accounts[5]}),
+          truffleAssert.ErrorType.REVERT
+        )
+      })
+
+      it("Should not allow admins to sign multisig instance", async ()=>{
+        await truffleAssert.fails(
+          instance3.signMultisigInstance({from: accounts[6]}),
+          truffleAssert.ErrorType.REVERT
+        )
+      })
 
      it("Should allow superadmins to sign multisig instance", async ()=>{
         let sign = await instance3.signMultisigInstance({from: accounts[8]})
@@ -57,11 +95,25 @@ const truffleAssert = require('truffle-assertions');
       })
      })
 
+    /////////////////////////Upgrade functionality//////////////////////////////////////////
+     it("Should not allow standard users to upgrade contract", async ()=>{
+      await truffleAssert.fails(
+        instance3.upgrade(instance2.address,{from: accounts[5]}),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
+
+    it("Should not allow admins to upgrade contract", async ()=>{
+      await truffleAssert.fails(
+        instance3.upgrade(instance2.address,{from: accounts[6]}),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
+
      it("Should allow superAdmins to upgrade contract", async ()=>{
-      
         let upgrade = await instance3.upgrade(instance2.address, {from: accounts[9]})
         await truffleAssert.eventEmitted(upgrade, 'caseApprovedE', (ev) =>{
-          return ev.title === "New pause, Unpause or Upgrade request";
+          return ev.title === "New pause or Upgrade request";
         })
      })
 
@@ -80,6 +132,23 @@ const truffleAssert = require('truffle-assertions');
       })
      })
 
+     /////////////////////////Unpause functionality//////////////////////////////////////////
+     it("Should not allow standard users to unpause contract", async ()=>{
+      await timeout(3000)
+      await truffleAssert.fails(
+        instance3.unPause({from: accounts[5]}),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
+
+    it("Should not allow admins to unpause contract", async ()=>{
+      await timeout(3000)
+      await truffleAssert.fails(
+        instance3.unPause({from: accounts[6]}),
+        truffleAssert.ErrorType.REVERT
+      )
+    })
+
      it("Should allow superadmins to unpause the contract", async()=>{
       await timeout(3000)
       let unpause = await instance3.unPause({from: accounts[9]})
@@ -87,6 +156,8 @@ const truffleAssert = require('truffle-assertions');
         return ev.confirmation === true;
       })
     })
+
+    /////////////////////////Upgraded contract functionality//////////////////////////////////////////
 
     it('Should fail to call old functions no longer in new contract', async function () {
       await truffleAssert.fails(
@@ -100,77 +171,4 @@ const truffleAssert = require('truffle-assertions');
           truffleAssert.ErrorType.REVERT
          )
      })
-
-     it("Should not allow standard user to access proxy functionality", async()=>{
-
-     })
-/*
-     it("Should unpause contract when called by superadmin", async ()=>{
-       await instance3.pause({from: accounts[7]})
-       await instance3.signMultisigInstance({from: accounts[8]})
-       await instance3.signMultisigInstance({from: accounts[9]})
-       await instance3.pause({from: accounts[9]})
-       let unpause = await instance3.unpause({from: address[9]})
-       await truffleAssert.eventEmitted(unpause, 'confirmationE', (ev)=>{
-          return ev.confirmation === true;
-       })
-     })
-
-      it("Should not allow standard users to call upgrade function", async()=>{
-       
-        await truffleAssert.fails(
-          await instance3.upgrade(caseOne.address, {from: accounts[0]}),
-          truffleAssert.ErrorType.REVERT
-        )})
-
-    it("Should be able to use new contract functions", async ()=>{
-      await instance3.pause({from: accounts[0]})
-      await instance3.upgrade(CaseTwo.address, {from: accounts[0]})
-      await instance3.unPause({from: accounts[0]})
-      await truffleAssert.passes(
-        instance2.verifyNewCase(),
-        truffleAssert.ErrorType.REVERT
-        )})
-          
-    it("Should change the address of case contract", async ()=>{
-      await instance3.pause({from: accounts[0]})
-      await truffleAssert.passes(
-        instance3.upgrade(CaseTwo.address, {from: accounts[0]}),
-        truffleAssert.ErrorType.REVERT
-        )})
-
-    it("Owner should be able to pause contract", async ()=>{
-        await truffleAssert.passes(
-          instance3.pause({from: accounts[0]}),
-          truffleAssert.ErrorType.REVERT
-        )})
-
-    it("Owner should be able to unpause contract", async ()=>{
-        await instance3.pause({from: accounts[0]})
-         await truffleAssert.passes(
-          instance3.unPause({from: accounts[0]}),
-          truffleAssert.ErrorType.REVERT
-         )})
-
-    it("Only owner should be able to unpause contract", async ()=>{
-        await truffleAssert.fails(
-          instance3.pause({from: accounts[2]}),
-          truffleAssert.ErrorType.REVERT
-        )})
-
-
-   it("Should only allow the owner to upgrade", async ()=>{
-        await instance3.pause({from: accounts[0]});
-           await truffleAssert.fails(
-             instance3.upgrade(CaseTwo.address, {from: accounts[2]}),
-             truffleAssert.ErrorType.REVERT
-           )})
-
-    it("Should not be able to Upgrade when not paused", async () =>{
-      await truffleAssert.fails(
-        instance3.upgrade(CaseTwo.address, {from: accounts[0]}),
-        truffleAssert.ErrorType.REVERT
-      )})
-      })
-      */
-    })
+  })
