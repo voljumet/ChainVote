@@ -33,7 +33,7 @@ async function createCase(
         alt2
       )
       .send({ from: ethereum.selectedAddress })
-      .on('receipt', function (receipt) {
+      .on('receipt', async function (receipt) {
         if (receipt.events.confirmationE.returnValues.confirmation) {
           showSuccessAlert('Case Created Successfully');
           disaprearAlert(2000);
