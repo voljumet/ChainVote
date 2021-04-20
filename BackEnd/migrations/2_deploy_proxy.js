@@ -14,6 +14,8 @@ module.exports = async function (deployer, network, accounts) {
     accounts[7]
   ];
   await deployer.deploy(CaseOne, {from: accounts[9]});
+  await deployer.deploy(CaseTwo, {from: accounts[9]});
+
 
   let proxyinstance = await deployer.deploy(Proxey, adminarray,"Grimstad", {from: accounts[9]});
 
