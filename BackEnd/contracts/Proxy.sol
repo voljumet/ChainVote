@@ -35,11 +35,8 @@ contract Proxy is MultiSig {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
             createMultisigInstance();
-        }
-        if(_uintStorage["ApprovalsNeeded"] == 0){
-            _addressStorage["functionContractAddress"] = _newAddress;
-            _boolStorage["InstanceInProgress"] = false;
-            emit confirmationE(true);
+            _boolStorage["UpgradeStarted"] = true;
+            _addressStorage["functionContractAddressUpgrade"] = _newAddress;
         }
     }
 
@@ -57,13 +54,8 @@ contract Proxy is MultiSig {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
             createMultisigInstance();
+            _boolStorage["PauseStarted"] = true;
         }
-        if(_uintStorage["ApprovalsNeeded"] == 0){
-            _boolStorage["paused"] = true;
-            _boolStorage["InstanceInProgress"] = false;
-            _uintStorage["pauseTimer"] = (block.timestamp) + 2; //604800; //uncomment number for 7 days.
-            emit confirmationE(true);
-         }
     }
     
     function unPause() public whenPaused {

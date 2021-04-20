@@ -2,10 +2,9 @@
 pragma solidity 0.7.5;
 pragma abicoder v2;
 
+import "./MultiSigCase.sol";
 
-import "./MultiSig.sol";
-
-contract Case is MultiSig {
+contract Case is MultiSigCase {
 
     event addApprovalsE(string[] stringAlt, uint256[] uintAlt);
     event approvalsE(uint256 numberOfApprovals, uint256 limit);
@@ -20,11 +19,6 @@ contract Case is MultiSig {
     /*  "receipt.events.userCreatedE.returnValues.confirmationE" in main.js
      *   used for userCreatedE(x x, string confirmation)
      */
-
-     function balance() public payable {
-         
-     }
-
 
     function createUser(string memory _region, string memory _userType) public {
         bytes32 _regionStorageKecc = keccak256(bytes(_users[msg.sender]._stringUser["Region"]));
