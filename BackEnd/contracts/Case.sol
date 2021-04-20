@@ -7,15 +7,15 @@ import "./MultiSig.sol";
 
 contract Case is MultiSig {
 
-    event SigningRequestE(string title,uint256 caseNumber);
-    event getCaseE(uint256 indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint256[] uintAlt, uint256 totalVotes, string region);
     event addApprovalsE(string[] stringAlt, uint256[] uintAlt);
-    event getUsersE(uint256 usersWithSameRegionAndUserType); 
-    event getUserE(string region, string userType); 
-    event totalVotesE(uint256 toalVotes);
     event approvalsE(uint256 numberOfApprovals, uint256 limit);
     event casesWaitingForApprovalE(uint[] casesWaitingForApproval);
+    event getCaseE(uint256 indexed caseNumber, string title, string description, bool openForVoting, uint256 startDate, uint256 endDate, string[] stringAlt, uint256[] uintAlt, uint256 totalVotes, string region);
+    event getUsersE(uint256 usersWithSameRegionAndUserType); 
+    event getUserE(string region, string userType); 
     event myVoteE(string votedAlternative);
+    event signingRequestE(string title,uint256 caseNumber);
+    event totalVotesE(uint256 toalVotes);
     
     /*  "receipt.events.userCreatedE.returnValues.confirmationE" in main.js
      *   used for userCreatedE(x x, string confirmation)
@@ -88,6 +88,7 @@ contract Case is MultiSig {
     
     function endVoting(uint256 _caseNumber)public {
         require(decitionmaker(_caseNumber), "ERR22");
+        require(_caseNumber <= _uintStorage["CaseNumber"] && _caseNumber != 0, "ERR36");
         if(_cases[_caseNumber]._boolCase["OpenForVoting"]){
             // end voting when the deadline has passed
             require(_cases[_caseNumber]._uintCase["EndDate"] < block.timestamp, "ERR3");
@@ -193,7 +194,7 @@ contract Case is MultiSig {
 
 
         emit confirmationE(true);
-        emit SigningRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
+        emit signingRequestE(_cases[caseNumber]._stringCase["Title"], caseNumber);
         emit getCaseE(caseNumber, _title, _description, _cases[caseNumber]._boolCase["OpenForVoting"], _startDate, _endDate, _cases[caseNumber]._stringArrayCase["Alt"], _cases[caseNumber]._uintArrayCase["Alt"], _cases[caseNumber]._uintCase["TotalVotes"], _region);
     }
    
