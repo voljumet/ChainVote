@@ -34,8 +34,8 @@ contract Proxy is MultiSig {
     function upgrade(address _newAddress) public whenPaused {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
-            createMultisigInstance();
             _boolStorage["UpgradeStarted"] = true;
+            createMultisigInstance();
             _addressStorage["functionContractAddressUpgrade"] = _newAddress;
         }
     }
@@ -53,8 +53,8 @@ contract Proxy is MultiSig {
     function pause() public whenNotPaused {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
-            createMultisigInstance();
             _boolStorage["PauseStarted"] = true;
+            createMultisigInstance();
         }
     }
     

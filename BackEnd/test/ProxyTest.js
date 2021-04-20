@@ -3,10 +3,12 @@ const CaseTwo = artifacts.require('CaseTwo');
 const Proxey = artifacts.require('Proxy');
 const truffleAssert = require('truffle-assertions');
 
-  contract('Proxy', async function (accounts) {
+  contract('Proxy', async function (deployer, accounts) {
     let instance;
     let instance2;
     let instance3;
+
+    await deployer.deploy(CaseTwo, {from: accounts[4]});
 
     beforeEach(async function () {
       let proxey = await Proxey.deployed();
