@@ -40,7 +40,6 @@ function showCase(
   caseDes.disabled = true;
   cardy.appendChild(caseDes);
 
-
   for (let i = 0; i < _stringAlternatives.length; i++) {
     const card = document.createElement('li');
     const labelInput = document.createElement('input');
@@ -49,7 +48,7 @@ function showCase(
     labelInput.name = 'selector';
     labelInput.value = i;
     var now = new Date().getTime();
-    if(_endDate*1000 < now){
+    if (_endDate * 1000 < now) {
       labelInput.disabled = true;
       disapleButtons();
     }
@@ -86,8 +85,9 @@ function timeIt(date) {
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
   console.log(days, hours, minutes, seconds);
   //Change the color of Time Bar based on date
-  if(days < 0 || hours < 0 || minutes < 0){
-    return "Case Closed"
+  if (days < 0 || hours < 0 || minutes < 0) {
+    data();
+    return 'Case Closed';
   }
   if (days == 0) {
     return [hours + ' H ' + minutes + ' M '];
@@ -156,7 +156,6 @@ async function getCaseInfo(_caseNumber) {
 
 function showResult() {
   let selected = document.querySelector('input[type="radio"]:checked');
-  console.log(selected.value);
   vote(globalCaseNumber, selected.value);
 }
 
@@ -184,8 +183,6 @@ async function updateMoralis(_caseNum, _resultArray) {
 
   TheCase.set('objectId', ID);
   TheCase.save().then((gameScore) => {
-    // Now let's update it with some new data. In this case, only cheatMode and score
-    // will get sent to the cloud. playerName hasn't changed.
     gameScore.set('uintAlt', _resultArray);
     return gameScore.save();
   });
@@ -223,58 +220,49 @@ async function getMyVote(_caseNumber) {
     });
 }
 
-function disapleButtons(){
-  document.getElementById('confirm-myVote').disabled=true;
-  document.getElementById('change-myvote').disabled=true;
+function disapleButtons() {
+  document.getElementById('confirm-myVote').disabled = true;
+  document.getElementById('change-myvote').disabled = true;
 }
 
-Moralis.Web3.onAccountsChanged(function(accounts) {
-  // window.location.replace("http://www.w3schools.com");
-  location.hash = "runLogOut";
-  location.href = 'login.html' + location.hash ;
-
+Moralis.Web3.onAccountsChanged(function (accounts) {
+  location.hash = 'runLogOut';
+  location.href = 'login.html' + location.hash;
 });
-window.addEventListener("load", function(){
-  const loader = document.querySelector(".loader");
-  loader.className += " hidden"
-})
+window.addEventListener('load', function () {
+  const loader = document.querySelector('.loader');
+  loader.className += ' hidden';
+});
 
 
-async function data(){
+// Chart
+async function data() {
   let stringData;
-  let intData; 
+  let intData;
   let reuslt = await Moralis.Cloud.run('Cases', {});
   reuslt.forEach((element) => {
     if (element.attributes.caseNumber == globalCaseNumber) {
-      stringData = element.attributes.stringAlt
-      intData = element.attributes.uintAlt
-      console.log(intData)
+      stringData = element.attributes.stringAlt;
+      intData = element.attributes.uintAlt;
+      console.log(intData);
     }
   });
 
   var data = [
-  
     {
       x: stringData,
       y: intData,
-      type: 'bar'
-    }
+      type: 'bar',
+    },
   ];
   var layout = {
     title: 'Graph over result',
-    showlegend: false
-};
-  
-  Plotly.newPlot('myDiv', data,layout , {staticPlot: true});
- 
+    showlegend: false,
+  };
+
+  Plotly.newPlot('myDiv', data, layout, { staticPlot: true });
 }
 
-console.log( "here" + data())
-// Chart 
 
-//getMyVote(globalCaseNumber)
-AddCaseToPage(globalCaseNumber)
-
-
-
-
+getMyVote(globalCaseNumber)
+AddCaseToPage(globalCaseNumber);

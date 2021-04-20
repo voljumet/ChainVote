@@ -2,17 +2,18 @@ Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application i
 Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
 
 function pauseContract() {
-  let txt;
-  let confirmed = confirm('Did you want to pause the contract!');
-  if (confirmed) {
-    txt = 'You pressed OK!';
-  } else {
-    txt = 'You pressed Cancel!';
-  }
-  document.getElementById('d').innerHTML = txt;
+  hideElment(PauseButton);
+  showElment(UnpauseButton);
+   alert('Did you want to pause the contract!');
+}
+function unPauseContract() {
+  showElment(PauseButton);
+  hideElment(UnpauseButton);
+  alert('Did you want to pause the contract!');
 }
 
 async function checkUserType() {
+  hideElment(UnpauseButton)
   user = await Moralis.User.current();
   if (!user) {
     alert('Please Log in');
@@ -22,7 +23,12 @@ async function checkUserType() {
     location.href = 'accessDenied.html';
   }
 }
+
+const PauseButton = document.getElementById('pause-button');
+PauseButton.onclick = pauseContract;
+const UnpauseButton = document.getElementById('unpause-button');
+UnpauseButton.onclick = unPauseContract;
+hideElment = (element) => (element.style.display = 'none');
+showElment = (element) => (element.style.display = 'block');
+
 checkUserType();
-document.getElementById('pause-button').onclick = pauseContract;
-
-

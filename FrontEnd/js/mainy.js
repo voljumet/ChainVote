@@ -1,15 +1,21 @@
 Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application id from moralis.io
 Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
-var web3 = new Web3(Web3.givenProvider);
-
 
 const tabele = document.getElementsByClassName('container2')[0];
 
-function createCard(_number, _title, _stratDate, _endDate, _openForVoting, _uintAlt, _stingAlt) {
+function createCard(
+  _number,
+  _title,
+  _stratDate,
+  _endDate,
+  _openForVoting,
+  _uintAlt,
+  _stingAlt
+) {
   const monthDiv = document.createElement('div');
 
   const month = document.createElement('u');
-  month.innerHTML = getMyDate(_stratDate);
+  month.innerHTML = getCaseMonth(_stratDate);
 
   const card = document.createElement('div');
   card.className = 'card';
@@ -36,8 +42,8 @@ function createCard(_number, _title, _stratDate, _endDate, _openForVoting, _uint
 
   var txt2 = 'Time Left: ';
   timeLeft.innerHTML =
-  txt2.fontsize(5).fontcolor('black') + timeIt(_endDate, bar, _openForVoting);
-  getMyDate(_stratDate);
+    txt2.fontsize(5).fontcolor('black') +
+    calculateTimeLeft(_endDate, bar, _openForVoting);
 
   const openForVoting = document.createElement('p');
   var now = new Date().getTime();
@@ -53,12 +59,9 @@ function createCard(_number, _title, _stratDate, _endDate, _openForVoting, _uint
   }
 
   var voteResult = _stingAlt[indexOfMax(_uintAlt)];
-  console.log( "vote: "+voteResult)
-  const result = document.createElement('h2')
-  result.innerHTML = 'Result: '+ voteResult
-
-  
-  
+  console.log('vote: ' + voteResult);
+  const result = document.createElement('h2');
+  result.innerHTML = 'Result: ' + voteResult;
 
   monthDiv.appendChild(month);
   card.appendChild(monthDiv);
@@ -70,14 +73,14 @@ function createCard(_number, _title, _stratDate, _endDate, _openForVoting, _uint
   card.append(pro);
   pro.appendChild(bar);
   card.appendChild(openForVoting);
-  if(_endDate*1000 < now ){
+  if (_endDate * 1000 < now) {
     card.appendChild(result);
   }
 
   return card;
 }
 
-function getMyDate(t) {
+function getCaseMonth(t) {
   var month = new Array();
   month[0] = 'January';
   month[1] = 'February';
@@ -99,7 +102,7 @@ function getMyDate(t) {
 }
 
 ////////////////////////
-function timeIt(date, timeBar, _openForVoting) {
+function calculateTimeLeft(date, timeBar, _openForVoting) {
   var countDownDate = date * 1000;
   // Get today's date and time
   var now = new Date().getTime();
@@ -141,18 +144,17 @@ function timeIt(date, timeBar, _openForVoting) {
 ///////////////////////////
 // Render Case Card on the Index page
 async function AddCardsToPage() {
-  user = await Moralis.User.current()
-  if(!user){
-    alert("Please Log in")
-    location.href = 'login.html' + location.hash ;
+  user = await Moralis.User.current();
+  if (!user) {
+    alert('Please Log in');
+    location.href = 'login.html' + location.hash;
   }
   let reuslt = await Moralis.Cloud.run('Cases', {});
 
-  console.log("userRegion: "+ user.get("Region"))
+  console.log('userRegion: ' + user.get('Region'));
   console.log(reuslt);
   var newArray = reuslt.filter(function (el) {
-    return el.attributes.region == user.get("Region")
-        
+    return el.attributes.region == user.get('Region');
   });
   newArray.forEach((element) => {
     tabele.appendChild(
@@ -171,66 +173,55 @@ async function AddCardsToPage() {
   });
 }
 function indexOfMax(arr) {
-  console.log(arr)
+  console.log(arr);
   if (arr.length === 0) {
-      return -1;
+    return -1;
   }
 
   var max = arr[0];
   var maxIndex = 0;
 
   for (var i = 1; i < arr.length; i++) {
-      if (arr[i] > max) {
-          maxIndex = i;
-          max = arr[i];
-      }
+    if (arr[i] > max) {
+      maxIndex = i;
+      max = arr[i];
+    }
   }
 
   return maxIndex;
 }
-
-
-AddCardsToPage();
-checkUserType();
-
-// Reload the page
-setTimeout(function () {
-  //$('#here').load(document.URL +  ' #here');
-}, 10000);
 
 async function checkUserType() {
   user = await Moralis.User.current();
   if (user.get('UserType') == 'Standard') {
     hideElment(document.getElementById('createCaseHerf'));
     hideElment(document.getElementById('approveHerf'));
-    window.onload = function() {
-      if(!window.location.hash) {
+    window.onload = function () {
+      if (!window.location.hash) {
         window.location = window.location + '#loaded';
         window.location.reload();
       }
-    }
-    
+    };
   } else if (user.get('UserType') == 'Admin') {
     showElment(document.getElementById('createCaseHerf'));
     showElment(document.getElementById('approveHerf'));
     hideElment(document.getElementById('contractHerf'));
-    window.onload = function() {
-      if(!window.location.hash) {
+    window.onload = function () {
+      if (!window.location.hash) {
         window.location = window.location + '#loaded';
         window.location.reload();
       }
-    }
-  } else if(user.get('UserType') == 'SuperAdmin'){
+    };
+  } else if (user.get('UserType') == 'SuperAdmin') {
     showElment(document.getElementById('createCaseHerf'));
     showElment(document.getElementById('approveHerf'));
     showElment(document.getElementById('contractHerf'));
-    window.onload = function() {
-      if(!window.location.hash) {
+    window.onload = function () {
+      if (!window.location.hash) {
         window.location = window.location + '#loaded';
         window.location.reload();
       }
-    }
-
+    };
   }
 }
 
@@ -240,7 +231,7 @@ async function search(_title) {
   document.getElementById('noMatch').innerText = '';
 
   let reuslt = await Moralis.Cloud.run('Cases', {});
-  console.log("result:" +reuslt);
+  console.log('result:' + reuslt);
   if (_title == '' && tempy == false) {
     AddCardsToPage();
   }
@@ -290,15 +281,15 @@ input.addEventListener('keyup', function (event) {
   }
 });
 
-
-Moralis.Web3.onAccountsChanged(function(accounts) {
-  // window.location.replace("http://www.w3schools.com");
-  location.hash = "runLogOut";
-  location.href = 'login.html' + location.hash ;
-
+Moralis.Web3.onAccountsChanged(function (accounts) {
+  location.hash = 'runLogOut';
+  location.href = 'login.html' + location.hash;
 });
 
-window.addEventListener("load", function(){
-  const loader = document.querySelector(".loader");
-  loader.className += " hidden"
-})
+window.addEventListener('load', function () {
+  const loader = document.querySelector('.loader');
+  loader.className += ' hidden';
+});
+
+AddCardsToPage();
+checkUserType();
