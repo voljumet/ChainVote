@@ -78,8 +78,6 @@ function showCase(_stringAlternatives) {
   return cardy;
 }
 
-
-
 $('#startDate').datetimepicker({
   timepicker: true,
   datepicker: true,
@@ -179,7 +177,8 @@ async function addAlternative(id) {
   try {
     var altValue = document.getElementById('alt' + id).value;
     window.web3 = await Moralis.Web3.enable();
-    let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+    let abi = await getAbi();
+    let contractInstance = new web3.eth.Contract(abi, contractAddress);
 
     await contractInstance.methods
       .addAlternatives(globalCaseNumber, altValue)
