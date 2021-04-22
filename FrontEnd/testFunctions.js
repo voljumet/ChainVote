@@ -12,6 +12,7 @@ async function login() {
     // alert("User logged in");
     document.getElementById('login_button').style.display = 'none';
     document.getElementById('createUser').style.display = 'block';
+    document.getElementById('pauseContract').style.display = 'block';
     document.getElementById('createCase').style.display = 'block';
     document.getElementById('getMyVote').style.display = 'block';
     document.getElementById('approve').style.display = 'block';
@@ -47,11 +48,26 @@ async function createUser(_region, _userType) {
     });
 }
 
+async function pauseContract() {
+  window.web3 = await Moralis.Web3.enable();
+  let abi = await getProxyAbi();
+  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  contractInstance.methods
+    .pause()
+    .send({ from: ethereum.selectedAddress })
+    .on('receipt', function (receipt) {
+      console.log(receipt);
+      if (receipt.events.userCreated.returnValues.confirmation) {
+        alert('user created successfully');
+      }
+    });
+}
+
 // async function getUserArrayLength(_region, _userType) {
 //   alert("Region: " + _region + "\nUserType: " + _userType);
 //   window.web3 = await Moralis.Web3.enable();
 //   let abi = await getAbi();
-let contractInstance = new web3.eth.Contract(abi, contractAddress);
+//  let contractInstance = new web3.eth.Contract(abi, contractAddress);
 //   contractInstance.methods
 //     .getUserArrayLength(_region, _userType)
 //     .send({ from: ethereum.selectedAddress })
@@ -111,7 +127,7 @@ async function createCase(
 // async function getCase(_caseNumber) {
 //   window.web3 = await Moralis.Web3.enable();
 //   let abi = await getAbi();
-let contractInstance = new web3.eth.Contract(abi, contractAddress);
+// let contractInstance = new web3.eth.Contract(abi, contractAddress);
 //   contractInstance.methods
 //     .getCase(_caseNumber)
 //     .send({ from: ethereum.selectedAddress })
@@ -124,7 +140,7 @@ let contractInstance = new web3.eth.Contract(abi, contractAddress);
 // async function getUser() {
 //   window.web3 = await Moralis.Web3.enable();
 //   let abi = await getAbi();
-let contractInstance = new web3.eth.Contract(abi, contractAddress);
+// let contractInstance = new web3.eth.Contract(abi, contractAddress);
 //   contractInstance.methods
 //     .getUser()
 //     .send({ from: ethereum.selectedAddress })
@@ -142,7 +158,7 @@ let contractInstance = new web3.eth.Contract(abi, contractAddress);
 // async function getCasesWaitingForApproval() {
 //   window.web3 = await Moralis.Web3.enable();
 //   let abi = await getAbi();
-let contractInstance = new web3.eth.Contract(abi, contractAddress);
+// let contractInstance = new web3.eth.Contract(abi, contractAddress);
 //   contractInstance.methods
 //     .getCasesWaitingForApproval()
 //     .send({ from: ethereum.selectedAddress })
@@ -198,7 +214,7 @@ async function approve(caseNumber) {
 // async function getMyVote(caseNumber) {
 //   window.web3 = await Moralis.Web3.enable();
 //   let abi = await getAbi();
-let contractInstance = new web3.eth.Contract(abi, contractAddress);
+// let contractInstance = new web3.eth.Contract(abi, contractAddress);
 //   contractInstance.methods
 //     .getMyVote(caseNumber)
 //     .send({ from: ethereum.selectedAddress })
@@ -231,7 +247,7 @@ async function deactivateCase(caseNumber) {
 // async function getTotalVotes(caseNumber) {
 //   window.web3 = await Moralis.Web3.enable();
 //   let abi = await getAbi();
-let contractInstance = new web3.eth.Contract(abi, contractAddress);
+// let contractInstance = new web3.eth.Contract(abi, contractAddress);
 //   contractInstance.methods
 //     .getTotalVotes(caseNumber)
 //     .send({ from: ethereum.selectedAddress })
@@ -310,6 +326,7 @@ async function addAlternatives(caseNumber, alternative) {
 }
 
 document.getElementById('login_button').onclick = login;
+document.getElementById('pause_contract').onclick = pauseContract;
 // document.getElementById("get_users").onclick = getUserArrayLength;
 // document.getElementById("get_user").onclick = getUser;
 
