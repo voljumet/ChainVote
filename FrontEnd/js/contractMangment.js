@@ -1,6 +1,21 @@
-Moralis.initialize('2xY2tmcdYBf3IdqY5Yuo74fSEyxigYSADL9Ywtrj'); // Application id from moralis.io
-Moralis.serverURL = 'https://rnonp7vwlz3d.moralis.io:2053/server'; //Server url from moralis.io
+Moralis.initialize('V72IuyWsaYclkUWnzU7JdLkfSZqyArobvyU4OKOg'); // Application id from moralis.io
+Moralis.serverURL = 'https://03i7vk4ziens.moralis.io:2053/server'; //Server url from moralis.io
 
+async function updateMoralis(_caseNum, _resultArray) {
+  let reuslt = await Moralis.Cloud.run('Cases', {});
+  let ID;
+  reuslt.forEach((element) => {
+    if (element.attributes.caseNumber == _caseNum) ID = element.id;
+  });
+  const CaseOne = Moralis.Object.extend('Cases');
+  const TheCase = new CaseOne();
+
+  TheCase.set('objectId', ID);
+  TheCase.save().then((gameScore) => {
+    gameScore.set('uintAlt', _resultArray);
+    return gameScore.save();
+  });
+}
 async function pauseContract() {
   alert('Did you want to pause the contract!');
 
@@ -11,6 +26,16 @@ async function pauseContract() {
     .pause()
     .send({ from: ethereum.selectedAddress })
     .on('receipt', async function (receipt) {
+
+     // let PauseStarted = receipt.events.caseApprovedE.returnValues.PauseStarted;
+      //let UpgradeStarted = receipt.events.caseApprovedE.returnValues.UpgradeStarted;
+      //let InstanceInProgress = receipt.events.caseApprovedE.returnValues.InstanceInProgress;
+      //if (!InstanceInProgress){
+        // Show pauseContract btn
+       
+     // } else if(UpgradeStarted && InstanceInProgress ) {
+        
+      //}
       console.log(receipt);
     });
 }

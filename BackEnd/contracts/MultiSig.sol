@@ -21,6 +21,7 @@ contract MultiSig is Storage{
         _uintStorage["ApprovalsNeeded"] = ((_addressArrayStorage["SuperAdmin"].length + 1) /2) -1;
 
     emit caseApprovedE(_boolStorage["InstanceInProgress"], _boolStorage["PauseStarted"], _boolStorage["UpgradeStarted"], _uintStorage["ApprovalsNeeded"]);
+   
     }
 
     function signMultisigInstance() public {
