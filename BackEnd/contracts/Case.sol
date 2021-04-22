@@ -2,10 +2,9 @@
 pragma solidity 0.7.5;
 pragma abicoder v2;
 
+import "./MultiSigCase.sol";
 
-import "./MultiSig.sol";
-
-contract Case is MultiSig {
+contract Case is MultiSigCase {
 
     event addApprovalsE(string[] stringAlt, uint256[] uintAlt);
     event approvalsE(uint256 numberOfApprovals, uint256 limit);
@@ -21,11 +20,6 @@ contract Case is MultiSig {
      *   used for userCreatedE(x x, string confirmation)
      */
 
-     function balance() public payable {
-         
-     }
-
-
     function createUser(string memory _region, string memory _userType) public {
         bytes32 _regionStorageKecc = keccak256(bytes(_users[msg.sender]._stringUser["Region"]));
         bytes32 _userTypeStorageKecc = keccak256(bytes(_users[msg.sender]._stringUser["UserType"]));
@@ -37,8 +31,6 @@ contract Case is MultiSig {
         if(_regionStorageKecc.length == 0){
             _users[msg.sender]._boolUser["Init"] = false;
         }
-
-        _users[msg.sender]._uintUser["Moved"] = block.timestamp;
 
         if(!_users[msg.sender]._boolUser["Init"]){
             _users[msg.sender]._boolUser["Init"] = true;
@@ -63,6 +55,7 @@ contract Case is MultiSig {
         // checks where there are changes, then applies to storage
         if(keccak256((bytes(_region))) != _regionStorageKecc){
             _users[msg.sender]._stringUser["Region"] = _region;
+            _users[msg.sender]._uintUser["Moved"] = block.timestamp;
         }
         if(keccak256((bytes(_userType))) != _userTypeStorageKecc){
             _users[msg.sender]._stringUser["UserType"] = _userType;

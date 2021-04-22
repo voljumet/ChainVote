@@ -120,7 +120,8 @@ async function AddCaseToPage(_caseNumber) {
 
 async function vote(caseNumber, alternative) {
   window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+  let abi = await getAbi();
+  let contractInstance = new web3.eth.Contract(abi, contractAddress);
   contractInstance.methods
     .vote(caseNumber, alternative)
     .send({ from: ethereum.selectedAddress })
@@ -191,7 +192,8 @@ async function updateMoralis(_caseNum, _resultArray) {
 async function getMyVote(_caseNumber) {
   let reuslt = await Moralis.Cloud.run('Cases', {});
   window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+  let abi = await getAbi();
+  let contractInstance = new web3.eth.Contract(abi, contractAddress);
   contractInstance.methods
     .getMyVote(_caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -234,7 +236,6 @@ window.addEventListener('load', function () {
   loader.className += ' hidden';
 });
 
-
 // Chart
 async function data() {
   let stringData;
@@ -263,6 +264,5 @@ async function data() {
   Plotly.newPlot('myDiv', data, layout, { staticPlot: true });
 }
 
-
-getMyVote(globalCaseNumber)
+getMyVote(globalCaseNumber);
 AddCaseToPage(globalCaseNumber);

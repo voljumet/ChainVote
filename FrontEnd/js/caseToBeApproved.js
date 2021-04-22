@@ -161,7 +161,8 @@ async function updateMoralis(_caseNum, _result) {
 async function approve(_caseNumber) {
   let reuslt = await Moralis.Cloud.run('Cases', {});
   window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+  let abi = await getAbi();
+  let contractInstance = new web3.eth.Contract(abi, contractAddress);
   contractInstance.methods
     .approve(_caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -187,7 +188,8 @@ async function approve(_caseNumber) {
 
 async function moreInfoy(_caseNumber) {
   window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+  let abi = await getAbi();
+  let contractInstance = new web3.eth.Contract(abi, contractAddress);
   contractInstance.methods
     .getApprovalsAndLimit(_caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -204,7 +206,8 @@ async function moreInfoy(_caseNumber) {
 async function delete_Case(_caseNumber) {
   let reuslt = await Moralis.Cloud.run('Cases', {});
   window.web3 = await Moralis.Web3.enable();
-  let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+  let abi = await getAbi();
+  let contractInstance = new web3.eth.Contract(abi, contractAddress);
   contractInstance.methods
     .endVoting(_caseNumber)
     .send({ from: ethereum.selectedAddress })

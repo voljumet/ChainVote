@@ -34,14 +34,15 @@ contract Proxy is MultiSig {
     function upgrade(address _newAddress) public whenPaused {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
+            _boolStorage["InstanceInProgress"] = true;
+            _boolStorage["UpgradeStarted"] = true;
             createMultisigInstance();
-        }
-        if(_uintStorage["ApprovalsNeeded"] == 0){
+            _addressStorage["functionContractAddressUpgrade"] = _newAddress;
+        }else if(!_boolStorage["initialized"]){
             _addressStorage["functionContractAddress"] = _newAddress;
-            _boolStorage["InstanceInProgress"] = false;
-            emit confirmationE(true);
         }
     }
+
 
     modifier whenNotPaused() {
         require(!_boolStorage["paused"], "ERR24");
@@ -56,25 +57,21 @@ contract Proxy is MultiSig {
     function pause() public whenNotPaused {
         require(onlyOwners());
         if(!_boolStorage["InstanceInProgress"]){
+            _boolStorage["InstanceInProgress"] = true;
+            _boolStorage["PauseStarted"] = true;
             createMultisigInstance();
         }
-        if(_uintStorage["ApprovalsNeeded"] == 0){
-            _boolStorage["paused"] = true;
-            _boolStorage["InstanceInProgress"] = false;
-            _uintStorage["pauseTimer"] = (block.timestamp) + 2; //604800; //uncomment number for 7 days.
-            emit confirmationE(true);
-         }
     }
     
     function unPause() public whenPaused {
         require(onlyOwners());
         if(_boolStorage["initialized"] && _uintStorage["pauseTimer"] < block.timestamp){
             _boolStorage["paused"] = false;
-            emit confirmationE(true);
         } else {
             // will be unpaused if contract is not initialized yet
             _boolStorage["paused"] = false;
             _boolStorage["initialized"] = true;
+            _boolStorage["InstanceInProgress"] = false;
         }
     }
 

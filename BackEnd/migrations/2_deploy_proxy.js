@@ -9,16 +9,15 @@ const fsLibrary = require("fs");
 
 module.exports = async function (deployer, network, accounts) {
   let adminarray = [
-    accounts[9],
+    accounts[7],
     accounts[8],
-    accounts[7]
+    accounts[9]
   ];
   await deployer.deploy(CaseOne, {from: accounts[9]});
   // await deployer.deploy(CaseTwo, {from: accounts[9]});
   
 
-
-  let proxyinstance = await deployer.deploy(Proxey, adminarray,"Grimstad", {from: accounts[9]});
+  let proxyinstance = await deployer.deploy(Proxey, adminarray,"Grimstad", {from: accounts[0]});
 
   let instanceCase = await CaseOne.deployed();
   await proxyinstance.upgrade(instanceCase.address, {from: accounts[9]});

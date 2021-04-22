@@ -776,6 +776,16 @@ textarea {
   margin: auto;
   background-color: rgb(172, 57, 57);
 }
+#demo{
+    padding: 10px;
+    border-radius: 10px;
+    width: fit-content;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    margin: auto;
+    background-color: rgb(172, 57, 57);
+
+}
 #search-addon {
   width: 35px;
   height: 35px;
@@ -822,35 +832,31 @@ label {
   background-color: red;
 }
 .pause-btn {
+  padding: 15px 25px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
   background-color: red;
   border: none;
-  color: white;
-  padding: 16px 32px;
-  text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.5;
-  transition: 0.1s;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
 }
 
-.pause-btn:hover {
-  opacity: 1;
-}
 .unpause-btn {
-  background-color: #16ac1be7;
-  border: none;
-  color: white;
-  padding: 16px 32px;
+  padding: 15px 25px;
+  font-size: 20px;
   text-align: center;
-  font-size: 16px;
-  margin: 4px 2px;
-  opacity: 0.5;
-  transition: 0.1s;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #1db712;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
 }
 
-.unpause-btn:hover {
-  opacity: 2;
-}
 
 #usertype-input {
   width: 100%;
@@ -868,13 +874,16 @@ label {
 #upgrade_input input {
   width: 100%;
 }
+.contract_mangment  {
+  margin-top: 20px;
+  width: 90%;
+}
+
 
 #check {
   margin-left: -740px;
 }
 .upgrade-btn {
-  width: 20%;
-  margin-left: 75%;
   padding: 15px 25px;
   font-size: 20px;
   text-align: center;
@@ -955,4 +964,8 @@ label {
   font: 1.5rem 'Fira Sans';
   margin-top: 10px;
   margin-bottom: -5px;
+}
+.contract_mangment{
+
+  margin-top: 100px;
 }

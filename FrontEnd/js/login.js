@@ -93,7 +93,8 @@ saveUserInfo = async () => {
 async function createUser(_region, _userType) {
   if (confirm('Region: ' + _region + '\nUserType: ' + _userType)) {
     window.web3 = await Moralis.Web3.enable();
-    let contractInstance = new web3.eth.Contract(window.abi, contractAddress);
+    let abi = await getAbi();
+    let contractInstance = new web3.eth.Contract(abi, contractAddress);
 
     contractInstance.methods
       .createUser(_region, _userType)
