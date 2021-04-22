@@ -18,7 +18,7 @@ const truffleAssert = require('truffle-assertions');
     }); 
     
     //////////////////Create User//////////////////////////
-    it('Should create a user of any type', async function () {
+    it('Should create admin users', async function () {
       await truffleAssert.passes(
        instance.createUser('Grimstad', 'Admin', { from: accounts[0] }),
         truffleAssert.ErrorType.REVERT
@@ -31,6 +31,8 @@ const truffleAssert = require('truffle-assertions');
         instance.createUser('Grimstad', 'Admin', { from: accounts[2] }),
         truffleAssert.ErrorType.REVERT
       );
+    });
+    it("Should create standard users", async()=>{
       await truffleAssert.passes(
         instance.createUser('Grimstad', 'Standard', { from: accounts[3] }),
         truffleAssert.ErrorType.REVERT
@@ -47,7 +49,7 @@ const truffleAssert = require('truffle-assertions');
         instance.createUser('Grimstad', 'Standard', { from: accounts[6] }),
         truffleAssert.ErrorType.REVERT
       );
-    });
+    })
 
     it('Should not be able to change userType or Region on account to the same', async function () {
       await truffleAssert.fails(
@@ -55,8 +57,10 @@ const truffleAssert = require('truffle-assertions');
         truffleAssert.ErrorType.REVERT
       );
     });
+
+    ///////////////////////////CREATE CASE/////////////////////////////////////////////
       
-    it('UserType Admin can create cases', async function () {
+    it('Should allow admins to create case', async function () {
         await truffleAssert.passes(
           instance.createCase('First Case', 'Descripton',
           Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
@@ -66,7 +70,7 @@ const truffleAssert = require('truffle-assertions');
     });
         
         
-    it('UserType SuperAdmin can create a cases', async function () {
+    it('Should allow superAdmins to create case', async function () {
           await truffleAssert.passes(
             instance. createCase('Second Case', 'Descripton',
             Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
@@ -75,7 +79,7 @@ const truffleAssert = require('truffle-assertions');
             );
     });
           
-    it('User type Standard can NOT create a case', async function () {
+    it('Should NOT allow standard users to create case', async function () {
             await truffleAssert.fails(
               instance. createCase('Third Case', 'Descripton',
               Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
@@ -85,7 +89,7 @@ const truffleAssert = require('truffle-assertions');
     });
 
             
-    it('Even number of Admin users can NOT create a case', async function () {
+    it('Even number of Admin can NOT create a case', async function () {
       instance.createUser('Grimstad', 'Admin', { from: accounts[5] })
       await truffleAssert.fails(
         instance. createCase('Third Case', 'Descripton',
@@ -95,7 +99,7 @@ const truffleAssert = require('truffle-assertions');
         );
     });
 
-    it('Even number of SuperAdmin users can NOT create a case', async function () {
+    it('Even number of SuperAdmin can NOT create a case', async function () {
          await instance.createUser('Grimstad', 'SuperAdmin', {from: accounts[5] });
          await truffleAssert.fails(
            instance.createCase('Third Case', 'Descripton',
@@ -136,9 +140,7 @@ const truffleAssert = require('truffle-assertions');
       );
     });
         
-
-    /////////////////////////////////////////////////////////
-    //////////////////////////// approve /////////////////////////
+    ///////////////////////////APPROVE/////////////////////////////////////////////
 
     it('Admin can approve a case', async function () {
       await truffleAssert.passes(
@@ -161,21 +163,21 @@ const truffleAssert = require('truffle-assertions');
       );
     });
 
-    it('Admin should not approve twice', async function () {
+    it('Admin cannot approve case twice', async function () {
       await truffleAssert.fails(
         instance.approve(1, { from: accounts[1] }),
         truffleAssert.ErrorType.REVERT
       );
     });
 
-    it('SuperAdmin should not approve twice', async function () {
+    it('SuperAdmin cannot approve case twice', async function () {
       await truffleAssert.fails(
         instance.approve(2, { from: accounts[8] }),
         truffleAssert.ErrorType.REVERT
       );
     });
 
-    it('Admin user should not approve an approved case', async function () {
+    it('Admin cannot approve an approved case', async function () {
       await instance.approve(1, { from: accounts[0] });
       await truffleAssert.fails(
         instance.approve(1, { from: accounts[4] }),
@@ -183,7 +185,7 @@ const truffleAssert = require('truffle-assertions');
       );
     });
 
-    it('SuperAdmin user should not approve an approved case', async function () {
+    it('SuperAdmin cannot approve an approved case', async function () {
       await instance.approve(2, { from: accounts[7] });
 
       await truffleAssert.fails(
@@ -205,21 +207,21 @@ const truffleAssert = require('truffle-assertions');
     
     /////////////////////////////////////////////////////////////////////////
     
-    ///////////////////// Vote ///////////////////////////////////////
-    it('Standard user type should be able to vote on a availabe case', async function () {
+    ///////////////////////////VOTEU/////////////////////////////////////////////
+    it('Standard user should be able to vote on a availabe case', async function () {
       await truffleAssert.passes(
           instance.vote(1, 2, {from: accounts[6]}),
           truffleAssert.ErrorType.REVERT
       )
     });
-    it('Admin user type should be able to vote on a availabe case', async function () {
+    it('Admin user should be able to vote on a availabe case', async function () {
       await truffleAssert.passes(
           instance.vote(1, 1, {from: accounts[1]}),
           truffleAssert.ErrorType.REVERT
       )
     });
 
-    it('SuperAdmin user type should be able to vote on a availabe case', async function () {
+    it('SuperAdmin user should be able to vote on a availabe case', async function () {
       await truffleAssert.passes(
           instance.vote(1, 1, {from: accounts[9]}),
           truffleAssert.ErrorType.REVERT
@@ -248,21 +250,21 @@ const truffleAssert = require('truffle-assertions');
       )
     });
 
-    it("Should not allow for standard users to vote on case that is not open for voting", async ()=>{
+    it("Should not allow standard to vote on case that is not open for voting", async ()=>{
       await truffleAssert.fails(
         instance.vote(4, 1, {from: accounts[6]}),
         truffleAssert.ErrorType.REVERT
       )
     })
 
-    it("Should not allow for admin users to vote on case that is not open for voting", async ()=>{
+    it("Should not allow admin to vote on case that is not open for voting", async ()=>{
       await truffleAssert.fails(
         instance.vote(4, 1, {from: accounts[1]}),
         truffleAssert.ErrorType.REVERT
       )
     })
 
-    it("Should not allow for superAdmin users to vote on case that is not open for voting", async ()=>{
+    it("Should not allow superAdmin to vote on case that is not open for voting", async ()=>{
       await truffleAssert.fails(
         instance.vote(4, 1, {from: accounts[9]}),
         truffleAssert.ErrorType.REVERT

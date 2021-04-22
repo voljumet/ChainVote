@@ -1,6 +1,7 @@
 // import contractAddress as ok from "../address.js";
 // 'Case' is contract name, NOT FILENAME!
 const CaseOne = artifacts.require("Case");
+// const CaseTwo = artifacts.require("CaseTwo");
 const Proxey = artifacts.require("Proxy");
 
 // import fs module in which writeFile function is defined.
@@ -13,6 +14,7 @@ module.exports = async function (deployer, network, accounts) {
     accounts[7]
   ];
   await deployer.deploy(CaseOne, {from: accounts[9]});
+  // await deployer.deploy(CaseTwo, {from: accounts[9]});
   
 
 

@@ -3,36 +3,38 @@ const CaseTwo = artifacts.require('CaseTwo');
 const Proxey = artifacts.require('Proxy');
 const truffleAssert = require('truffle-assertions');
 
-  contract('Proxy', async function (deployer, accounts) {
-    let instance;
-    let instance2;
-    let instance3;
-
-    await deployer.deploy(CaseTwo, {from: accounts[9]})
-
-    beforeEach(async function () {
-      let proxey = await Proxey.deployed();
-      await CaseOne.deployed();
-      await CaseTwo.deployed();
-      //create proxy Case to fool truffle
-      
-      instance = await CaseOne.at(proxey.address);
-      instance2 = await CaseTwo.at(proxey.address);
-      instance3 = await Proxey.at(proxey.address);
-    });
-
-    function timeout(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    /////////////////////////Create users//////////////////////////////////////////
+contract('Proxy', async function (accounts, deployer) {
+  let instance;
+  let instance2;
+  let instance3;
   
-    it("Should be possible to access case functionality as standard user", async()=>{
-      await truffleAssert.passes(
-        instance.createUser("Grimstad", "Standard", {from: accounts[5]}),
-        truffleAssert.ErrorType.REVERT
-      )})
+  
+  // await deployer.deploy(CaseTwo, {from: accounts[9]})
+  
+  beforeEach(async function () {
+    let proxey = await Proxey.deployed();
+    await CaseOne.deployed();
+    await CaseTwo.deployed();
+    //create proxy Case to fool truffle
     
+    instance = await CaseOne.at(proxey.address);
+    instance2 = await CaseTwo.at(proxey.address);
+    instance3 = await Proxey.at(proxey.address);
+  });
+  
+  function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  
+  /////////////////////////Create users//////////////////////////////////////////
+  
+  
+  it("Should be possible to access case functionality as standard user", async()=>{
+    await truffleAssert.passes(
+      instance.createUser("Grimstad", "Standard", {from: accounts[5]}),
+      truffleAssert.ErrorType.REVERT
+      )})
+      
       it("Should be possible to create admin user", async()=>{
         await truffleAssert.passes(
           instance.createUser("Grimstad", "Admin", {from: accounts[6]}),
@@ -167,10 +169,11 @@ const truffleAssert = require('truffle-assertions');
        truffleAssert.ErrorType.REVERT);
       })
 
-     it("Should be possible to access functionality in casetwo after upgrade", async()=>{
+     it("Should be possible to access functionality in new contract", async()=>{
          await truffleAssert.passes(
           await instance2.verifyNewCase({from: accounts[9]}),
           truffleAssert.ErrorType.REVERT
          )
-     })
+        })
+        
   })
