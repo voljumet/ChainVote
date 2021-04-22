@@ -71,6 +71,7 @@ contract Proxy is MultiSig {
             // will be unpaused if contract is not initialized yet
             _boolStorage["paused"] = false;
             _boolStorage["initialized"] = true;
+            _boolStorage["InstanceInProgress"] = false;
         }
     }
 

@@ -32,8 +32,6 @@ contract Case is MultiSigCase {
             _users[msg.sender]._boolUser["Init"] = false;
         }
 
-        _users[msg.sender]._uintUser["Moved"] = block.timestamp;
-
         if(!_users[msg.sender]._boolUser["Init"]){
             _users[msg.sender]._boolUser["Init"] = true;
         } else {
@@ -57,6 +55,7 @@ contract Case is MultiSigCase {
         // checks where there are changes, then applies to storage
         if(keccak256((bytes(_region))) != _regionStorageKecc){
             _users[msg.sender]._stringUser["Region"] = _region;
+            _users[msg.sender]._uintUser["Moved"] = block.timestamp;
         }
         if(keccak256((bytes(_userType))) != _userTypeStorageKecc){
             _users[msg.sender]._stringUser["UserType"] = _userType;
