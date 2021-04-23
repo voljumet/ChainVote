@@ -94,33 +94,35 @@
     <section
       class="hero hero-bg d-flex justify-content-center align-items-center"
     >
+  
     <div class="form-controler">
-
-      <div class="upgrade_input">
-        <label for="upgrade_input">Enter the new address: </label>
+      <div >
+        <h3 id="Current_Address"></h3>
         <input
         type="text"
-          id="upgrade_input"
+          id="upgrade_input_field"
           name="upgrade_input"
-          placeholder="Enter the address"
+          placeholder="Enter the new address"
         />
-        <button id="upgrade-button" class="upgrade-btn">
-          Upgrade The Contract
-        </button>
+        <button id="upgrade-button" class="manager-btn"> Upgrade The Contract</button>
         <div>
           <p id="d"></p>
         </div>
       </div>
 
       <div class="contract_mangment">
-        <label>Contract Mangment </label>
-        <button id="unpause-button" class="unpause-btn">UnpauseContract</button>
-        <button id="pause-button" class="pause-btn">Pause Contract</button>
-        <button id="approve-pause-button" class="unpause-btn">Approve Pause</button>
+        <label></label>
+        <button id="unpause-button" class="manager-btn">UnpauseContract</button>
+        <button id="pause-button" class="manager-btn">Pause Contract</button>
+        <h1 id="showApprovalsNeeded"></h1>
+        <button id="approve-pause-button" class="manager-btn">Approve Pause</button>
+        <button id="approveUpgrade" class="manager-btn">Approve Upgrade</button>
         <div>
+          
           <h2 id="h2"></h2>
-          <p id="demo" style="color: aliceblue"></p>
-          <p id="d"></p>
+          <!--<p id="demo" style="color: aliceblue"></p>  -->  
+            <p id="d"></p>
+         
         </div>
       </div>
     </div>
