@@ -1,5 +1,3 @@
-Moralis.initialize(initialize); // Application id from moralis.io
-Moralis.serverURL = serverurl; //Server url from moralis.io
 var web3 = new Web3(Web3.givenProvider);
 
 const tabele = document.getElementsByClassName('container3')[0];

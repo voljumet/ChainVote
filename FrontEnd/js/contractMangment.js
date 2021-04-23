@@ -1,5 +1,3 @@
-Moralis.initialize(initialize); // Application id from moralis.io
-Moralis.serverURL = serverurl; //Server url from moralis.io
 
 
 async function updateMoralis(_PauseStarted, _UpgradeStarted, _InstanceInProgress, _ApprovalsNeeded) {

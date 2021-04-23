@@ -1,6 +1,3 @@
-Moralis.initialize(initialize); // Application id from moralis.io
-Moralis.serverURL = serverurl; //Server url from moralis.io
-
 function reloadUrl() {
   if (location.hash == '#runLogOut') {
     logOut();

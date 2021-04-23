@@ -163,13 +163,13 @@ a {
   background-repeat: no-repeat;
 }
 
-.no:before {
+/* .no:before {
   background-image: url(https://www.countryflags.io/sj/flat/32.png);
-}
+} */
 
-.en:before {
+/* .en:before {
   background-image: url(https://www.countryflags.io/us/flat/32.png);
-}
+} */
 
 .lang-menu:hover ul {
   display: block;

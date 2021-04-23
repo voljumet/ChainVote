@@ -1,6 +1,3 @@
-Moralis.initialize(initialize); // Application id from moralis.io
-Moralis.serverURL = serverurl; //Server url from moralis.io
-
 async function getNewCaseNumber(_caseNum) {
   hideElment(document.getElementById('n1'));
   var num = _caseNum;

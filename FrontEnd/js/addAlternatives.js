@@ -1,6 +1,3 @@
-Moralis.initialize(initialize); // Application id from moralis.io
-Moralis.serverURL = serverurl; //Server url from moralis.io
-
 const tabele = document.getElementsByClassName('case-details')[0];
 function globaNumber() {
   var url = new URL(window.location.href).href;
