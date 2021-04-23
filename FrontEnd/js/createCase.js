@@ -34,6 +34,7 @@ async function createCase(
       )
       .send({ from: ethereum.selectedAddress })
       .on('receipt', async function (receipt) {
+        console.log('This is receipt:' + receipt);
         if (receipt.events.confirmationE.returnValues.confirmation) {
           showSuccessAlert('Case Created Successfully');
           disaprearAlert(2000);
@@ -177,27 +178,6 @@ function removeInput(id) {
   return elem.parentNode.removeChild(elem);
 }
 
-async function addAlternative(_caseNumber, _altValue) {
-  window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
-
-  contractInstance.methods
-    .addAlternatives(_caseNumber, _altValue)
-    .send({ from: ethereum.selectedAddress })
-    .on('receipt', async function (receipt) {
-      if (receipt.events.addApprovalsE.returnValues.stringAlt) {
-        showSuccessAlert('Option added successfully');
-        showElment(document.getElementById('add-alt-button'));
-        showElment(addAltButton);
-        hideElment(document.getElementById('create-button'));
-        disaprearAlert(2000);
-      } else {
-        showErrorAlert('Failed');
-      }
-    });
-}
-
 function redirect(_caseNum) {
   location.href = 'addAlternatives.html?id' + _caseNum;
 }
@@ -205,8 +185,6 @@ function redirect(_caseNum) {
 document.getElementById('add-alt-button').onclick = addInput;
 const addAltButton = document.getElementById('addNewAlt-button');
 const addNewOption = document.getElementById('add-alt-button');
-
-addAltButton.onclick = addAlternative();
 
 hideElment = (element) => (element.style.display = 'none');
 showElment = (element) => (element.style.display = 'block');
