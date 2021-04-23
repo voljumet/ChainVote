@@ -1,6 +1,3 @@
-Moralis.initialize(initialize); // Application id from moralis.io
-Moralis.serverURL = serverurl; //Server url from moralis.io
-
 async function pauseContract() {
   alert('Did you want to pause the contract!');
 

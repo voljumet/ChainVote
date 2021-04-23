@@ -1,6 +1,3 @@
-Moralis.initialize(initialize); // Application id from moralis.io
-Moralis.serverURL = serverurl; //Server url from moralis.io
-
 async function login() {
   try {
     user = await Moralis.User.current();
@@ -27,28 +24,6 @@ async function login() {
     // document.getElementById("getCasesWaitingForApproval").style.display = "block";
   } catch (error) {
     console.log(error);
-  }
-}
-
-function loadPage() {
-  if (!instanceInProgress) {
-    if (!Paused) {
-      // show "Pause contract"
-    } else {
-      // show field to enter address
-      // show request for upgrade contract
-    }
-  } else {
-    if (!Paused) {
-      if (pauseStarted) {
-        // show "Approve pause contract"
-      }
-      if (upgradeStarted) {
-        // show "Approve contract upgrade"
-      }
-    } else {
-      // show "Unpause"
-    }
   }
 }
 
