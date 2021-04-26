@@ -1,4 +1,5 @@
 const tabele = document.getElementsByClassName('case-details')[0];
+
 function globaNumber() {
   var url = new URL(window.location.href).href;
   return url.substring(url.lastIndexOf('d') + 1);

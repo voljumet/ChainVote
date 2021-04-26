@@ -6,7 +6,6 @@ function reloadUrl() {
 }
 
 init = async () => {
-  hideElment(userInfo);
   window.web3 = await Moralis.Web3.enable();
 
   initUser();
@@ -14,9 +13,9 @@ init = async () => {
 initUser = async () => {
   user = await Moralis.User.current();
   if (user) {
-    hideElment(userConnectButton);
-    showElment(userProfileButton);
-    showElment(document.getElementById('logout'));
+      hideElment(userConnectButton);
+     showElment(userProfileButton);
+     showElment(document.getElementById('logout'));
     UserNameFront.innerText = user.get('username');
     window.onload = function () {
       if (!window.location.hash) {
@@ -26,9 +25,9 @@ initUser = async () => {
       }
     };
   } else {
-    showElment(userConnectButton);
-    hideElment(userProfileButton);
-    hideElment(document.getElementById('logout'));
+     showElment(userConnectButton);
+     hideElment(userProfileButton);
+     hideElment(document.getElementById('logout'));
     UserNameFront.innerText = '';
   }
 };
@@ -47,7 +46,7 @@ login = async () => {
 
 logOut = async () => {
   await Moralis.User.logOut();
-  hideElment(userInfo);
+   hideElment(userInfo);
   showSuccessAlert('You have been loged out successfully');
   disaprearAlert(2000);
   initUser();
@@ -71,8 +70,8 @@ openUerInfo = async () => {
     userRegionField.value = user.get('Region');
     userTypeField.value = user.get('UserType');
 
-    showElment(userInfo);
-    hideElment(userProfileButton);
+     showElment(userInfo);
+     hideElment(userProfileButton);
   } else {
     login();
   }
@@ -115,8 +114,8 @@ async function createUser(_region, _userType) {
 }
 
 closeButton = async () => {
-  hideElment(userInfo);
-  showElment(userProfileButton);
+   hideElment(userInfo);
+   showElment(userProfileButton);
 };
 
 function disaprearAlert(after) {

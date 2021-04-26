@@ -36,7 +36,7 @@ contract MultiSig is Storage{
                 _boolStorage["UpgradeStarted"] = false;
             } else if (_boolStorage["PauseStarted"]){
                 _boolStorage["paused"] = true;
-                _uintStorage["pauseTimer"] = (block.timestamp) + 2; //604800; //uncomment number for 7 days.
+                _uintStorage["pauseTimer"] = (block.timestamp) + 2; //604800; // number is 7 days.
                 _boolStorage["PauseStarted"] = false;
             }
             _boolStorage["InstanceInProgress"] = false;
