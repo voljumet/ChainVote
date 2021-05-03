@@ -184,7 +184,6 @@ function indexOfMax(arr) {
       max = arr[i];
     }
   }
-
   return maxIndex;
 }
 
