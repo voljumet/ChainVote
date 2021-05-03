@@ -191,7 +191,7 @@ async function getMyVote(_caseNumber) {
       if (receipt.events.myVoteE.returnValues.votedAlternative != '') {
         alert(receipt.events.myVoteE.returnValues.votedAlternative);
         let vote = receipt.events.myVoteE.returnValues.votedAlternative;
-        result.innerText = 'Your Have Voted: ' + vote;
+        result.innerText = 'You Have Voted: ' + vote;
 
         let array;
         reuslt.forEach((element) => {
@@ -213,7 +213,6 @@ async function getMyVote(_caseNumber) {
 
 function disapleButtons() {
   document.getElementById('confirm-myVote').disabled = true;
-  document.getElementById('change-myvote').disabled = true;
 }
 
 Moralis.Web3.onAccountsChanged(function (accounts) {
