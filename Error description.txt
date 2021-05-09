@@ -37,8 +37,6 @@ Error codes
 34: Number of SuperAdmin has to be an odd number to avoid a tie. -> Case.sol
 35: Nunber of SuperAdmin has to be an odd number. -> Proxy.sol
 36: Case does not exist. -> Case.sol
-37: Address has already signed -> MultiSig.sol
-38: 
-
+37: Address has allready approved multisig instance -> multisig.sol
 
 
