@@ -9,7 +9,7 @@ contract('Proxy', async function (accounts, deployer) {
   let instance3;
   
   
-  // await deployer.deploy(CaseTwo, {from: accounts[9]})
+  // await deployer.deploy(CaseTwo, {from: accounts[2]})
   
   beforeEach(async function () {
     let proxey = await Proxey.deployed();
@@ -59,13 +59,13 @@ contract('Proxy', async function (accounts, deployer) {
       
       it("Should not run upgrade function when not paused", async()=>{
         await truffleAssert.fails(
-          instance3.upgrade(instance2.address,{from: accounts[9]}),
+          instance3.upgrade(instance2.address,{from: accounts[2]}),
           truffleAssert.ErrorType.REVERT
         )
       })
     
       it("Should allow superadmins to pause contract", async ()=>{
-          let pause = await instance3.pause({from: accounts[7]})
+          let pause = await instance3.pause({from: accounts[0]})
           await truffleAssert.eventEmitted(pause, 'caseApprovedE', (ev) => {
           return ev.pauseStarted;
       })})
@@ -85,7 +85,7 @@ contract('Proxy', async function (accounts, deployer) {
       })
 
      it("Should allow superadmins to sign last multisig instance and pause contract", async ()=>{
-        let sign = await instance3.signMultisigInstance({from: accounts[8]})
+        let sign = await instance3.signMultisigInstance({from: accounts[1]})
         await truffleAssert.eventEmitted(sign, 'caseApprovedE', (ev) =>{
           return ev.approvalsNeeded.toNumber() === 0;
         })
@@ -111,14 +111,14 @@ contract('Proxy', async function (accounts, deployer) {
     })
 
      it("Should allow superAdmins to upgrade contract", async ()=>{
-        let upgrade = await instance3.upgrade(instance2.address, {from: accounts[9]})
+        let upgrade = await instance3.upgrade(instance2.address, {from: accounts[2]})
         await truffleAssert.eventEmitted(upgrade, 'caseApprovedE', (ev) =>{
           return ev.upgradeStarted;
         })
      })
 
      it("Should allow superAdmins to sign upgrade request", async () =>{
-       let signupgrade = await instance3.signMultisigInstance({from: accounts[8]})
+       let signupgrade = await instance3.signMultisigInstance({from: accounts[1]})
        await truffleAssert.eventEmitted(signupgrade, 'caseApprovedE', (ev)=>{
          return ev.upgradeStarted === false;
        })
@@ -148,7 +148,7 @@ contract('Proxy', async function (accounts, deployer) {
 
      it("Should allow superadmins to unpause the contract", async()=>{
       await timeout(3000)
-      let unpausecheck = instance3.unPause({from: accounts[9]})
+      let unpausecheck = instance3.unPause({from: accounts[2]})
       truffleAssert.eventEmitted(unpausecheck, 'confirmationE', (ev)=>{
         return ev.paused === false;
       })
@@ -158,12 +158,12 @@ contract('Proxy', async function (accounts, deployer) {
 
     it('Should fail to call old functions no longer in new contract', async function () {
       await truffleAssert.fails(
-       instance.createUser('Grimstad', 'Standard', { from: accounts[2] }),
+       instance.createUser('Grimstad', 'Standard', { from: accounts[9] }),
        truffleAssert.ErrorType.REVERT);
       })
 
      it("Should allow users to access new functions in upgraded case", async()=>{
-        let newcasefunction = await instance2.verifyNewCase({from: accounts[9]})
+        let newcasefunction = await instance2.verifyNewCase({from: accounts[2]})
         truffleAssert.eventEmitted(newcasefunction, 'casetwoemit', (ev)=>{
           return ev.cool === "Cool";
         })

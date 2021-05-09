@@ -20,15 +20,15 @@ const truffleAssert = require('truffle-assertions');
     //////////////////Create User//////////////////////////
     it('Should create admin users', async function () {
       await truffleAssert.passes(
-       instance.createUser('Grimstad', 'Admin', { from: accounts[0] }),
+       instance.createUser('Grimstad', 'Admin', { from: accounts[7] }),
         truffleAssert.ErrorType.REVERT
       );
       await truffleAssert.passes(
-        instance.createUser('Grimstad', 'Admin', { from: accounts[1] }),
+        instance.createUser('Grimstad', 'Admin', { from: accounts[8] }),
         truffleAssert.ErrorType.REVERT
       );
       await truffleAssert.passes(
-        instance.createUser('Grimstad', 'Admin', { from: accounts[2] }),
+        instance.createUser('Grimstad', 'Admin', { from: accounts[9] }),
         truffleAssert.ErrorType.REVERT
       );
     });
@@ -53,7 +53,7 @@ const truffleAssert = require('truffle-assertions');
 
     it('Should not be able to change userType or Region on account to the same', async function () {
       await truffleAssert.fails(
-        instance.createUser('Grimstad', 'Admin', { from: accounts[1] }),
+        instance.createUser('Grimstad', 'Admin', { from: accounts[8] }),
         truffleAssert.ErrorType.REVERT
       );
     });
@@ -63,13 +63,13 @@ const truffleAssert = require('truffle-assertions');
 
     //  it('Should be able to change userType on account', async function () {
     //    await truffleAssert.passes(
-    //      instance.createUser('Grimstad', 'Standard', { from: accounts[2] }),
+    //      instance.createUser('Grimstad', 'Standard', { from: accounts[9] }),
     //      truffleAssert.ErrorType.REVERT
     //    );
     //  })
     //  it('Should able to change Region on account', async function () {
     //    await truffleAssert.passes(
-    //      instance.createUser('Oslo', 'Standard', { from: accounts[2] }),
+    //      instance.createUser('Oslo', 'Standard', { from: accounts[9] }),
     //      truffleAssert.ErrorType.REVERT
     //    );
     //  });
@@ -87,7 +87,7 @@ const truffleAssert = require('truffle-assertions');
         await truffleAssert.passes(
           instance.createCase('First Case', 'Descripton',
           Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-          'yes', 'no', { from: accounts[1] }),
+          'yes', 'no', { from: accounts[8] }),
           truffleAssert.ErrorType.REVERT
           );
     });
@@ -97,7 +97,7 @@ const truffleAssert = require('truffle-assertions');
           await truffleAssert.passes(
             instance. createCase('Second Case', 'Descripton',
             Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-            'yes', 'no', { from: accounts[9] }),
+            'yes', 'no', { from: accounts[2] }),
             truffleAssert.ErrorType.REVERT
             );
     });
@@ -127,7 +127,7 @@ const truffleAssert = require('truffle-assertions');
          await truffleAssert.fails(
            instance.createCase('Third Case', 'Descripton',
              Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-             'yes', 'no', { from: accounts[9] }),
+             'yes', 'no', { from: accounts[2] }),
            truffleAssert.ErrorType.REVERT
          );
       await instance.createUser('Grimstad', 'Standard', { from: accounts[5] }); // reverts back to a standard
@@ -138,7 +138,7 @@ const truffleAssert = require('truffle-assertions');
     it('Should deactivate case', async function () {
       await instance.createCase('third Case', 'Descripton',
            Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-          'yes', 'no', { from: accounts[9], });
+          'yes', 'no', { from: accounts[2], });
       
       let end = await instance.endVoting(3);
 
@@ -155,8 +155,8 @@ const truffleAssert = require('truffle-assertions');
     it('Should NOT be able to deactivate case that has gotten approvals', async function () {
       await instance.createCase('fourth Case', 'Descripton',
            Math.round(new Date() / 1000) + 1, Math.round(new Date() / 1000) + 60 * 60,
-           'yes', 'no', {from: accounts[9],});
-      await instance.approve(4, { from: accounts[9] });
+           'yes', 'no', {from: accounts[2],});
+      await instance.approve(4, { from: accounts[2] });
       await truffleAssert.fails(
         instance.endVoting(4),
         truffleAssert.ErrorType.REVERT
@@ -167,14 +167,14 @@ const truffleAssert = require('truffle-assertions');
 
     it('Admin can approve a case', async function () {
       await truffleAssert.passes(
-        instance.approve(1, { from: accounts[1] }),
+        instance.approve(1, { from: accounts[8] }),
         truffleAssert.ErrorType.REVERT
       );
     });
 
     it('SuperAdmin user can approve a case', async function () {
       await truffleAssert.passes(
-        instance.approve(2, { from: accounts[8] }),
+        instance.approve(2, { from: accounts[1] }),
         truffleAssert.ErrorType.REVERT
       );
     });
@@ -188,20 +188,20 @@ const truffleAssert = require('truffle-assertions');
 
     it('Admin cannot approve case twice', async function () {
       await truffleAssert.fails(
-        instance.approve(1, { from: accounts[1] }),
+        instance.approve(1, { from: accounts[8] }),
         truffleAssert.ErrorType.REVERT
       );
     });
 
     it('SuperAdmin cannot approve case twice', async function () {
       await truffleAssert.fails(
-        instance.approve(2, { from: accounts[8] }),
+        instance.approve(2, { from: accounts[1] }),
         truffleAssert.ErrorType.REVERT
       );
     });
 
     it('Admin cannot approve an approved case', async function () {
-      await instance.approve(1, { from: accounts[0] });
+      await instance.approve(1, { from: accounts[7] });
       await truffleAssert.fails(
         instance.approve(1, { from: accounts[4] }),
         truffleAssert.ErrorType.REVERT
@@ -209,10 +209,10 @@ const truffleAssert = require('truffle-assertions');
     });
 
     it('SuperAdmin cannot approve an approved case', async function () {
-      await instance.approve(2, { from: accounts[7] });
+      await instance.approve(2, { from: accounts[0] });
 
       await truffleAssert.fails(
-        instance.approve(1, { from: accounts[9] }),
+        instance.approve(1, { from: accounts[2] }),
         truffleAssert.ErrorType.REVERT
       );
     });
@@ -239,21 +239,21 @@ const truffleAssert = require('truffle-assertions');
     });
     it('Admin user should be able to vote on a availabe case', async function () {
       await truffleAssert.passes(
-          instance.vote(1, 1, {from: accounts[1]}),
+          instance.vote(1, 1, {from: accounts[8]}),
           truffleAssert.ErrorType.REVERT
       )
     });
 
     it('SuperAdmin user should be able to vote on a availabe case', async function () {
       await truffleAssert.passes(
-          instance.vote(1, 1, {from: accounts[9]}),
+          instance.vote(1, 1, {from: accounts[2]}),
           truffleAssert.ErrorType.REVERT
       )
     });
 
     it('Should not allow vote on non-existing alternative (Admin)', async ()=> {
       await truffleAssert.fails(
-          instance.vote(1, 4, {from: accounts[1]}),
+          instance.vote(1, 4, {from: accounts[8]}),
           truffleAssert.ErrorType.REVERT
       )
     });
@@ -268,7 +268,7 @@ const truffleAssert = require('truffle-assertions');
 
     it('Should not allow vote on non-existing alternative (SuperAdmin)', async ()=> {
       await truffleAssert.fails(
-          instance.vote(1, 4, {from: accounts[9]}),
+          instance.vote(1, 4, {from: accounts[2]}),
           truffleAssert.ErrorType.REVERT
       )
     });
@@ -282,14 +282,14 @@ const truffleAssert = require('truffle-assertions');
 
     it("Should not allow admin to vote on case that is not open for voting", async ()=>{
       await truffleAssert.fails(
-        instance.vote(4, 1, {from: accounts[1]}),
+        instance.vote(4, 1, {from: accounts[8]}),
         truffleAssert.ErrorType.REVERT
       )
     })
 
     it("Should not allow superAdmin to vote on case that is not open for voting", async ()=>{
       await truffleAssert.fails(
-        instance.vote(4, 1, {from: accounts[9]}),
+        instance.vote(4, 1, {from: accounts[2]}),
         truffleAssert.ErrorType.REVERT
       )
     })
@@ -303,14 +303,14 @@ const truffleAssert = require('truffle-assertions');
 
     it("Should not allow admin users to vote on a deactivated case", async()=>{
       await truffleAssert.fails(
-          instance.vote(3, 1, {from: accounts[1]}),
+          instance.vote(3, 1, {from: accounts[8]}),
           truffleAssert.ErrorType.REVERT
       )
     })
 
     it("Should not allow superAdmin users to vote on a deactivated case", async()=>{
       await truffleAssert.fails(
-          instance.vote(3, 1, {from: accounts[9]}),
+          instance.vote(3, 1, {from: accounts[2]}),
           truffleAssert.ErrorType.REVERT
       )
     })
