@@ -31,12 +31,12 @@ contract MultiSig is Storage{
 
         if(_uintStorage["ApprovalsNeeded"] == 0){
             if(_boolStorage["UpgradeStarted"]){
-                _addressStorage["functionContractAddress"] = _addressStorage["functionContractAddressUpgrade"];
                 _boolStorage["UpgradeStarted"] = false;
+                _addressStorage["functionContractAddress"] = _addressStorage["functionContractAddressUpgrade"];
             } else if (_boolStorage["PauseStarted"]){
+                _boolStorage["PauseStarted"] = false;
                 _boolStorage["paused"] = true;
                 _uintStorage["pauseTimer"] = (block.timestamp) + 2; //604800; //uncomment number for 7 days.
-                _boolStorage["PauseStarted"] = false;
             }
             _boolStorage["InstanceInProgress"] = false;
             emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );

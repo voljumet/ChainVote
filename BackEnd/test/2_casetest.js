@@ -58,6 +58,29 @@ const truffleAssert = require('truffle-assertions');
       );
     });
 
+    //These tests work, but due to the changed user restriction timer, fails tests 
+    //longer down in the test file. 
+
+    //  it('Should be able to change userType on account', async function () {
+    //    await truffleAssert.passes(
+    //      instance.createUser('Grimstad', 'Standard', { from: accounts[2] }),
+    //      truffleAssert.ErrorType.REVERT
+    //    );
+    //  })
+    //  it('Should able to change Region on account', async function () {
+    //    await truffleAssert.passes(
+    //      instance.createUser('Oslo', 'Standard', { from: accounts[2] }),
+    //      truffleAssert.ErrorType.REVERT
+    //    );
+    //  });
+
+    //  it('Should able to change userType on account', async function () {
+    //   await truffleAssert.passes(
+    //     instance.createUser('Oslo', 'Admin', { from: accounts[4] }),
+    //     truffleAssert.ErrorType.REVERT
+    //   );
+    // });
+
     ///////////////////////////CREATE CASE/////////////////////////////////////////////
       
     it('Should allow admins to create case', async function () {
