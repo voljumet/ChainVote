@@ -556,7 +556,12 @@ span.psw {
   border-radius: 15px;
   box-shadow: 0 9px #999;
 }
+.hide_element_on_load {
+  display: none;
+}
+
 #connect {
+  display: none;
   padding: 15px 25px;
   font-size: 20px;
   text-align: center;

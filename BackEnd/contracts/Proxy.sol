@@ -74,8 +74,8 @@ contract Proxy is MultiSig {
             _boolStorage["paused"] = false;
             _boolStorage["initialized"] = true;
             _boolStorage["InstanceInProgress"]= false;
-        emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );
         }
+        emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );
     }
 
     // Fallback function, last call..

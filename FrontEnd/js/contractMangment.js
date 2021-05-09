@@ -21,8 +21,8 @@ async function updateMoralis(_PauseStarted, _UpgradeStarted, _InstanceInProgress
     el.set('ApprovalsNeeded', _ApprovalsNeeded);
     return  el.save()
   });
-  alert("Moralis Updated");
-  
+  // alert("Moralis Updated");
+   
 }
 
 async function updateMoralis2(_paused, _pauseTimer, _functionContractAddress) {
@@ -45,8 +45,8 @@ async function updateMoralis2(_paused, _pauseTimer, _functionContractAddress) {
     return  el.save()
   });
 
-  alert("Moralis Updated 2");
-  
+  // alert("Moralis Updated 2");
+   
 }
 
 
@@ -67,45 +67,37 @@ async function buttonsDisplayManager(){
       Paused = element.attributes.paused;
       PauseTimer = element.attributes.pauseTimer;
       console.log("PauseStarted: "+ PauseStarted,"UpgradeStarted: " + UpgradeStarted , "InstanceInProgress: "+ InstanceInProgress
-      ,"ApprovalsNeeded: "+ ApprovalsNeeded, "Paused:" + Paused, "PauseTimer: "+ PauseTimer);
+        , "ApprovalsNeeded: " + ApprovalsNeeded, "Paused:" + Paused, "PauseTimer: " + PauseTimer);
+      
 
     }
     else{
-      alert("No Match found on Moralis")
+      // alert("No Match found on Moralis")
     }
   });
 
   
-    if (Paused && !PauseStarted && !UpgradeStarted) {
-      // show "Pause contract"
-      showElment(inputField)
-      showElment(UnpauseButton)
-      showElment(UpgradeButton);
-      
-    
+  if (Paused && !PauseStarted && !UpgradeStarted) {
+    showElment(inputField);
+    showElment(UnpauseButton);
+    showElment(UpgradeButton);
   } else {
     if (InstanceInProgress) {
-      show.innerText =
-      'ApprovalsNeeded:'+ ApprovalsNeeded 
-     
+      show.innerText ='ApprovalsNeeded:' + ApprovalsNeeded;
       if (PauseStarted) {
-        // show "Approve pause contract"
         showElment(ApprovePause);
       }
       if (UpgradeStarted) {
-        // show "Approve contract upgrade"
         showElment(ApproveUppgrade);
       }
     } else {
-      // show "Unpause"
       showElment(PauseButton);
     }
   }
-
 }
 
 async function pauseContract() {
-  alert('Did you want to pause the contract!');
+  // alert('Did you want to pause the contract!');
 
   window.web3 = await Moralis.Web3.enable();
   let abi = await getProxyAbi();
@@ -121,6 +113,8 @@ async function pauseContract() {
 
       updateMoralis(PauseStarted,UpgradeStarted,InstanceInProgress,ApprovalsNeeded);
       console.log(receipt);
+    //  
+
     });
 }
 
@@ -138,14 +132,16 @@ async function upgradContract(_newAddress){
       let ApprovalsNeeded = receipt.events.caseApprovedE.returnValues.approvalsNeeded;
 
       updateMoralis(PauseStarted,UpgradeStarted,InstanceInProgress,ApprovalsNeeded);
+      
       console.log(receipt);
+     
     });
 
 }
 
 async function unPauseContract() {
   try {
-    alert('Did you want to Unpause the contract!');
+    // alert('Did you want to Unpause the contract!');
     window.web3 = await Moralis.Web3.enable();
     let abi = await getProxyAbi();
     let contractInstance = new web3.eth.Contract(abi, contractAddress);
@@ -153,24 +149,32 @@ async function unPauseContract() {
       .unPause()
       .send({ from: ethereum.selectedAddress })
       .on('receipt', async function (receipt) {
+        
         if (receipt) {
+          let Paused = receipt.events.confirmationE.returnValues.paused;
+          let PausedTimer = receipt.events.confirmationE.returnValues.pauseTimer;
+          let FunctionContractAddress = receipt.events.confirmationE.returnValues.functionContractAddress;
+          updateMoralis2(Paused,PausedTimer,FunctionContractAddress);
           console.log(receipt);
+           
         }
       });
   } catch (error) {
     console.log(error);
   }
 }
+
 async function approvePause() {
   try {
-    alert('Did you want to Unpause the contract!');
+    // alert('Did you want to Unpause the contract!');
     window.web3 = await Moralis.Web3.enable();
     let abi = await getMultiAbi();
     let contractInstance = new web3.eth.Contract(abi, contractAddress);
     contractInstance.methods
       .signMultisigInstance()
       .send({ from: ethereum.selectedAddress })
-      .on('receipt', async function (receipt) {console.log("approve: "+ receipt)
+      .on('receipt', async function (receipt) {
+        console.log("approve: " + receipt)
         if (receipt.events.caseApprovedE != null) {
           let PauseStarted = receipt.events.caseApprovedE.returnValues.pauseStarted;
           let UpgradeStarted = receipt.events.caseApprovedE.returnValues.upgradeStarted;
@@ -185,6 +189,8 @@ async function approvePause() {
           let FunctionContractAddress = receipt.events.confirmationE.returnValues.functionContractAddress;
           updateMoralis2(Paused,PausedTimer,FunctionContractAddress);
         }
+   
+        
       });
   } catch (error) {
     console.log(error);
