@@ -9,9 +9,9 @@ const fsLibrary = require("fs");
 
 module.exports = async function (deployer, network, accounts) {
   let adminarray = [
-    accounts[7],
-    accounts[8],
-    accounts[9]
+    accounts[0],
+    accounts[1],
+    accounts[2]
   ];
   await deployer.deploy(CaseOne, {from: accounts[9]});
   // await deployer.deploy(CaseTwo, {from: accounts[9]});

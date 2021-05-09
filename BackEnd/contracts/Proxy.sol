@@ -40,7 +40,9 @@ contract Proxy is MultiSig {
             _addressStorage["functionContractAddressUpgrade"] = _newAddress;
         }else if(!_boolStorage["initialized"]){
             _addressStorage["functionContractAddress"] = _newAddress;
+        
         }
+
     }
 
 
@@ -73,7 +75,8 @@ contract Proxy is MultiSig {
             // will be unpaused if contract is not initialized yet
             _boolStorage["paused"] = false;
             _boolStorage["initialized"] = true;
-            _boolStorage["InstanceInProgress"] = false;
+            _boolStorage["InstanceInProgress"]= false;
+        emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );
         }
         
     }

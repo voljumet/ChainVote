@@ -1,6 +1,3 @@
-Moralis.initialize('Ex6QoD9lxvp4BJ7ZVJCNejuw236DSINOUNMOUpbV'); // Application id from moralis.io
-Moralis.serverURL = 'https://et2gfmeu3ppx.moralis.io:2053/server'; //Server url from moralis.io
-
 async function login() {
   try {
     user = await Moralis.User.current();
