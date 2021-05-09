@@ -189,16 +189,19 @@ function indexOfMax(arr) {
 
 async function checkUserType() {
   user = await Moralis.User.current();
-  if (user.get('UserType') == 'Standard') {
+  console.log("HER: "+user.get('UserType'))
+  if (user.get('UserType') == 'Admin') {
     hideElment(document.getElementById('createCaseHerf'));
     hideElment(document.getElementById('approveHerf'));
+    hideElment(document.getElementById('contractHerf'));
     window.onload = function () {
       if (!window.location.hash) {
         window.location = window.location + '#loaded';
         window.location.reload();
       }
     };
-  } else if (user.get('UserType') == 'Admin') {
+  } else if (user.get('UserType') == 'Standard') {
+    
     showElment(document.getElementById('createCaseHerf'));
     showElment(document.getElementById('approveHerf'));
     hideElment(document.getElementById('contractHerf'));
