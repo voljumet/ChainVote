@@ -69,16 +69,13 @@ contract Proxy is MultiSig {
         require(onlyOwners());
         if(_boolStorage["initialized"] && _uintStorage["pauseTimer"] < block.timestamp){
             _boolStorage["paused"] = false;
-            emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );
-
         } else {
             // will be unpaused if contract is not initialized yet
             _boolStorage["paused"] = false;
             _boolStorage["initialized"] = true;
             _boolStorage["InstanceInProgress"]= false;
-        emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );
         }
-        
+        emit confirmationE(_boolStorage["paused"], _uintStorage["pauseTimer"], _addressStorage["functionContractAddress"] );
     }
 
     // Fallback function, last call..

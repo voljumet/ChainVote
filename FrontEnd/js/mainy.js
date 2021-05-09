@@ -184,7 +184,6 @@ function indexOfMax(arr) {
       max = arr[i];
     }
   }
-
   return maxIndex;
 }
 
@@ -251,15 +250,21 @@ async function search(_title) {
           element.attributes.stringAlt
         )
       );
+      const loader = document.querySelector('.loader');
+      loader.className += ' hidden';
       tempy = true;
       return false;
     } else {
+      const loader = document.querySelector('.loader');
+      loader.className += ' hidden';
       return true;
     }
   });
   if (_title != '' && tempy == false) {
     document.getElementById('noMatch').innerText = 'No Match Found';
   }
+  const loader = document.querySelector('.loader');
+      loader.className += ' hidden';
 }
 
 hideElment = (element) => (element.style.display = 'none');
