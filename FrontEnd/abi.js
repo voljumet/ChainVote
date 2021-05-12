@@ -9,7 +9,7 @@ Moralis.serverURL = "https://03i7vk4ziens.moralis.io:2053/server"; //Server url 
 
 function getAbi() {
     return new Promise((res) => {
-        $.getJSON("../Backend/build/contracts/Case.json", ((json) => {
+        $.getJSON("Case.json", ((json) => {
             res(json.abi);
         }))
     })
@@ -17,7 +17,7 @@ function getAbi() {
 
 function getProxyAbi() {
     return new Promise((res) => {
-        $.getJSON("../Backend/build/contracts/Proxy.json", ((json) => {
+        $.getJSON("Proxy.json", ((json) => {
             res(json.abi);
         }))
     })
@@ -25,7 +25,7 @@ function getProxyAbi() {
 
 function getMultiAbi() {
     return new Promise((res) => {
-        $.getJSON("../Backend/build/contracts/MultiSig.json", ((json) => {
+        $.getJSON("MultiSig.json", ((json) => {
             res(json.abi);
         }))
     })
