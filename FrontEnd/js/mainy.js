@@ -191,8 +191,8 @@ async function checkUserType() {
   user = await Moralis.User.current();
   console.log("HER: "+user.get('UserType'))
   if (user.get('UserType') == 'Admin') {
-    hideElment(document.getElementById('createCaseHerf'));
-    hideElment(document.getElementById('approveHerf'));
+    showElment(document.getElementById('createCaseHerf'));
+    showElment(document.getElementById('approveHerf'));
     hideElment(document.getElementById('contractHerf'));
     window.onload = function () {
       if (!window.location.hash) {
@@ -202,8 +202,8 @@ async function checkUserType() {
     };
   } else if (user.get('UserType') == 'Standard') {
     
-    showElment(document.getElementById('createCaseHerf'));
-    showElment(document.getElementById('approveHerf'));
+    hideElment(document.getElementById('createCaseHerf'));
+    hideElment(document.getElementById('approveHerf'));
     hideElment(document.getElementById('contractHerf'));
     window.onload = function () {
       if (!window.location.hash) {
