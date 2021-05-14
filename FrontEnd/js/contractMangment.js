@@ -100,7 +100,124 @@ async function pauseContract() {
   // alert('Did you want to pause the contract!');
 
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getProxyAbi();
+  let abi = [
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_superAdminArray",
+          "type": "address[]"
+        },
+        {
+          "internalType": "string",
+          "name": "_region",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "instanceInProgress",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "pauseStarted",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "upgradeStarted",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "approvalsNeeded",
+          "type": "uint256"
+        }
+      ],
+      "name": "caseApprovedE",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "paused",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "pauseTimer",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "functionContractAddress",
+          "type": "address"
+        }
+      ],
+      "name": "confirmationE",
+      "type": "event"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "signMultisigInstance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newAddress",
+          "type": "address"
+        }
+      ],
+      "name": "upgrade",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unPause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ];
   let contractInstance = new web3.eth.Contract(abi, contractAddress);
   contractInstance.methods
     .pause()
@@ -120,7 +237,124 @@ async function pauseContract() {
 
 async function upgradContract(_newAddress){
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getProxyAbi();
+  let abi = [
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_superAdminArray",
+          "type": "address[]"
+        },
+        {
+          "internalType": "string",
+          "name": "_region",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "instanceInProgress",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "pauseStarted",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "upgradeStarted",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "approvalsNeeded",
+          "type": "uint256"
+        }
+      ],
+      "name": "caseApprovedE",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "paused",
+          "type": "bool"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "pauseTimer",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "functionContractAddress",
+          "type": "address"
+        }
+      ],
+      "name": "confirmationE",
+      "type": "event"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "fallback",
+      "payable": true
+    },
+    {
+      "inputs": [],
+      "name": "signMultisigInstance",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive",
+      "payable": true
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_newAddress",
+          "type": "address"
+        }
+      ],
+      "name": "upgrade",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unPause",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ];
   let contractInstance = new web3.eth.Contract(abi, contractAddress);
   contractInstance.methods
     .upgrade(_newAddress)
@@ -143,7 +377,124 @@ async function unPauseContract() {
   try {
     // alert('Did you want to Unpause the contract!');
     window.web3 = await Moralis.Web3.enable();
-    let abi = await getProxyAbi();
+    let abi = [
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "_superAdminArray",
+            "type": "address[]"
+          },
+          {
+            "internalType": "string",
+            "name": "_region",
+            "type": "string"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "instanceInProgress",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "pauseStarted",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "upgradeStarted",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "approvalsNeeded",
+            "type": "uint256"
+          }
+        ],
+        "name": "caseApprovedE",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "paused",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "pauseTimer",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "functionContractAddress",
+            "type": "address"
+          }
+        ],
+        "name": "confirmationE",
+        "type": "event"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "fallback",
+        "payable": true
+      },
+      {
+        "inputs": [],
+        "name": "signMultisigInstance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "stateMutability": "payable",
+        "type": "receive",
+        "payable": true
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "_newAddress",
+            "type": "address"
+          }
+        ],
+        "name": "upgrade",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "pause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "unPause",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ];
     let contractInstance = new web3.eth.Contract(abi, contractAddress);
     contractInstance.methods
       .unPause()
@@ -168,7 +519,71 @@ async function approvePause() {
   try {
     // alert('Did you want to Unpause the contract!');
     window.web3 = await Moralis.Web3.enable();
-    let abi = await getMultiAbi();
+    let abi = [
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "instanceInProgress",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "pauseStarted",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "upgradeStarted",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "approvalsNeeded",
+            "type": "uint256"
+          }
+        ],
+        "name": "caseApprovedE",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "bool",
+            "name": "paused",
+            "type": "bool"
+          },
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "pauseTimer",
+            "type": "uint256"
+          },
+          {
+            "indexed": false,
+            "internalType": "address",
+            "name": "functionContractAddress",
+            "type": "address"
+          }
+        ],
+        "name": "confirmationE",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "signMultisigInstance",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ];
     let contractInstance = new web3.eth.Contract(abi, contractAddress);
     contractInstance.methods
       .signMultisigInstance()
