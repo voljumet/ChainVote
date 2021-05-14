@@ -5,7 +5,7 @@ async function updateMoralis(_PauseStarted, _UpgradeStarted, _InstanceInProgress
  
   reuslt.forEach((element) => {
     console.log("el: " +element.attributes.PauseStarted);
-    if (element.id == "skUzkrXWu4") ID = element.id;
+    if (element.id == "saMLLu4sWK") ID = element.id;
     
     else("No Match found")
   });
@@ -13,7 +13,7 @@ async function updateMoralis(_PauseStarted, _UpgradeStarted, _InstanceInProgress
   const newContrctManager = new contractManager();
 
   console.log(_PauseStarted,_UpgradeStarted, _InstanceInProgress)
-  newContrctManager.set('objectId', "skUzkrXWu4");
+  newContrctManager.set('objectId', "saMLLu4sWK");
   await newContrctManager.save().then((el)=>{
     el.set('PauseStarted', _PauseStarted);
     el.set('UpgradeStarted', _UpgradeStarted);
@@ -30,14 +30,14 @@ async function updateMoralis2(_paused, _pauseTimer, _functionContractAddress) {
  
   reuslt.forEach((element) => {
     console.log("el: " +element.attributes.PauseStarted);
-    if (element.id == "skUzkrXWu4") ID = element.id;
+    if (element.id == "saMLLu4sWK") ID = element.id;
     
     else("No Match found")
   });
   const contractManager = Moralis.Object.extend('ContractManager');
   const newContrctManager = new contractManager();
 
-  newContrctManager.set('objectId', "skUzkrXWu4");
+  newContrctManager.set('objectId', "saMLLu4sWK");
   await newContrctManager.save().then((el)=>{
     el.set('paused', _paused);
     el.set('pauseTimer', _pauseTimer);
@@ -58,7 +58,7 @@ async function buttonsDisplayManager(){
 
   let reuslt = await Moralis.Cloud.run('ContractManager', {});
   reuslt.forEach((element) => {
-    if (element.id == "skUzkrXWu4"){
+    if (element.id == "saMLLu4sWK"){
       console.log("el: " +element);
       PauseStarted = element.attributes.PauseStarted;
       UpgradeStarted = element.attributes.UpgradeStarted;
