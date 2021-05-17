@@ -32,8 +32,7 @@ async function createUser(_region, _userType) {
   //   alert(load);
   alert('Region: ' + _region + '\nUserType: ' + _userType);
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .createUser(_region, _userType)
     .send({ from: ethereum.selectedAddress })
@@ -47,8 +46,7 @@ async function createUser(_region, _userType) {
 
 async function pauseContract() {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getProxyAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.ProxyAbi, contractAddress);
   contractInstance.methods
     .pause()
     .send({ from: ethereum.selectedAddress })
@@ -100,8 +98,7 @@ async function createCase(
       array
   );
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .createCase(
       _title,
@@ -171,8 +168,7 @@ async function createCase(
 
 async function endVoting(caseNumber) {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .endVoting(caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -189,8 +185,7 @@ async function endVoting(caseNumber) {
 
 async function approve(caseNumber) {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .approve(caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -228,8 +223,7 @@ async function approve(caseNumber) {
 
 async function deactivateCase(caseNumber) {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .deactivateCase(caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -261,8 +255,7 @@ async function deactivateCase(caseNumber) {
 
 async function getMyVote(caseNumber) {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .getMyVote(caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -277,8 +270,7 @@ async function getMyVote(caseNumber) {
 
 async function getApprovalsAndLimit(caseNumber) {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .getApprovalsAndLimit(caseNumber)
     .send({ from: ethereum.selectedAddress })
@@ -295,8 +287,7 @@ async function getApprovalsAndLimit(caseNumber) {
 
 async function vote(caseNumber, alternative) {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .vote(caseNumber, alternative)
     .send({ from: ethereum.selectedAddress })
@@ -310,8 +301,7 @@ async function vote(caseNumber, alternative) {
 
 async function addAlternatives(caseNumber, alternative) {
   window.web3 = await Moralis.Web3.enable();
-  let abi = await getAbi();
-  let contractInstance = new web3.eth.Contract(abi, contractAddress);
+  let contractInstance = new web3.eth.Contract(window.CaseAbi, contractAddress);
   contractInstance.methods
     .addAlternatives(caseNumber, alternative)
     .send({ from: ethereum.selectedAddress })
