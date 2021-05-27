@@ -7,7 +7,15 @@ function globaNumber() {
 
 var globalCaseNumber = globaNumber();
 
-function showCase( _number, _title, _stringAlternatives, _description, _endDate, _totalVotes, _UintAlt, _stratDate
+function showCase(
+  _number,
+  _title,
+  _stringAlternatives,
+  _description,
+  _endDate,
+  _totalVotes,
+  _UintAlt,
+  _stratDate
 ) {
   var totalVotes = { totalVotes: _totalVotes };
   w3.displayObject('total-votes-vote', totalVotes);
@@ -15,7 +23,7 @@ function showCase( _number, _title, _stringAlternatives, _description, _endDate,
   var caseNum = { proposal_number: _number };
   w3.displayObject('case-num-vote', caseNum);
 
-  var timeLeft = { timeLeft: timeIt(_stratDate) };
+  var timeLeft = { timeLeft: timeIt(_endDate) };
   w3.displayObject('time-left-vote', timeLeft);
 
   const cardy = document.createElement('ul');
